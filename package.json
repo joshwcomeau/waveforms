@@ -10,16 +10,18 @@
     "prettier":
       "prettier --single-quote --trailing-comma es5 --write \"src/**/*.js\"",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "flow": "flow"
   },
   "dependencies": {
+    "flow-bin": "^0.59.0",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-scripts": "1.0.17"
   },
   "devDependencies": {
-    "@storybook/react": "^3.2.15",
     "@storybook/addon-actions": "^3.2.15",
-    "@storybook/addon-links": "^3.2.15"
+    "@storybook/addon-links": "^3.2.15",
+    "@storybook/react": "^3.2.15"
   }
 }
