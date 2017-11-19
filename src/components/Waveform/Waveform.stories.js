@@ -16,6 +16,7 @@ class WaveformProgress extends Component {
   state = {
     progress: 0,
   };
+  animationFrameId: number;
 
   static defaultProps = {
     speed: 1,
@@ -25,8 +26,12 @@ class WaveformProgress extends Component {
     this.tick();
   }
 
+  componentWillUnmount() {
+    window.cancelAnimationFrame(this.animationFrameId);
+  }
+
   tick() {
-    window.requestAnimationFrame(() => {
+    this.animationFrameId = window.requestAnimationFrame(() => {
       this.setState(
         state => ({ progress: (state.progress + this.props.speed) % 99 }),
         this.tick
