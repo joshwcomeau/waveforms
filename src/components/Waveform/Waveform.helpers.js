@@ -1,10 +1,22 @@
 // @flow
+import { range } from '../../utils';
 import type { WaveformShape } from '../../types';
 
-export const getPathForWaveformShape = (shape: WaveformShape) => {
+export const getPathForWaveformShape = (
+  shape: WaveformShape,
+  width: number,
+  height: number
+) => {
   switch (shape) {
-    case 'sine':
-      return 'M10 80  C 40 10, 65 10, 95 80 S 150 150, 180 80';
+    case 'sine': {
+      let path = `M 0,${Math.round(height / 2)} `;
+
+      return range(100).reduce((acc, percentage) => {
+        const { x, y } = getTracePosition(shape, width, height, percentage);
+
+        return `${acc} L ${x},${y} `;
+      }, path);
+    }
     default:
       return 'M0,0 L100,100';
   }

@@ -12,19 +12,22 @@ type Props = {
   progressPercentage: number,
 };
 
-const VIEWBOX_WIDTH = 190;
-const VIEWBOX_HEIGHT = 160;
+const VIEWBOX_WIDTH = 200;
+const VIEWBOX_HEIGHT = 100;
+const ASPECT_RATIO = VIEWBOX_HEIGHT / VIEWBOX_WIDTH;
 
 const Waveform = ({
   shape,
-  size = 190,
+  size = VIEWBOX_WIDTH,
   color = 'black',
   progressPercentage,
 }) => {
-  const svgPath = getPathForWaveformShape(shape);
-
   const width = size;
-  const height = Math.round(size * 0.842);
+  const height = Math.round(size * ASPECT_RATIO);
+
+  const start = performance.now();
+  const svgPath = getPathForWaveformShape(shape, width, height);
+  console.log(performance.now() - start);
 
   let tracePosition;
   if (typeof progressPercentage === 'number') {
