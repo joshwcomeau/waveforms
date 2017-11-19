@@ -25,9 +25,7 @@ const Waveform = ({
   const width = size;
   const height = Math.round(size * ASPECT_RATIO);
 
-  const start = performance.now();
   const svgPath = getPathForWaveformShape(shape, width, height);
-  console.log(performance.now() - start);
 
   let tracePosition;
   if (typeof progressPercentage === 'number') {
@@ -44,6 +42,7 @@ const Waveform = ({
       width={width}
       height={height}
       viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
+      style={{ overflow: 'visible' }}
     >
       <path stroke="black" fill="none" d={svgPath} />
 
