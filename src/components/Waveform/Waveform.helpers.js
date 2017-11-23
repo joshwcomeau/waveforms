@@ -24,7 +24,7 @@ export const getPathForWaveformShape = (
 
 export const getPositionAtPointRelativeToAxis = (
   shape: WaveformShape,
-  percentage
+  percentage: number
 ) => {
   switch (shape) {
     case 'sine': {

@@ -7,9 +7,9 @@ import type { WaveformShape } from '../../types';
 
 type Props = {
   shape: WaveformShape,
-  size: number,
-  color: string,
-  progressPercentage: number,
+  size?: number,
+  color?: string,
+  progressPercentage?: number,
 };
 
 const VIEWBOX_WIDTH = 200;
@@ -21,7 +21,7 @@ const Waveform = ({
   size = VIEWBOX_WIDTH,
   color = 'black',
   progressPercentage,
-}) => {
+}: Props) => {
   const width = size;
   const height = Math.round(size * ASPECT_RATIO);
 

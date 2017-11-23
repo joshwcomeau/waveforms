@@ -8,11 +8,16 @@ import Waveform from './Waveform';
 
 import type { WaveformShape } from '../../types/index';
 
-class WaveformProgress extends Component {
-  props: {
-    shape: WaveformShape,
-    speed: number,
-  };
+type Props = {
+  shape: WaveformShape,
+  speed: number,
+};
+
+type State = {
+  progress: number,
+};
+
+class WaveformProgress extends Component<Props, State> {
   state = {
     progress: 0,
   };
@@ -50,6 +55,5 @@ class WaveformProgress extends Component {
 }
 
 storiesOf('Waveform', module)
-  .add('Default', () => <Waveform />)
   .add('Sine', () => <Waveform shape="sine" />)
   .add('Sine with progress', () => <WaveformProgress shape="sine" />);
