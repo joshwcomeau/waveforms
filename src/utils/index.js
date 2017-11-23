@@ -1,7 +1,12 @@
-export const range = n =>
-  Array(n)
-    .fill()
-    .map((_, i) => i);
+export const range = (start, end) => {
+  // Support passing a single value (eg. range(5)), to create 0-4
+  if (typeof end === 'undefined') {
+    end = start;
+    start = 0;
+  }
+
+  return Array.from({ length: end - start }, (v, k) => k + start);
+};
 
 export const sample = arr => arr[Math.floor(Math.random() * arr.length)];
 

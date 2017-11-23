@@ -38,7 +38,7 @@ class WaveformProgress extends Component<Props, State> {
   tick() {
     this.animationFrameId = window.requestAnimationFrame(() => {
       this.setState(
-        state => ({ progress: (state.progress + this.props.speed) % 99 }),
+        state => ({ progress: (state.progress + this.props.speed) % 100 }),
         this.tick
       );
     });
@@ -48,7 +48,8 @@ class WaveformProgress extends Component<Props, State> {
     return (
       <Waveform
         shape={this.props.shape}
-        progressPercentage={this.state.progress}
+        cycles={1}
+        offset={this.state.progress}
       />
     );
   }
@@ -56,4 +57,7 @@ class WaveformProgress extends Component<Props, State> {
 
 storiesOf('Waveform', module)
   .add('Sine', () => <Waveform shape="sine" />)
+  .add('Sine (2 cycles)', () => <Waveform shape="sine" cycles={2} />)
+  .add('Sine (4 cycles)', () => <Waveform shape="sine" cycles={4} />)
+  .add('Sine (10 cycles)', () => <Waveform shape="sine" cycles={10} />)
   .add('Sine with progress', () => <WaveformProgress shape="sine" />);
