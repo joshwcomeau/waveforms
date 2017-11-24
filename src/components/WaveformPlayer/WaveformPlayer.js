@@ -15,7 +15,7 @@ type State = {
   // `progress` is the number of cycles that have advanced since starting.
   // It can be decimal, and is reset whenever `isPlaying` changes.
   progress: number,
-  startTime: Date,
+  lastTickAt?: Date,
 };
 
 class WaveformPlayer extends PureComponent<Props, State> {
@@ -35,7 +35,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
       this.start();
     }
 
-    window.setTimeout(this.stop, 4000);
+    // window.setTimeout(this.stop, 4000);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -54,11 +54,10 @@ class WaveformPlayer extends PureComponent<Props, State> {
   }
 
   start = () => {
-    console.log('START');
     this.setState(
       {
         progress: 0,
-        startTime: new Date(),
+        lastTickAt: new Date(),
       },
       this.tick
     );
@@ -72,12 +71,17 @@ class WaveformPlayer extends PureComponent<Props, State> {
 
   tick = () => {
     this.animationFrameId = window.requestAnimationFrame(() => {
-      const secondsSinceStart = (new Date() - this.state.startTime) / 1000;
-      const progress = secondsSinceStart * this.props.frequency;
+      if (!this.state.lastTickAt) {
+        return;
+      }
 
-      console.log(progress);
+      const tickAt = new Date();
 
-      this.setState({ progress }, this.tick);
+      const secondsSinceLastTick = (tickAt - this.state.lastTickAt) / 1000;
+      const nextProgress =
+        this.state.progress + secondsSinceLastTick * this.props.frequency;
+
+      this.setState({ progress: nextProgress, lastTickAt: tickAt }, this.tick);
     });
   };
 
