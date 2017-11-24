@@ -9,7 +9,7 @@ const VIEWBOX_WIDTH = 200;
 const VIEWBOX_HEIGHT = 100;
 const ASPECT_RATIO = VIEWBOX_HEIGHT / VIEWBOX_WIDTH;
 
-type Props = {
+export type Props = {
   shape: WaveformShape,
   // 'size' will be used for the width, and the height will be derived, using
   // the ASPECT_RATIO constant.

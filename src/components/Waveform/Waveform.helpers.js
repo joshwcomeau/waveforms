@@ -9,9 +9,11 @@ export const getPathForWaveformShape = (
   width: number,
   height: number,
   cycles: number,
-  startPercentage: number = 0
+  startPercentage?: number = 0
 ) => {
   const offset = startPercentage * width / 100;
+
+  const totalPoints = startPercentage + 100 * cycles;
 
   switch (shape) {
     case 'sine': {
@@ -25,10 +27,7 @@ export const getPathForWaveformShape = (
 
       let path = `M ${startPosition.x},${startPosition.y} `;
 
-      return range(
-        startPercentage,
-        startPercentage + 100
-      ).reduce((acc, index) => {
+      return range(startPercentage, totalPoints).reduce((acc, index) => {
         const { x, y } = getTracePosition(shape, width, height, index, offset);
 
         return `${acc} L ${x},${y} `;

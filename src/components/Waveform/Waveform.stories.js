@@ -1,8 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
 
 import Waveform from './Waveform';
 
@@ -48,7 +46,7 @@ class WaveformProgress extends Component<Props, State> {
     return (
       <Waveform
         shape={this.props.shape}
-        cycles={1}
+        cycles={2}
         offset={this.state.progress}
       />
     );
