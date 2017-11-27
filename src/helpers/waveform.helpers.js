@@ -1,15 +1,15 @@
 // @flow
-import { convertPercentageToSinePosition } from '../../helpers/sine.helpers';
-import { range } from '../../utils';
+import { convertPercentageToSinePosition } from './sine.helpers';
+import { range } from '../utils';
 
-import type { WaveformShape } from '../../types';
+import type { WaveformShape } from '../types';
 
 export const getPathForWaveformShape = (
   shape: WaveformShape,
   width: number,
   height: number,
   cycles: number,
-  startPercentage?: number = 0
+  startPercentage?: number = 0,
 ) => {
   const offset = startPercentage * width / 100;
 
@@ -22,7 +22,7 @@ export const getPathForWaveformShape = (
         width,
         height,
         startPercentage,
-        offset
+        offset,
       );
 
       let path = `M ${startPosition.x},${startPosition.y} `;
@@ -44,7 +44,7 @@ export const getPathForWaveformShape = (
  */
 export const getPositionAtPointRelativeToAxis = (
   shape: WaveformShape,
-  index: number
+  index: number,
 ) => {
   switch (shape) {
     case 'sine': {
@@ -83,7 +83,7 @@ export const getTracePosition = (
   width: number,
   height: number,
   index: number,
-  offset: number
+  offset: number,
 ) => {
   // `index` is a number between 0 and 99, representing where within
   // the path a circle should be drawn.

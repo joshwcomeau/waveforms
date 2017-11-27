@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 
 import Waveform from '../Waveform';
+import WaveformAxes from '../WaveformAxes';
 
 import type { Props as WaveformProps } from '../Waveform';
 
@@ -59,7 +60,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
         progress: 0,
         lastTickAt: new Date(),
       },
-      this.tick
+      this.tick,
     );
   };
 
@@ -86,10 +87,17 @@ class WaveformPlayer extends PureComponent<Props, State> {
   };
 
   render() {
-    const { frequency, isPlaying, ...delegatedProps } = this.props;
+    const { frequency, isPlaying, size, ...delegatedProps } = this.props;
     const { progress } = this.state;
 
-    return <Waveform {...delegatedProps} offset={(progress * 100) % 100} />;
+    // Turn progress into a cyclical value between 0 and 99
+    const offsetCycles = (progress * 100) % 100;
+
+    return (
+      <WaveformAxes size={size}>
+        <Waveform {...delegatedProps} size={size} offset={offsetCycles} />
+      </WaveformAxes>
+    );
   }
 }
 

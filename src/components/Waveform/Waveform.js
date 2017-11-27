@@ -1,13 +1,16 @@
 // @flow
 import React from 'react';
 
-import { getPathForWaveformShape, getTracePosition } from './Waveform.helpers';
+import { WAVEFORM_ASPECT_RATIO } from '../../constants';
+import {
+  getPathForWaveformShape,
+  getTracePosition,
+} from '../../helpers/waveform.helpers';
 
 import type { WaveformShape } from '../../types';
 
 const VIEWBOX_WIDTH = 200;
-const VIEWBOX_HEIGHT = 100;
-const ASPECT_RATIO = VIEWBOX_HEIGHT / VIEWBOX_WIDTH;
+const VIEWBOX_HEIGHT = VIEWBOX_WIDTH * WAVEFORM_ASPECT_RATIO;
 
 export type Props = {
   shape: WaveformShape,
@@ -43,7 +46,7 @@ const Waveform = ({
   offset,
 }: Props) => {
   const width = size;
-  const height = Math.round(size * ASPECT_RATIO);
+  const height = Math.round(size * WAVEFORM_ASPECT_RATIO);
 
   const svgPath = getPathForWaveformShape(shape, width, height, cycles, offset);
 
@@ -53,7 +56,7 @@ const Waveform = ({
       shape,
       VIEWBOX_WIDTH,
       VIEWBOX_HEIGHT,
-      offset
+      offset,
     );
   }
 

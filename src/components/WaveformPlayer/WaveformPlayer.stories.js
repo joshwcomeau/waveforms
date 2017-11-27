@@ -29,7 +29,6 @@ class VariableFrequency extends Component<Props, State> {
   };
 
   render() {
-    console.log('reder', this.state.frequency);
     return <WaveformPlayer isPlaying frequency={this.state.frequency} />;
   }
 }
