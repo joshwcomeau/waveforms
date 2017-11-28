@@ -1,11 +1,55 @@
-export const range = (start, end) => {
-  // Support passing a single value (eg. range(5)), to create 0-4
-  if (typeof end === 'undefined') {
-    end = start;
-    start = 0;
+export const range = function(start, end, step) {
+  var range = [];
+  var typeofStart = typeof start;
+  var typeofEnd = typeof end;
+
+  if (step === 0) {
+    throw TypeError('Step cannot be zero.');
   }
 
-  return Array.from({ length: end - start }, (v, k) => k + start);
+  if (typeof end === 'undefined' && typeof 'step' === 'undefined') {
+    end = start;
+    start = 0;
+    typeofStart = typeof start;
+    typeofEnd = typeof end;
+  }
+
+  console.log(start, end);
+
+  if (typeofStart == 'undefined' || typeofEnd == 'undefined') {
+    throw TypeError('Must pass start and end arguments.');
+  } else if (typeofStart != typeofEnd) {
+    throw TypeError('Start and end arguments must be of same type.');
+  }
+
+  typeof step == 'undefined' && (step = 1);
+
+  if (end < start) {
+    step = -step;
+  }
+
+  if (typeofStart == 'number') {
+    while (step > 0 ? end >= start : end <= start) {
+      range.push(start);
+      start += step;
+    }
+  } else if (typeofStart == 'string') {
+    if (start.length != 1 || end.length != 1) {
+      throw TypeError('Only strings with one character are supported.');
+    }
+
+    start = start.charCodeAt(0);
+    end = end.charCodeAt(0);
+
+    while (step > 0 ? end >= start : end <= start) {
+      range.push(String.fromCharCode(start));
+      start += step;
+    }
+  } else {
+    throw TypeError('Only string and number types are supported');
+  }
+
+  return range;
 };
 
 export const sample = arr => arr[Math.floor(Math.random() * arr.length)];
@@ -32,7 +76,7 @@ export const convertArrayToMap = list =>
       ...acc,
       [item.id]: item,
     }),
-    {}
+    {},
   );
 
 // Either removes or adds an item to an array
@@ -62,6 +106,6 @@ export function setTimeoutPromise(duration) {
 
 export const deleteCookie = key => {
   document.cookie = `${encodeURIComponent(
-    key
+    key,
   )}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 };

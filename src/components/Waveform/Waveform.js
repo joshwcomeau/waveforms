@@ -21,15 +21,14 @@ export type Props = {
   // TODO: Find a way to support other line features (width, endcap) in a nice
   // way?
   color?: string,
-  // How many cycles of the waveform should be drawn in the available space?
-  // Another way to think of this is frequency.
-  // Let's say that the graph's X axis is 1 second of time.
-  // If that's the case, then a single cycle represents 1 Hz (since if you were
-  // to loop playing it, you'd get 1 cycle per second). By specifying another
-  // value (eg. `5 cycles`), your waveform would repeat 5 times in 1 second,
-  // and have a frequency value of 5 Hz.
-  // NOTE: There is no actual unit for the X axis, "1 second" is just an example
-  cycles?: number,
+  // Frequency is the number of cycles to squeeze into this waveform
+  // visualization. The default value of `1` means that it plays at 1Hz, and
+  // displays a single cycle in the visible space. A value of `5` would
+  // render the waveform 5 times in the same amount of space.
+  frequency?: number,
+  // Amplitude is the strength of the waveform (AKA loudness, volume).
+  // it can range from 0 to 1, and affects how 'tall' the waveform is.
+  amplitude?: number,
   // At what point in the waveform should the drawing start?
   // By default, it starts at `0`, but any value between 0 and 99 can be
   // used.
@@ -42,22 +41,32 @@ const Waveform = ({
   shape,
   size = VIEWBOX_WIDTH,
   color = 'black',
-  cycles = 1,
+  frequency = 1,
+  amplitude = 1,
   offset,
 }: Props) => {
   const width = size;
   const height = Math.round(size * WAVEFORM_ASPECT_RATIO);
 
-  const svgPath = getPathForWaveformShape(shape, width, height, cycles, offset);
+  const svgPath = getPathForWaveformShape(
+    shape,
+    width,
+    height,
+    frequency,
+    amplitude,
+    offset,
+  );
+
+  console.log(svgPath);
 
   let tracePosition;
   if (typeof offset === 'number') {
-    tracePosition = getTracePosition(
-      shape,
-      VIEWBOX_WIDTH,
-      VIEWBOX_HEIGHT,
-      offset,
-    );
+    // tracePosition = getTracePosition(
+    //   shape,
+    //   VIEWBOX_WIDTH,
+    //   VIEWBOX_HEIGHT,
+    //   offset,
+    // );
   }
 
   return (

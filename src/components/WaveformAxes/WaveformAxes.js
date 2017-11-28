@@ -43,6 +43,7 @@ const YAxis = styled.div`
   left: ${props => props.left + 'px'};
   bottom: 0;
   width: 2px;
+  transform: translateX(-1px);
   background: ${COLORS.gray[700]};
 `;
 

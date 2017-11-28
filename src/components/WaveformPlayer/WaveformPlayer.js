@@ -79,15 +79,21 @@ class WaveformPlayer extends PureComponent<Props, State> {
       const tickAt = new Date();
 
       const secondsSinceLastTick = (tickAt - this.state.lastTickAt) / 1000;
+
+      // We want to move 1/frequency every second.
+      // For example, if `frequency` is 1, we want to progress 1 per second.
+      // If `frequency` is 5, we want to progress 0.2 per second.
+      const progressPerSecond = 1 / this.props.frequency;
+
       const nextProgress =
-        this.state.progress + secondsSinceLastTick * this.props.frequency;
+        this.state.progress + secondsSinceLastTick * progressPerSecond;
 
       this.setState({ progress: nextProgress, lastTickAt: tickAt }, this.tick);
     });
   };
 
   render() {
-    const { frequency, isPlaying, size, ...delegatedProps } = this.props;
+    const { isPlaying, size, ...delegatedProps } = this.props;
     const { progress } = this.state;
 
     // Turn progress into a cyclical value between 0 and 99
