@@ -19,11 +19,8 @@ export const getPathForWaveformShape = (
   // drawing should start halfway through the waveform and loop from there.
   offset?: number = 0,
 ) => {
-  // We're gonna be lazy and just draw straight lines between near points. If
-  // we do this densely enough, it should look just fine.
-
   // If our width is 300, we want 150 `x` values.
-  const totalPoints = width / 2;
+  const totalPoints = width * 2;
   // Get an array of `x` values. Because we're doing every second one, it ought
   // to look like `[0, 2, 4, 6, ..., 150]
   const xValues = range(0, totalPoints + 1, 2);
@@ -31,11 +28,11 @@ export const getPathForWaveformShape = (
   // Convert each X value to a proper coordinate system, relative to the axis
   // (so, Y values will be from -1 to 1)
   const relativeAxisPoints = xValues.map(x => {
-    const progress = x / totalPoints * 100;
+    const progress = x / totalPoints * 100 + offset;
 
     return {
       x,
-      y: getPositionAtPointRelativeToAxis(shape, progress, frequency),
+      y: getPositionAtPointRelativeToAxis(shape, progress, frequency, offset),
     };
   });
 
@@ -93,6 +90,7 @@ export const getPositionAtPointRelativeToAxis = (
   shape: WaveformShape,
   progress: number,
   frequency: number,
+  offset?: number = 0,
 ) => {
   switch (shape) {
     case 'sine': {
