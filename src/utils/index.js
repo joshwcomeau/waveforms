@@ -14,8 +14,6 @@ export const range = function(start, end, step) {
     typeofEnd = typeof end;
   }
 
-  console.log(start, end);
-
   if (typeofStart == 'undefined' || typeofEnd == 'undefined') {
     throw TypeError('Must pass start and end arguments.');
   } else if (typeofStart != typeofEnd) {
