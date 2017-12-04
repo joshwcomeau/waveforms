@@ -4,6 +4,8 @@
 
 Right now I'm creating an SVG that connects a bunch of points with lines.
 
+Clearly, Canvas would be better suited to this job, so I should switch to that.
+
 I thought about using bezier curves to ensure that the waveforms peak properly
 at high frequency, but because the waveforms move, that seems like an awful lot
 of trouble. A much cooler idea is to _generate_ the waveform using Web Audio,
