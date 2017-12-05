@@ -57,8 +57,6 @@ const Waveform = ({
     offset,
   );
 
-  console.log(svgPath);
-
   let tracePosition;
   if (typeof offset === 'number') {
     // tracePosition = getTracePosition(

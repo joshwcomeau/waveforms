@@ -20,7 +20,7 @@ export const getPathForWaveformShape = (
   offset?: number = 0,
 ) => {
   // If our width is 300, we want 150 `x` values.
-  const totalPoints = width * 2;
+  const totalPoints = width;
   // Get an array of `x` values. Because we're doing every second one, it ought
   // to look like `[0, 2, 4, 6, ..., 150]
   const xValues = range(0, totalPoints + 1, 2);
