@@ -4,6 +4,7 @@ import { injectGlobal } from 'styled-components';
 import { COLORS } from '../../constants';
 
 import Header from '../Header';
+import MaxWidthWrapper from '../MaxWidthWrapper';
 
 // NOTE: Many of the variable-free global CSS lives in public/index.html.
 // I think it's better to leave stuff there to avoid a flash once the JS is
@@ -18,9 +19,9 @@ injectGlobal`
 
 const App = () => {
   return (
-    <div>
+    <MaxWidthWrapper>
       <Header />
-    </div>
+    </MaxWidthWrapper>
   );
 };
 
