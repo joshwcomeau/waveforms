@@ -23,10 +23,9 @@ const WaveformAxes = ({ size = 200, children }: Props) => {
     <WaveformAxesWrapper width={width} height={height}>
       <YAxis left={sideSpacing} />
       <XAxis />
-      <WaveformPositioner left={sideSpacing} top={heightSpacing}>
+      <WaveformWrapper left={sideSpacing} top={heightSpacing}>
         {children}
-      </WaveformPositioner>
-      <VerticalCycleIndicators />
+      </WaveformWrapper>
     </WaveformAxesWrapper>
   );
 };
@@ -58,11 +57,9 @@ const XAxis = styled.div`
   background: ${COLORS.gray[700]};
 `;
 
-const WaveformPositioner = styled.div`
+const WaveformWrapper = styled.div`
   padding-top: ${props => props.top + 'px'};
   padding-left: ${props => props.left + 'px'};
 `;
-
-const VerticalCycleIndicators = styled.div``;
 
 export default WaveformAxes;

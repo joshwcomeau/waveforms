@@ -80,10 +80,15 @@ class WaveformPlayer extends PureComponent<Props, State> {
 
       const secondsSinceLastTick = (tickAt - this.state.lastTickAt) / 1000;
 
-      // We want to move 1/frequency every second.
-      // For example, if `frequency` is 1, we want to progress 1 per second.
-      // If `frequency` is 5, we want to progress 0.2 per second.
-      const progressPerSecond = 1 / this.props.frequency;
+      // Each tick, we want to advance the waveform by a certain amount.
+      // This is controlled by the offset, and it's how we control the "speed"
+      // of the waveform. The higher the frequency, the faster we want the
+      // wave to "appear" to move.
+      //
+      // Of course, we aren't actually "moving" anything; we're redrawing it
+      // on every frame.
+      const progressPerSecond =
+        0.5 / this.props.frequency + this.props.frequency * 0.1;
 
       const nextProgress =
         this.state.progress + secondsSinceLastTick * progressPerSecond;

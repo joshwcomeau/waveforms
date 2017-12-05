@@ -54,32 +54,6 @@ export const getPathForWaveformShape = (
     // For all subsequent points, we can just draw a line to it.
     return `${acc} L ${x},${y}`;
   }, '');
-
-  // const startPercentage = offset * width / 100;
-
-  // // const totalPoints = offset + 100 * frequency;
-
-  // switch (shape) {
-  //   case 'sine': {
-  //     const startPosition = getTracePosition(
-  //       shape,
-  //       width,
-  //       height,
-  //       offset,
-  //       startPercentage,
-  //     );
-
-  //     let path = `M ${startPosition.x},${startPosition.y} `;
-
-  //     return range(offset, totalPoints).reduce((acc, index) => {
-  //       const { x, y } = getTracePosition(shape, width, height, index, offset);
-
-  //       return `${acc} L ${x},${y} `;
-  //     }, path);
-  //   }
-  //   default:
-  //     return 'M0,0 L100,100';
-  // }
 };
 
 /**
