@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import { WAVEFORM_ASPECT_RATIO } from '../../constants';
+import { WAVEFORM_ASPECT_RATIO, DEFAULT_WAVEFORM_SIZE } from '../../constants';
 import {
   getPathForWaveformShape,
   getTracePosition,
@@ -9,7 +9,7 @@ import {
 
 import type { WaveformShape } from '../../types';
 
-const VIEWBOX_WIDTH = 200;
+const VIEWBOX_WIDTH = DEFAULT_WAVEFORM_SIZE;
 const VIEWBOX_HEIGHT = VIEWBOX_WIDTH * WAVEFORM_ASPECT_RATIO;
 
 export type Props = {
@@ -57,16 +57,6 @@ const Waveform = ({
     offset,
   );
 
-  let tracePosition;
-  if (typeof offset === 'number') {
-    // tracePosition = getTracePosition(
-    //   shape,
-    //   VIEWBOX_WIDTH,
-    //   VIEWBOX_HEIGHT,
-    //   offset,
-    // );
-  }
-
   return (
     <svg
       width={width}
@@ -75,10 +65,6 @@ const Waveform = ({
       style={{ overflow: 'visible' }}
     >
       <path stroke="black" fill="none" d={svgPath} />
-
-      {tracePosition && (
-        <circle cx={tracePosition.x} cy={tracePosition.y} r={5} fill="red" />
-      )}
     </svg>
   );
 };

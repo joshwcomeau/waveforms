@@ -1,5 +1,6 @@
 // @flow
 export const WAVEFORM_ASPECT_RATIO = 0.5;
+export const DEFAULT_WAVEFORM_SIZE = 200;
 
 export const COLORS = {
   red: {

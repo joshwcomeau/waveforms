@@ -6,6 +6,6 @@ import Waveform from './Waveform';
 
 storiesOf('Waveform', module)
   .add('Sine', () => <Waveform shape="sine" />)
-  .add('Sine (2 cycles)', () => <Waveform shape="sine" cycles={2} />)
-  .add('Sine (4 cycles)', () => <Waveform shape="sine" cycles={4} />)
-  .add('Sine (10 cycles)', () => <Waveform shape="sine" cycles={10} />);
+  .add('Sine (red)', () => <Waveform shape="sine" color="red" />)
+  .add('Sine (2Hz)', () => <Waveform shape="sine" frequency={2} />)
+  .add('Sine (quiet)', () => <Waveform shape="sine" amplitude={0.5} />);

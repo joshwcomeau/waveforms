@@ -32,7 +32,7 @@ export const getPathForWaveformShape = (
 
     return {
       x,
-      y: getPositionAtPointRelativeToAxis(shape, progress, frequency, offset),
+      y: getPositionAtPointRelativeToAxis(shape, frequency, progress),
     };
   });
 
@@ -62,9 +62,8 @@ export const getPathForWaveformShape = (
  */
 export const getPositionAtPointRelativeToAxis = (
   shape: WaveformShape,
-  progress: number,
   frequency: number,
-  offset?: number = 0,
+  progress: number,
 ) => {
   switch (shape) {
     case 'sine': {
@@ -83,6 +82,9 @@ export const getPositionAtPointRelativeToAxis = (
       // from -1 to 1
       return Math.sin(positionInRads);
     }
+
+    default:
+      throw new Error('Unrecognized waveform shape supplied: ' + shape);
   }
 };
 
@@ -104,40 +106,56 @@ const translateAxisRelativeYValue = (
   // prettier-ignore
   return (incrementedYValue * height) / 2;
 };
-/**
- * getTracePosition
- * A helper that figures out where to put the "Current position" indicator.
- * Returns X/Y coordinates relative to the SVG's viewbox
- */
-export const getTracePosition = (
+
+export const getInterceptPosition = (
   shape: WaveformShape,
-  width: number,
   height: number,
-  index: number,
-  offset: number,
+  frequency: number,
+  progress: number,
 ) => {
-  // `index` is a number between 0 and 99, representing where within
-  // the path a circle should be drawn.
-  // The X coordinate is easy; it's just proportional to the width of the SVG.
-
-  // prettier-ignore
-  const tracePositionX = (index * width) / 99 - offset;
-
-  // The Y coordinate is trickier, and will take some steps.
-  // First, let's get the point relative to the axis (so, between -1 and 1):
-  const relativePositionY = getPositionAtPointRelativeToAxis(shape, index);
-
-  // Then, we need to convert relative Y position to absolute.
-  // To do the cross-multiplication, we need to increment the range so that it's
-  // positive: from -1-1 to 0-2
-  const positiveRelativePositionY = relativePositionY + 1;
-  const maxPositiveRelativePositionY = 2;
-  // Next, cross-multiply, to get its value from 0-VIEWBOX_HEIGHT
-
-  // prettier-ignore
-  const tracePositionY = (
-    positiveRelativePositionY * height / maxPositiveRelativePositionY
+  const relativePosition = getPositionAtPointRelativeToAxis(
+    shape,
+    frequency,
+    progress,
   );
 
-  return { x: tracePositionX, y: tracePositionY };
+  return translateAxisRelativeYValue(relativePosition, height);
 };
+
+// /**
+//  * getTracePosition
+//  * A helper that figures out where to put the "Current position" indicator.
+//  * Returns X/Y coordinates relative to the SVG's viewbox
+//  */
+// export const getTracePosition = (
+//   shape: WaveformShape,
+//   width: number,
+//   height: number,
+//   index: number,
+//   offset: number,
+// ) => {
+//   // `index` is a number between 0 and 99, representing where within
+//   // the path a circle should be drawn.
+//   // The X coordinate is easy; it's just proportional to the width of the SVG.
+
+//   // prettier-ignore
+//   const tracePositionX = (index * width) / 99 - offset;
+
+//   // The Y coordinate is trickier, and will take some steps.
+//   // First, let's get the point relative to the axis (so, between -1 and 1):
+//   const relativePositionY = getPositionAtPointRelativeToAxis(shape, index);
+
+//   // Then, we need to convert relative Y position to absolute.
+//   // To do the cross-multiplication, we need to increment the range so that it's
+//   // positive: from -1-1 to 0-2
+//   const positiveRelativePositionY = relativePositionY + 1;
+//   const maxPositiveRelativePositionY = 2;
+//   // Next, cross-multiply, to get its value from 0-VIEWBOX_HEIGHT
+
+//   // prettier-ignore
+//   const tracePositionY = (
+//     positiveRelativePositionY * height / maxPositiveRelativePositionY
+//   );
+
+//   return { x: tracePositionX, y: tracePositionY };
+// };

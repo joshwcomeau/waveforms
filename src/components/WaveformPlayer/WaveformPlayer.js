@@ -1,5 +1,9 @@
 // @flow
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
+
+import { WAVEFORM_ASPECT_RATIO, DEFAULT_WAVEFORM_SIZE } from '../../constants';
+import { getInterceptPosition } from '../../helpers/waveform.helpers';
 
 import Waveform from '../Waveform';
 import WaveformAxes from '../WaveformAxes';
@@ -13,9 +17,9 @@ type Props = {
 };
 
 type State = {
-  // `progress` is the number of cycles that have advanced since starting.
+  // `cycles` is the number of cycles that have advanced since starting.
   // It can be decimal, and is reset whenever `isPlaying` changes.
-  progress: number,
+  cycles: number,
   lastTickAt?: Date,
 };
 
@@ -23,7 +27,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
   animationFrameId: number;
 
   state = {
-    progress: 0,
+    cycles: 0,
   };
 
   static defaultProps = {
@@ -57,7 +61,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
   start = () => {
     this.setState(
       {
-        progress: 0,
+        cycles: 0,
         lastTickAt: new Date(),
       },
       this.tick,
@@ -67,7 +71,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
   stop = () => {
     window.cancelAnimationFrame(this.animationFrameId);
 
-    this.setState({ progress: 0 });
+    this.setState({ cycles: 0 });
   };
 
   tick = () => {
@@ -87,29 +91,59 @@ class WaveformPlayer extends PureComponent<Props, State> {
       //
       // Of course, we aren't actually "moving" anything; we're redrawing it
       // on every frame.
-      const progressPerSecond =
+      const cyclesPerSecond =
         0.5 / this.props.frequency + this.props.frequency * 0.1;
 
-      const nextProgress =
-        this.state.progress + secondsSinceLastTick * progressPerSecond;
+      const nextcycles =
+        this.state.cycles + secondsSinceLastTick * cyclesPerSecond;
 
-      this.setState({ progress: nextProgress, lastTickAt: tickAt }, this.tick);
+      this.setState({ cycles: nextcycles, lastTickAt: tickAt }, this.tick);
     });
   };
 
   render() {
-    const { isPlaying, size, ...delegatedProps } = this.props;
-    const { progress } = this.state;
+    const { isPlaying, ...delegatedProps } = this.props;
+    const { cycles } = this.state;
 
-    // Turn progress into a cyclical value between 0 and 99
-    const offsetCycles = (progress * 100) % 100;
+    // Turn cycles into a cyclical value between 0 and 99
+    const progress = (cycles * 100) % 100;
+
+    // Figure out where the cycles indicator needs to be, if required.
+    const width =
+      typeof delegatedProps.size === 'number'
+        ? delegatedProps.size
+        : DEFAULT_WAVEFORM_SIZE;
+    const height = width * WAVEFORM_ASPECT_RATIO;
+
+    const interceptPosition = getInterceptPosition(
+      delegatedProps.shape,
+      height,
+      delegatedProps.frequency,
+      progress,
+    );
 
     return (
-      <WaveformAxes size={size}>
-        <Waveform {...delegatedProps} size={size} offset={offsetCycles} />
+      <WaveformAxes size={delegatedProps.size}>
+        <Waveform {...delegatedProps} offset={progress} />
+        <WaveformIntercept position={interceptPosition} />
       </WaveformAxes>
     );
   }
 }
+
+const WaveformIntercept = styled.div.attrs({
+  style: ({ position }) => ({
+    transform: `translateY(${position}px)`,
+  }),
+})`
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background: red;
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  will-change: transform;
+`;
 
 export default WaveformPlayer;
