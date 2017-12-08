@@ -2,10 +2,7 @@
 import React from 'react';
 
 import { WAVEFORM_ASPECT_RATIO, DEFAULT_WAVEFORM_SIZE } from '../../constants';
-import {
-  getPathForWaveformShape,
-  getTracePosition,
-} from '../../helpers/waveform.helpers';
+import { getPathForWaveformShape } from '../../helpers/waveform.helpers';
 
 import type { WaveformShape } from '../../types';
 
