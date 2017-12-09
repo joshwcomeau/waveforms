@@ -2,7 +2,10 @@
 import React from 'react';
 
 import { WAVEFORM_ASPECT_RATIO, DEFAULT_WAVEFORM_SIZE } from '../../constants';
-import { getPathForWaveformShape } from '../../helpers/waveform.helpers';
+import {
+  getPointsForWaveform,
+  createPathFromWaveformPoints,
+} from '../../helpers/waveform.helpers';
 
 import type { WaveformShape } from '../../types';
 
@@ -10,7 +13,13 @@ const VIEWBOX_WIDTH = DEFAULT_WAVEFORM_SIZE;
 const VIEWBOX_HEIGHT = VIEWBOX_WIDTH * WAVEFORM_ASPECT_RATIO;
 
 export type Props = {
-  shape: WaveformShape,
+  // In most cases, the Waveform simply requires an enum waveform shape, like
+  // 'sine' or 'square'.
+  shape?: WaveformShape,
+  // In certain cases (eg. waveform addition), it's more helpful to provide an
+  // array of points, instead of a `shape`. The Waveform will simply plot those
+  // points, in that case.
+  points?: Array<{ x: number, y: number }>,
   // 'size' will be used for the width, and the height will be derived, using
   // the ASPECT_RATIO constant.
   size?: number,
@@ -36,6 +45,7 @@ export type Props = {
 
 const Waveform = ({
   shape,
+  points,
   size = VIEWBOX_WIDTH,
   color = 'black',
   frequency = 1,
@@ -45,14 +55,18 @@ const Waveform = ({
   const width = size;
   const height = Math.round(size * WAVEFORM_ASPECT_RATIO);
 
-  const svgPath = getPathForWaveformShape(
-    shape,
-    width,
-    height,
-    frequency,
-    amplitude,
-    offset,
-  );
+  if (typeof shape !== 'string' && !Array.isArray(points)) {
+    throw new Error(
+      'Waveform requires either a `shape` string, or an array ' +
+        'of `points`. Please provide one of the two.',
+    );
+  }
+
+  if (typeof points === 'undefined') {
+    points = getPointsForWaveform(shape, frequency, width, offset);
+  }
+
+  const svgPath = createPathFromWaveformPoints(points, height);
 
   return (
     <svg

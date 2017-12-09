@@ -2,44 +2,45 @@
 import { convertPercentageToSinePosition } from './sine.helpers';
 import { range } from '../utils';
 
-import type { WaveformShape } from '../types';
+import type { WaveformShape, WaveformPoints } from '../types';
 
-export const getPathForWaveformShape = (
+/**
+ * This method gets an array of axis-relative points that can be used for
+ * further calculations.
+ * Given a waveform shape, and some information about its frequency/offset/size,
+ * this method returns an array of X/Y values that describes the waveform.
+ * This is NOT plot-ready, since the Y values range from -1 to 1.
+ * Further processing is required to get something drawable.
+ */
+export const getPointsForWaveform = (
   shape: WaveformShape,
+  frequency: number,
   width: number,
-  height: number,
-  // Frequency refers to the waveform frequency (in Hz), although it's used
-  // here to control the "density" of the waveform.
-  // 1Hz = 1 cycle, 5Hz = 5 cycles
-  frequency?: number = 1,
-  // Amplitude refers to the waveform amplitude. Ranges from 0 to 1.
-  amplitude?: number = 1,
-  // Offset is a number between 0 and 1, and represents the progress through
-  // the current 'cycle' of the waveform. For example, 0.5 means that the
-  // drawing should start halfway through the waveform and loop from there.
-  offset?: number = 0,
-) => {
-  // If our width is 300, we want 150 `x` values.
-  const totalPoints = width;
-  // Get an array of `x` values. Because we're doing every second one, it ought
-  // to look like `[0, 2, 4, 6, ..., 150]
-  const xValues = range(0, totalPoints + 1, 2);
+  offset: number = 0,
+): Array<WaveformPoints> => {
+  // Get an array of `x` values.
+  // For now, we're drawing lines at every second point, for performance.
+  // After experimentation, this may change.
+  const ratioBetweenPointsAndPixels = 2;
+  const xValues = range(0, width + 1, ratioBetweenPointsAndPixels);
 
   // Convert each X value to a proper coordinate system, relative to the axis
   // (so, Y values will be from -1 to 1)
-  const relativeAxisPoints = xValues.map(x => {
-    const progress = x / totalPoints * 100 + offset;
+  return xValues.map(x => {
+    const progress = x / width * 100 + offset;
 
     return {
       x,
       y: getPositionAtPointRelativeToAxis(shape, frequency, progress),
     };
   });
+};
 
-  // Next, we need to convert our axis-relative values into something we can
-  // use to draw the line. While in math terms, the Y-values ranges from
-  // -1 to 1, we instead need them to range from 0 to `height`.
-  const drawablePoints = relativeAxisPoints.map(({ x, y }) => ({
+export const createPathFromWaveformPoints = (points, height) => {
+  // The points provided to this method will range in y-value from -1 to 1.
+  // This is mathematically pure, but it's not something our SVG can understand.
+  // Convert this -1:1 range to a 0:height range.
+  const drawablePoints = points.map(({ x, y }) => ({
     x,
     y: translateAxisRelativeYValue(y, height),
   }));
@@ -121,41 +122,3 @@ export const getInterceptPosition = (
 
   return translateAxisRelativeYValue(relativePosition, height);
 };
-
-// /**
-//  * getTracePosition
-//  * A helper that figures out where to put the "Current position" indicator.
-//  * Returns X/Y coordinates relative to the SVG's viewbox
-//  */
-// export const getTracePosition = (
-//   shape: WaveformShape,
-//   width: number,
-//   height: number,
-//   index: number,
-//   offset: number,
-// ) => {
-//   // `index` is a number between 0 and 99, representing where within
-//   // the path a circle should be drawn.
-//   // The X coordinate is easy; it's just proportional to the width of the SVG.
-
-//   // prettier-ignore
-//   const tracePositionX = (index * width) / 99 - offset;
-
-//   // The Y coordinate is trickier, and will take some steps.
-//   // First, let's get the point relative to the axis (so, between -1 and 1):
-//   const relativePositionY = getPositionAtPointRelativeToAxis(shape, index);
-
-//   // Then, we need to convert relative Y position to absolute.
-//   // To do the cross-multiplication, we need to increment the range so that it's
-//   // positive: from -1-1 to 0-2
-//   const positiveRelativePositionY = relativePositionY + 1;
-//   const maxPositiveRelativePositionY = 2;
-//   // Next, cross-multiply, to get its value from 0-VIEWBOX_HEIGHT
-
-//   // prettier-ignore
-//   const tracePositionY = (
-//     positiveRelativePositionY * height / maxPositiveRelativePositionY
-//   );
-
-//   return { x: tracePositionX, y: tracePositionY };
-// };
