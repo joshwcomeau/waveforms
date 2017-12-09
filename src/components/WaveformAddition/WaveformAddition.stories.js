@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { storiesOf } from '@storybook/react';
 
+import ValueGenerator from '../ValueGenerator';
 import WaveformAddition from './WaveformAddition';
 
 const defaultWaveformProps = {
@@ -60,6 +61,19 @@ storiesOf('WaveformAddition', module)
       ]}
       progress={1}
     />
+  ))
+  .add('Cancelling (random value animation)', () => (
+    <ValueGenerator from={0} to={100} updateEvery={1000}>
+      {value => (
+        <WaveformAddition
+          waveforms={[
+            { ...defaultWaveformProps, color: RED },
+            { ...defaultWaveformProps, color: BLUE, offset: 50 },
+          ]}
+          progress={value}
+        />
+      )}
+    </ValueGenerator>
   ))
   .add('Double-frequency (0%)', () => (
     <WaveformAddition
