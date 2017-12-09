@@ -12,7 +12,6 @@ import type { Props as WaveformProps } from '../Waveform';
 
 type Props = {
   ...WaveformProps,
-  frequency: number,
   isPlaying: boolean,
 };
 
@@ -119,6 +118,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
       delegatedProps.shape,
       height,
       delegatedProps.frequency,
+      delegatedProps.amplitude,
       progress,
     );
 

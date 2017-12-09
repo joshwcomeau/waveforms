@@ -1,8 +1,8 @@
 // @flow
 import { convertPercentageToSinePosition } from './sine.helpers';
-import { range } from '../utils';
+import { range, sum } from '../utils';
 
-import type { WaveformShape, WaveformPoints } from '../types';
+import type { WaveformShape, WaveformPoint } from '../types';
 import type { Props as WaveformProps } from '../components/Waveform';
 
 /**
@@ -19,7 +19,7 @@ export const getPointsForWaveform = ({
   amplitude,
   width,
   offset,
-}: WaveformProps): Array<WaveformPoints> => {
+}: WaveformProps): Array<WaveformPoint> => {
   // Get an array of `x` values.
   // For now, we're drawing lines at every second point, for performance.
   // After experimentation, this may change.
@@ -44,7 +44,7 @@ export const getPointsForWaveform = ({
 };
 
 export const createPathFromWaveformPoints = (
-  points: Array<WaveformPoints>,
+  points: Array<WaveformPoint>,
   height: number,
 ) => {
   // The points provided to this method will range in y-value from -1 to 1.
@@ -128,11 +128,13 @@ export const getInterceptPosition = (
   shape: WaveformShape,
   height: number,
   frequency: number,
+  amplitude: number,
   progress: number,
 ) => {
   const relativePosition = getPositionAtPointRelativeToAxis(
     shape,
     frequency,
+    amplitude,
     progress,
   );
 
@@ -140,10 +142,9 @@ export const getInterceptPosition = (
 };
 
 export const applyWaveformAddition = (
-  mainWave: Array<WaveformPoints>,
-  appliedWave: Array<WaveformPoints>,
+  mainWave: Array<WaveformPoint>,
+  appliedWaves: Array<Array<WaveformPoint>>,
   // ratio is the "effect" of the applied wave on the main wave, from 0-1.
-
   ratio: number,
 ) => {
   if (ratio === 0) {
@@ -154,12 +155,14 @@ export const applyWaveformAddition = (
   // For everything in-between, the applied wave adjusts the main wave by the
   // amount specified.
   return mainWave.map((point, index) => {
-    const appliedWaveAtPoint = appliedWave[index];
+    const appliedWavesAtPoint = sum(appliedWaves.map(wave => wave[index].y));
+
+    const mainValue = point.y * (1 - ratio);
+    const appliedValue = appliedWavesAtPoint * ratio;
 
     return {
       x: point.x,
-      // prettier-ignore
-      y: point.y + (appliedWaveAtPoint.y * ratio),
+      y: mainValue + appliedValue,
     };
   });
 };

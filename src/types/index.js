@@ -1,2 +1,2 @@
 export type WaveformShape = 'sine' | 'triangle' | 'square' | 'sawtooth';
-export type WaveformPoints = { x: number, y: number };
+export type WaveformPoint = { x: number, y: number };

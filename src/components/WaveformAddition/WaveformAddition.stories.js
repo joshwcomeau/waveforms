@@ -44,7 +44,7 @@ storiesOf('WaveformAddition', module)
       progress={1}
     />
   ))
-  .add('Cancelling (random value animation)', () => (
+  .add('Cancelling (oscillating animation)', () => (
     <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
       {value => (
         <WaveformAddition
@@ -84,13 +84,49 @@ storiesOf('WaveformAddition', module)
       progress={1}
     />
   ))
-  .add('Double-frequency (random value animation)', () => (
+  .add('Double-frequency (oscillating animation)', () => (
     <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
       {value => (
         <WaveformAddition
           waveforms={[
             { ...defaultWaveformProps, color: RED },
             { ...defaultWaveformProps, color: BLUE, frequency: 2 },
+          ]}
+          progress={value / 100}
+        />
+      )}
+    </ValueGenerator>
+  ))
+  .add('Square wave (5 waves, animated)', () => (
+    <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
+      {value => (
+        <WaveformAddition
+          waveforms={[
+            { ...defaultWaveformProps, color: RED },
+            {
+              ...defaultWaveformProps,
+              color: BLUE,
+              frequency: 3,
+              amplitude: 1 / 6,
+            },
+            {
+              ...defaultWaveformProps,
+              color: BLUE,
+              frequency: 5,
+              amplitude: 1 / 10,
+            },
+            {
+              ...defaultWaveformProps,
+              color: BLUE,
+              frequency: 7,
+              amplitude: 1 / 14,
+            },
+            {
+              ...defaultWaveformProps,
+              color: BLUE,
+              frequency: 9,
+              amplitude: 1 / 18,
+            },
           ]}
           progress={value / 100}
         />
