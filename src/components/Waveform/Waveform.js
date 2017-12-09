@@ -61,7 +61,7 @@ const Waveform = ({
       viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
       style={{ overflow: 'visible' }}
     >
-      <path stroke="black" fill="none" d={svgPath} />
+      <path stroke={color} fill="none" d={svgPath} />
     </svg>
   );
 };
