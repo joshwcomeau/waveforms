@@ -36,7 +36,10 @@ export const getPointsForWaveform = (
   });
 };
 
-export const createPathFromWaveformPoints = (points, height) => {
+export const createPathFromWaveformPoints = (
+  points: Array<WaveformPoints>,
+  height: number,
+) => {
   // The points provided to this method will range in y-value from -1 to 1.
   // This is mathematically pure, but it's not something our SVG can understand.
   // Convert this -1:1 range to a 0:height range.
@@ -95,6 +98,10 @@ const translateAxisRelativeYValue = (
   // The height in pixels of our waveform drawing
   height: number,
 ) => {
+  // Invert the y value. This is so that negative values are below the line,
+  // while positive ones are above it.
+  yValue *= -1;
+
   // Start by changing the range of the yValue:
   // -1...1 -> 0...2
   const incrementedYValue = yValue + 1;
