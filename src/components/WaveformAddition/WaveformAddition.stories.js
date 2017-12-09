@@ -26,15 +26,6 @@ storiesOf('WaveformAddition', module)
       progress={0}
     />
   ))
-  .add('Cancelling (25%)', () => (
-    <WaveformAddition
-      waveforms={[
-        { ...defaultWaveformProps, color: RED },
-        { ...defaultWaveformProps, color: BLUE, offset: 50 },
-      ]}
-      progress={0.25}
-    />
-  ))
   .add('Cancelling (50%)', () => (
     <WaveformAddition
       waveforms={[
@@ -42,15 +33,6 @@ storiesOf('WaveformAddition', module)
         { ...defaultWaveformProps, color: BLUE, offset: 50 },
       ]}
       progress={0.5}
-    />
-  ))
-  .add('Cancelling (75%)', () => (
-    <WaveformAddition
-      waveforms={[
-        { ...defaultWaveformProps, color: RED },
-        { ...defaultWaveformProps, color: BLUE, offset: 50 },
-      ]}
-      progress={0.75}
     />
   ))
   .add('Cancelling (100%)', () => (
@@ -63,14 +45,14 @@ storiesOf('WaveformAddition', module)
     />
   ))
   .add('Cancelling (random value animation)', () => (
-    <ValueGenerator from={0} to={100} updateEvery={1000}>
+    <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
       {value => (
         <WaveformAddition
           waveforms={[
             { ...defaultWaveformProps, color: RED },
             { ...defaultWaveformProps, color: BLUE, offset: 50 },
           ]}
-          progress={value}
+          progress={value / 100}
         />
       )}
     </ValueGenerator>
@@ -84,15 +66,6 @@ storiesOf('WaveformAddition', module)
       progress={0}
     />
   ))
-  .add('Double-frequency (25%)', () => (
-    <WaveformAddition
-      waveforms={[
-        { ...defaultWaveformProps, color: RED },
-        { ...defaultWaveformProps, color: BLUE, frequency: 2 },
-      ]}
-      progress={0.25}
-    />
-  ))
   .add('Double-frequency (50%)', () => (
     <WaveformAddition
       waveforms={[
@@ -100,15 +73,6 @@ storiesOf('WaveformAddition', module)
         { ...defaultWaveformProps, color: BLUE, frequency: 2 },
       ]}
       progress={0.5}
-    />
-  ))
-  .add('Double-frequency (75%)', () => (
-    <WaveformAddition
-      waveforms={[
-        { ...defaultWaveformProps, color: RED },
-        { ...defaultWaveformProps, color: BLUE, frequency: 2 },
-      ]}
-      progress={0.75}
     />
   ))
   .add('Double-frequency (100%)', () => (
@@ -119,4 +83,17 @@ storiesOf('WaveformAddition', module)
       ]}
       progress={1}
     />
+  ))
+  .add('Double-frequency (random value animation)', () => (
+    <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
+      {value => (
+        <WaveformAddition
+          waveforms={[
+            { ...defaultWaveformProps, color: RED },
+            { ...defaultWaveformProps, color: BLUE, frequency: 2 },
+          ]}
+          progress={value / 100}
+        />
+      )}
+    </ValueGenerator>
   ));
