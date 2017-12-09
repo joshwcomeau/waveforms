@@ -3,6 +3,7 @@ import { convertPercentageToSinePosition } from './sine.helpers';
 import { range } from '../utils';
 
 import type { WaveformShape, WaveformPoints } from '../types';
+import type { Props as WaveformProps } from '../components/Waveform';
 
 /**
  * This method gets an array of axis-relative points that can be used for
@@ -12,12 +13,12 @@ import type { WaveformShape, WaveformPoints } from '../types';
  * This is NOT plot-ready, since the Y values range from -1 to 1.
  * Further processing is required to get something drawable.
  */
-export const getPointsForWaveform = (
-  shape: WaveformShape,
-  frequency: number,
-  width: number,
-  offset: number = 0,
-): Array<WaveformPoints> => {
+export const getPointsForWaveform = ({
+  shape,
+  frequency,
+  width,
+  offset,
+}: WaveformProps): Array<WaveformPoints> => {
   // Get an array of `x` values.
   // For now, we're drawing lines at every second point, for performance.
   // After experimentation, this may change.
@@ -128,4 +129,29 @@ export const getInterceptPosition = (
   );
 
   return translateAxisRelativeYValue(relativePosition, height);
+};
+
+export const applyWaveformAddition = (
+  mainWave: Array<WaveformPoints>,
+  appliedWave: Array<WaveformPoints>,
+  // ratio is the "effect" of the applied wave on the main wave, from 0-1.
+
+  ratio: number,
+) => {
+  if (ratio === 0) {
+    // At 0, it has no effect. We can just return the main wave as-is.
+    return mainWave;
+  }
+
+  // For everything in-between, the applied wave adjusts the main wave by the
+  // amount specified.
+  return mainWave.map((point, index) => {
+    const appliedWaveAtPoint = appliedWave[index];
+
+    return {
+      x: point.x,
+      // prettier-ignore
+      y: point.y + (appliedWaveAtPoint.y * ratio),
+    };
+  });
 };

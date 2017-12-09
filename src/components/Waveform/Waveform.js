@@ -27,6 +27,7 @@ export type Props = {
   // TODO: Find a way to support other line features (width, endcap) in a nice
   // way?
   color?: string,
+  strokeWidth?: number,
   // Frequency is the number of cycles to squeeze into this waveform
   // visualization. The default value of `1` means that it plays at 1Hz, and
   // displays a single cycle in the visible space. A value of `5` would
@@ -48,6 +49,7 @@ const Waveform = ({
   points,
   size = VIEWBOX_WIDTH,
   color = 'black',
+  strokeWidth = 1,
   frequency = 1,
   amplitude = 1,
   offset,
@@ -63,7 +65,7 @@ const Waveform = ({
   }
 
   if (typeof points === 'undefined') {
-    points = getPointsForWaveform(shape, frequency, width, offset);
+    points = getPointsForWaveform({ shape, frequency, width, offset });
   }
 
   const svgPath = createPathFromWaveformPoints(points, height);
@@ -75,7 +77,7 @@ const Waveform = ({
       viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
       style={{ overflow: 'visible' }}
     >
-      <path stroke={color} fill="none" d={svgPath} />
+      <path stroke={color} strokeWidth={strokeWidth} fill="none" d={svgPath} />
     </svg>
   );
 };
