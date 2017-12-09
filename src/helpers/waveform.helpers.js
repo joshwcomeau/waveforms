@@ -16,6 +16,7 @@ import type { Props as WaveformProps } from '../components/Waveform';
 export const getPointsForWaveform = ({
   shape,
   frequency,
+  amplitude,
   width,
   offset,
 }: WaveformProps): Array<WaveformPoints> => {
@@ -32,7 +33,12 @@ export const getPointsForWaveform = ({
 
     return {
       x,
-      y: getPositionAtPointRelativeToAxis(shape, frequency, progress),
+      y: getPositionAtPointRelativeToAxis(
+        shape,
+        frequency,
+        amplitude,
+        progress,
+      ),
     };
   });
 };
@@ -68,6 +74,7 @@ export const createPathFromWaveformPoints = (
 export const getPositionAtPointRelativeToAxis = (
   shape: WaveformShape,
   frequency: number,
+  amplitude: number,
   progress: number,
 ) => {
   switch (shape) {
@@ -84,8 +91,9 @@ export const getPositionAtPointRelativeToAxis = (
       const positionInRads = (progress * totalLength) / 100;
 
       // Now we can simply take the sin of the rad position to get a value,
-      // from -1 to 1
-      return Math.sin(positionInRads);
+      // from -1 to 1. We multiply by amplitude (a value between 0 and 1) to
+      // make sure the waveform isn't more powerful than desired.
+      return Math.sin(positionInRads) * amplitude;
     }
 
     default:

@@ -65,7 +65,13 @@ const Waveform = ({
   }
 
   if (typeof points === 'undefined') {
-    points = getPointsForWaveform({ shape, frequency, width, offset });
+    points = getPointsForWaveform({
+      shape,
+      frequency,
+      amplitude,
+      width,
+      offset,
+    });
   }
 
   const svgPath = createPathFromWaveformPoints(points, height);
