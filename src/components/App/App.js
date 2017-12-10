@@ -1,10 +1,15 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import { injectGlobal } from 'styled-components';
 
 import { COLORS } from '../../constants';
 
-import Header from '../Header';
-import MaxWidthWrapper from '../MaxWidthWrapper';
+import IntroRoute from '../IntroRoute';
 
 // NOTE: Many of the variable-free global CSS lives in public/index.html.
 // I think it's better to leave stuff there to avoid a flash once the JS is
@@ -19,9 +24,12 @@ injectGlobal`
 
 const App = () => {
   return (
-    <MaxWidthWrapper>
-      <Header />
-    </MaxWidthWrapper>
+    <Router>
+      <Switch>
+        <Route path="/waveforms-intro" component={IntroRoute} />
+        <Redirect from="/" to="/waveforms-intro" />
+      </Switch>
+    </Router>
   );
 };
 
