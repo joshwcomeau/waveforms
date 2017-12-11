@@ -22,7 +22,6 @@ class IntersectionObserver extends PureComponent<Props> {
         .catch(err =>
           console.error('Could not load IntersectionObserver polyfill')
         );
-
       return;
     }
 

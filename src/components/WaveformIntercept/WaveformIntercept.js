@@ -13,31 +13,41 @@ import { getInterceptPosition } from '../../helpers/waveform.helpers';
 import type { WaveformShape } from '../../types/index';
 
 type Props = {
+  color?: string,
   size?: number,
-  shape: WaveformShape,
+  waveformSize?: number,
+  waveformShape: WaveformShape,
   frequency: number,
   amplitude: number,
   offset: number,
 };
 
 const WaveformIntercept = ({
-  size = DEFAULT_WAVEFORM_SIZE,
-  shape,
+  color = 'red',
+  size = 16,
+  waveformSize = DEFAULT_WAVEFORM_SIZE,
+  waveformShape,
   frequency = DEFAULT_WAVEFORM_FREQUENCY,
   amplitude = DEFAULT_WAVEFORM_AMPLITUDE,
   offset,
 }: Props) => {
-  const height = size * WAVEFORM_ASPECT_RATIO;
+  const waveformHeight = waveformSize * WAVEFORM_ASPECT_RATIO;
 
   const interceptPosition = getInterceptPosition(
-    shape,
-    height,
+    waveformShape,
+    waveformHeight,
     frequency,
     amplitude,
     offset
   );
 
-  return <WaveformInterceptElem position={interceptPosition} />;
+  return (
+    <WaveformInterceptElem
+      position={interceptPosition}
+      color={color}
+      size={size}
+    />
+  );
 };
 
 const WaveformInterceptElem = styled.div.attrs({
@@ -45,13 +55,13 @@ const WaveformInterceptElem = styled.div.attrs({
     transform: `translateY(${position}px)`,
   }),
 })`
-  width: 10px;
-  height: 10px;
-  border-radius: 100%;
-  background: red;
+  width: ${props => props.size + 'px'};
+  height: ${props => props.size + 'px'};
+  border-radius: 50%;
+  background: ${props => props.color};
   position: absolute;
-  top: -5px;
-  left: -5px;
+  top: ${props => -1 * props.size / 2 + 'px'};
+  left: ${props => -1 * props.size / 2 + 'px'};
   will-change: transform;
 `;
 

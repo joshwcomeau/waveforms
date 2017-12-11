@@ -94,7 +94,7 @@ storiesOf('WaveformPlayer', module)
           <span>
             <WaveformAxes />
             <Waveform shape="sine" offset={offset} />
-            <WaveformIntercept shape="sine" offset={offset} />
+            <WaveformIntercept waveformShape="sine" offset={offset} />
           </span>
         )}
       </WaveformPlayer>

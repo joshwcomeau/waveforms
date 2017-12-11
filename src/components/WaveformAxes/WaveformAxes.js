@@ -7,14 +7,20 @@ import {
   WAVEFORM_ASPECT_RATIO,
 } from '../../constants/index';
 
-type Props = {
-  size?: number,
-};
-
 const TOP_AXIS_SPACING = 15;
 const SIDE_AXIS_SPACING = 10;
 
-const WaveformAxes = ({ size = DEFAULT_WAVEFORM_SIZE }: Props) => {
+type Props = {
+  size?: number,
+  showYAxis?: boolean,
+  showXAxis?: boolean,
+};
+
+const WaveformAxes = ({
+  size = DEFAULT_WAVEFORM_SIZE,
+  showXAxis = true,
+  showYAxis = true,
+}: Props) => {
   // We want our axes to have some "breathing room" around the waveform.
   // It would be inconvenient to need to position the waveform explicitly,
   // though.
@@ -36,8 +42,8 @@ const WaveformAxes = ({ size = DEFAULT_WAVEFORM_SIZE }: Props) => {
 
   return (
     <WaveformAxesWrapper width={width} height={height}>
-      <YAxis left={SIDE_AXIS_SPACING} />
-      <XAxis />
+      {showYAxis && <YAxis left={SIDE_AXIS_SPACING} />}
+      {showXAxis && <XAxis />}
     </WaveformAxesWrapper>
   );
 };

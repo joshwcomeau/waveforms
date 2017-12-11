@@ -80,7 +80,13 @@ const Waveform = ({
 
   return (
     <svg width={width} height={height} style={{ overflow: 'visible' }}>
-      <path stroke={color} strokeWidth={strokeWidth} fill="none" d={svgPath} />
+      <path
+        stroke={color}
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        fill="none"
+        d={svgPath}
+      />
     </svg>
   );
 };
