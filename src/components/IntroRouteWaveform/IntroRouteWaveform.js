@@ -1,11 +1,15 @@
 // @flow
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 
 import type { IntroStep } from '../../types';
 
+import Aux from '../Aux';
 import AvailableWidth from '../AvailableWidth';
 import Waveform from '../Waveform';
 import WaveformPlayer from '../WaveformPlayer';
+import WaveformAxes from '../WaveformAxes';
+import WaveformIntercept from '../WaveformIntercept';
 
 type Props = {
   currentStep: IntroStep,
@@ -16,26 +20,31 @@ class IntroRouteWaveform extends PureComponent<Props> {
   renderContents = (width: number) => {
     const { currentStep, progress } = this.props;
 
-    // HACK: WaveformAxes wind up taking 20px more than advertised, because
-    // they add 10px spacing on either side. I should refactor this so that
-    // it subtracts from the waveform rather than add the spacing.
-    const adjustedWidthForPlayer = width - 20;
-
     switch (currentStep) {
       case '1-introduction':
       default:
         return (
-          <WaveformPlayer
-            isPlaying
-            shape="sine"
-            size={adjustedWidthForPlayer}
-          />
+          <WaveformPlayer isPlaying>
+            {offset => (
+              <Aux>
+                <WaveformAxes size={width} />
+                <Waveform size={width} shape="sine" offset={offset} />
+                <WaveformIntercept size={width} shape="sine" offset={offset} />
+              </Aux>
+            )}
+          </WaveformPlayer>
         );
     }
   };
   render() {
-    return <AvailableWidth>{this.renderContents}</AvailableWidth>;
+    return (
+      <IntroRouteWaveformWrapper>
+        <AvailableWidth>{this.renderContents}</AvailableWidth>
+      </IntroRouteWaveformWrapper>
+    );
   }
 }
+
+const IntroRouteWaveformWrapper = styled.div``;
 
 export default IntroRouteWaveform;

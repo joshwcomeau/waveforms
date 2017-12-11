@@ -1,7 +1,12 @@
 // @flow
 import React from 'react';
 
-import { WAVEFORM_ASPECT_RATIO, DEFAULT_WAVEFORM_SIZE } from '../../constants';
+import {
+  WAVEFORM_ASPECT_RATIO,
+  DEFAULT_WAVEFORM_SIZE,
+  DEFAULT_WAVEFORM_FREQUENCY,
+  DEFAULT_WAVEFORM_AMPLITUDE,
+} from '../../constants';
 import {
   getPointsForWaveform,
   createPathFromWaveformPoints,
@@ -47,8 +52,8 @@ const Waveform = ({
   size = DEFAULT_WAVEFORM_SIZE,
   color = 'black',
   strokeWidth = 1,
-  frequency = 1,
-  amplitude = 1,
+  frequency = DEFAULT_WAVEFORM_FREQUENCY,
+  amplitude = DEFAULT_WAVEFORM_AMPLITUDE,
   offset = 0,
 }: Props) => {
   const width = size;

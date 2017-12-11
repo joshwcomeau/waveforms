@@ -2,17 +2,12 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
-import { WAVEFORM_ASPECT_RATIO, DEFAULT_WAVEFORM_SIZE } from '../../constants';
-import { getInterceptPosition } from '../../helpers/waveform.helpers';
-
-import Waveform from '../Waveform';
-import WaveformAxes from '../WaveformAxes';
-
-import type { Props as WaveformProps } from '../Waveform';
+import { DEFAULT_WAVEFORM_FREQUENCY } from '../../constants';
 
 type Props = {
-  ...WaveformProps,
   isPlaying: boolean,
+  frequency: number,
+  children: (offset: number) => React$Node,
 };
 
 type State = {
@@ -30,17 +25,14 @@ class WaveformPlayer extends PureComponent<Props, State> {
   };
 
   static defaultProps = {
-    frequency: 1,
-    amplitude: 1,
-    shape: 'sine',
+    isPlaying: false,
+    frequency: DEFAULT_WAVEFORM_FREQUENCY,
   };
 
   componentDidMount() {
     if (this.props.isPlaying) {
       this.start();
     }
-
-    // window.setTimeout(this.stop, 4000);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -69,6 +61,8 @@ class WaveformPlayer extends PureComponent<Props, State> {
   };
 
   stop = () => {
+    // TODO: Might be nice to have a 'gradual' stop, where it waits until the
+    // end of the next cycle?
     window.cancelAnimationFrame(this.animationFrameId);
 
     this.setState({ cycles: 0 });
@@ -84,66 +78,41 @@ class WaveformPlayer extends PureComponent<Props, State> {
 
       const secondsSinceLastTick = (tickAt - this.state.lastTickAt) / 1000;
 
-      // Each tick, we want to advance the waveform by a certain amount.
-      // This is controlled by the offset, and it's how we control the "speed"
-      // of the waveform. The higher the frequency, the faster we want the
-      // wave to "appear" to move.
+      // At first glance, you might think we're just translating a fixed SVG
+      // by `n` pixels to the left on every tick.
+      // Actually, though, we're redrawing the wave on every tick.
+      // This winds up being simpler, since it's an endless animation; this way
+      // we don't have to worry about running out of wave, and every tick is
+      // exactly the same.
       //
-      // Of course, we aren't actually "moving" anything; we're redrawing it
+      // So, since we're not actually "moving" anything, all we need to know is
+      // how many cycles have passed. If the number is 0.2, we're 20% through
+      // the wave, and can start drawing from there.
+      // By changing that value, we get the illusion of it moving.
       // on every frame.
-      const cyclesPerSecond =
-        0.5 / this.props.frequency + this.props.frequency * 0.1;
 
-      const nextcycles =
+      // NOTE: This formula is complex, and there's no smart math behind it:
+      // I just wanted the number of cycles-per-second to increase gradually
+      // with the frequency, so that higher-frequency waves appear to be moving
+      // faster. It's just experimentation though.
+      const cyclesPerSecond = this.props.frequency;
+
+      const nextCyclesValue =
         this.state.cycles + secondsSinceLastTick * cyclesPerSecond;
 
-      this.setState({ cycles: nextcycles, lastTickAt: tickAt }, this.tick);
+      this.setState({ cycles: nextCyclesValue, lastTickAt: tickAt }, this.tick);
     });
   };
 
   render() {
-    const { isPlaying, ...delegatedProps } = this.props;
+    const { isPlaying, children } = this.props;
     const { cycles } = this.state;
 
     // Turn cycles into a cyclical value between 0 and 99
-    const progress = (cycles * 100) % 100;
+    const offset = (cycles * 100) % 100;
 
-    const width =
-      typeof delegatedProps.size === 'number'
-        ? delegatedProps.size
-        : DEFAULT_WAVEFORM_SIZE;
-    const height = width * WAVEFORM_ASPECT_RATIO;
-
-    const interceptPosition = getInterceptPosition(
-      delegatedProps.shape,
-      height,
-      delegatedProps.frequency,
-      delegatedProps.amplitude,
-      progress
-    );
-
-    return (
-      <WaveformAxes size={delegatedProps.size}>
-        <Waveform {...delegatedProps} offset={progress} />
-        <WaveformIntercept position={interceptPosition} />
-      </WaveformAxes>
-    );
+    return children(offset);
   }
 }
-
-const WaveformIntercept = styled.div.attrs({
-  style: ({ position }) => ({
-    transform: `translateY(${position}px)`,
-  }),
-})`
-  width: 10px;
-  height: 10px;
-  border-radius: 100%;
-  background: red;
-  position: absolute;
-  top: 10px;
-  left: 5px;
-  will-change: transform;
-`;
 
 export default WaveformPlayer;
