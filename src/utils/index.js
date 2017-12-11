@@ -1,3 +1,5 @@
+// TODO: Modernize
+/* eslint-disable */
 export const range = function(start, end, step) {
   var range = [];
   var typeofStart = typeof start;
@@ -49,6 +51,7 @@ export const range = function(start, end, step) {
 
   return range;
 };
+/* eslint-enable */
 
 export const sample = arr => arr[Math.floor(Math.random() * arr.length)];
 
@@ -77,7 +80,7 @@ export const convertArrayToMap = list =>
       ...acc,
       [item.id]: item,
     }),
-    {},
+    {}
   );
 
 // Either removes or adds an item to an array
@@ -107,6 +110,6 @@ export function setTimeoutPromise(duration) {
 
 export const deleteCookie = key => {
   document.cookie = `${encodeURIComponent(
-    key,
+    key
   )}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 };

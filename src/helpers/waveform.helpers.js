@@ -1,5 +1,4 @@
 // @flow
-import { convertPercentageToSinePosition } from './sine.helpers';
 import { range, sum } from '../utils';
 
 import type { WaveformShape, WaveformPoint } from '../types';
@@ -37,7 +36,7 @@ export const getPointsForWaveform = ({
         shape,
         frequency,
         amplitude,
-        progress,
+        progress
       ),
     };
   });
@@ -45,7 +44,7 @@ export const getPointsForWaveform = ({
 
 export const createPathFromWaveformPoints = (
   points: Array<WaveformPoint>,
-  height: number,
+  height: number
 ) => {
   // The points provided to this method will range in y-value from -1 to 1.
   // This is mathematically pure, but it's not something our SVG can understand.
@@ -75,7 +74,7 @@ export const getPositionAtPointRelativeToAxis = (
   shape: WaveformShape,
   frequency: number,
   amplitude: number,
-  progress: number,
+  progress: number
 ) => {
   switch (shape) {
     case 'sine': {
@@ -105,7 +104,7 @@ const translateAxisRelativeYValue = (
   // a value from -1 to 1 (relative to the axis)
   yValue: number,
   // The height in pixels of our waveform drawing
-  height: number,
+  height: number
 ) => {
   // Invert the y value. This is so that negative values are below the line,
   // while positive ones are above it.
@@ -129,13 +128,13 @@ export const getInterceptPosition = (
   height: number,
   frequency: number,
   amplitude: number,
-  progress: number,
+  progress: number
 ) => {
   const relativePosition = getPositionAtPointRelativeToAxis(
     shape,
     frequency,
     amplitude,
-    progress,
+    progress
   );
 
   return translateAxisRelativeYValue(relativePosition, height);
@@ -145,7 +144,7 @@ export const applyWaveformAddition = (
   mainWave: Array<WaveformPoint>,
   appliedWaves: Array<Array<WaveformPoint>>,
   // ratio is the "effect" of the applied wave on the main wave, from 0-1.
-  ratio: number,
+  ratio: number
 ) => {
   if (ratio === 0) {
     // At 0, it has no effect. We can just return the main wave as-is.
