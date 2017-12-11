@@ -22,7 +22,7 @@ const IntroRoute = () => {
 
 const MainContent = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 `;
 
 const WaveformWrapper = styled.div`
