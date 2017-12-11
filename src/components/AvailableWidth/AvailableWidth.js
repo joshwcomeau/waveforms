@@ -1,4 +1,10 @@
+/**
+ * Utility component that reports on the available width of the parent
+ * container. Helpful when you absolutely need to provide a pixel value for
+ * something that lives within a container without one.
+ */
 // @flow
+
 import React, { PureComponent } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
 
@@ -17,15 +23,11 @@ class AvailableWidth extends PureComponent<Props, State> {
   observer: ResizeObserver;
 
   componentDidMount() {
-    // Immediately after mount, we can calculate the available width.
-    this.setState({
-      width: this.elem.getBoundingClientRect().width,
-    });
-
     // We want to be notified of any changes to the size of this element.
     // Enter 'ResizeObserver'!
     // Using a polyfill atm since it's only in Chrome 65+. Polyfill's only
     // 2.4kb though, so I don't feel the need to import() it.
+    // Also, this will also report on mount, which'll set the initial value.
     this.observer = new ResizeObserver(([entry]) => {
       this.setState({ width: entry.contentRect.width });
     });
