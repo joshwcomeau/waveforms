@@ -8,6 +8,8 @@ storiesOf('Waveform', module)
   .add('Sine', () => <Waveform shape="sine" />)
   .add('Sine (red)', () => <Waveform shape="sine" color="red" />)
   .add('Sine (2Hz)', () => <Waveform shape="sine" frequency={2} />)
+  .add('Sine (20Hz)', () => <Waveform shape="sine" frequency={20} />)
+  .add('Sine (500px)', () => <Waveform shape="sine" size={500} />)
   .add('Sine (quiet)', () => <Waveform shape="sine" amplitude={0.5} />)
   .add('Arbitrary points', () => (
     <Waveform

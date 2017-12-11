@@ -9,9 +9,6 @@ import {
 
 import type { WaveformShape } from '../../types';
 
-const VIEWBOX_WIDTH = DEFAULT_WAVEFORM_SIZE;
-const VIEWBOX_HEIGHT = VIEWBOX_WIDTH * WAVEFORM_ASPECT_RATIO;
-
 export type Props = {
   // In most cases, the Waveform simply requires an enum waveform shape, like
   // 'sine' or 'square'.
@@ -47,12 +44,12 @@ export type Props = {
 const Waveform = ({
   shape,
   points,
-  size = VIEWBOX_WIDTH,
+  size = DEFAULT_WAVEFORM_SIZE,
   color = 'black',
   strokeWidth = 1,
   frequency = 1,
   amplitude = 1,
-  offset,
+  offset = 0,
 }: Props) => {
   const width = size;
   const height = Math.round(size * WAVEFORM_ASPECT_RATIO);
@@ -60,7 +57,7 @@ const Waveform = ({
   if (typeof shape !== 'string' && !Array.isArray(points)) {
     throw new Error(
       'Waveform requires either a `shape` string, or an array ' +
-        'of `points`. Please provide one of the two.',
+        'of `points`. Please provide one of the two.'
     );
   }
 
@@ -77,12 +74,7 @@ const Waveform = ({
   const svgPath = createPathFromWaveformPoints(points, height);
 
   return (
-    <svg
-      width={width}
-      height={height}
-      viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
-      style={{ overflow: 'visible' }}
-    >
+    <svg width={width} height={height} style={{ overflow: 'visible' }}>
       <path stroke={color} strokeWidth={strokeWidth} fill="none" d={svgPath} />
     </svg>
   );

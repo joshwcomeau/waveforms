@@ -49,20 +49,20 @@ const IntersectionObserverChild = styled.div`
 
 storiesOf('IntersectionObserver', module)
   .add('logging', () => (
-    <Wrapper id="logger" onIntersect={(...args) => console.log(...args)} />
+    <Wrapper id="logger" onIntersect={(...args) => console.info(...args)} />
   ))
   .add('logging with 5% triggers', () => (
     <Wrapper
       id="logger"
       threshold={fivePercentTriggers}
-      onIntersect={(...args) => console.log(...args)}
+      onIntersect={(...args) => console.info(...args)}
     />
   ))
   .add('logging intersectionRect (5% triggers)', () => (
     <Wrapper
       id="logger"
       threshold={fivePercentTriggers}
-      onIntersect={(id, entry) => console.log(entry.intersectionRect)}
+      onIntersect={(id, entry) => console.info(entry.intersectionRect)}
     />
   ))
   .add('Only log enter', () => (
@@ -70,7 +70,7 @@ storiesOf('IntersectionObserver', module)
       id="logger"
       threshold={fivePercentTriggers}
       onlyFireOn="enter"
-      onIntersect={(...args) => console.log(...args)}
+      onIntersect={(...args) => console.info(...args)}
     />
   ))
   .add('Only log exit', () => (
@@ -78,6 +78,6 @@ storiesOf('IntersectionObserver', module)
       id="logger"
       threshold={fivePercentTriggers}
       onlyFireOn="exit"
-      onIntersect={(...args) => console.log(...args)}
+      onIntersect={(...args) => console.info(...args)}
     />
   ));

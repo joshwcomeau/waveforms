@@ -31,6 +31,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
 
   static defaultProps = {
     frequency: 1,
+    amplitude: 1,
     shape: 'sine',
   };
 
@@ -63,7 +64,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
         cycles: 0,
         lastTickAt: new Date(),
       },
-      this.tick,
+      this.tick
     );
   };
 
@@ -107,7 +108,6 @@ class WaveformPlayer extends PureComponent<Props, State> {
     // Turn cycles into a cyclical value between 0 and 99
     const progress = (cycles * 100) % 100;
 
-    // Figure out where the cycles indicator needs to be, if required.
     const width =
       typeof delegatedProps.size === 'number'
         ? delegatedProps.size
@@ -119,7 +119,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
       height,
       delegatedProps.frequency,
       delegatedProps.amplitude,
-      progress,
+      progress
     );
 
     return (
