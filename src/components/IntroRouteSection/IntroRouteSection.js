@@ -31,6 +31,8 @@ const IntroRouteSection = ({
 
 const IntroRouteSectionElem = styled.div`
   height: 1000px;
+  font-size: 22px;
+  line-height: 1.4;
   margin-top: ${props => props.margin + 'px'};
 `;
 

@@ -26,10 +26,9 @@ class IntroRouteWaveform extends PureComponent<Props> {
       case '1-introduction':
       default:
         return (
-          <WaveformPlayer isPlaying frequency={0.4}>
+          <WaveformPlayer isPlaying={false} frequency={0.4}>
             {offset => (
               <Aux>
-                <WaveformAxes size={width} showYAxis={false} />
                 <Waveform
                   color={COLORS.blue[500]}
                   strokeWidth={5}
@@ -38,6 +37,7 @@ class IntroRouteWaveform extends PureComponent<Props> {
                   offset={offset}
                   frequency={2}
                 />
+                <WaveformAxes size={width} showYAxis={false} />
               </Aux>
             )}
           </WaveformPlayer>
@@ -46,13 +46,22 @@ class IntroRouteWaveform extends PureComponent<Props> {
   };
   render() {
     return (
-      <IntroRouteWaveformWrapper>
-        <AvailableWidth>{this.renderContents}</AvailableWidth>
-      </IntroRouteWaveformWrapper>
+      <Aux>
+        <InitialSpacer />
+        <IntroRouteWaveformWrapper>
+          <AvailableWidth>{this.renderContents}</AvailableWidth>
+        </IntroRouteWaveformWrapper>
+      </Aux>
     );
   }
 }
 
-const IntroRouteWaveformWrapper = styled.div``;
+const InitialSpacer = styled.div`
+  height: 175px;
+`;
+const IntroRouteWaveformWrapper = styled.div`
+  position: sticky;
+  top: 50px;
+`;
 
 export default IntroRouteWaveform;

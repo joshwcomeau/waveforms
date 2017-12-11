@@ -66,12 +66,11 @@ const MainContent = styled.div`
 
 const WaveformWrapper = styled.div`
   flex: 1;
-  margin-right: 50px;
-  margin-top: 150px;
+  margin-right: 65px;
 `;
 
 const ScrollableTextWrapper = styled.div`
-  margin-left: 35px;
+  margin-left: 50px;
   flex: 1;
 `;
 
