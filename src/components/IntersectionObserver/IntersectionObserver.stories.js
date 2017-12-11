@@ -37,10 +37,6 @@ const Wrapper = props => (
   </IntersectionObserverContainer>
 );
 
-<IntersectionObserver id="logger" callback={console.log}>
-  <div>Hello world</div>
-</IntersectionObserver>;
-
 const IntersectionObserverContainer = styled.div`
   height: 3000px;
   padding-top: 1000px;

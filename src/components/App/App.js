@@ -17,7 +17,7 @@ import IntroRoute from '../IntroRoute';
 // For certain things that require variables, though, better to do it here.
 injectGlobal`
   body {
-    background: ${COLORS.cream[50]};
+    background: ${COLORS.gray[50]};
     color: ${COLORS.gray[800]};
   }
 `;
