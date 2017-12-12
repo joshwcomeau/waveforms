@@ -8,7 +8,7 @@ import Aux from '../Aux';
 import AvailableWidth from '../AvailableWidth';
 import Waveform from '../Waveform';
 import WaveformPlayer from '../WaveformPlayer';
-import WaveformAxes from '../WaveformAxes';
+import WaveformAxis from '../WaveformAxis';
 import WaveformIntercept from '../WaveformIntercept';
 
 import type { IntroStep } from '../../types';
@@ -39,7 +39,7 @@ class IntroRouteWaveform extends Component<Props> {
                   offset={offset}
                   frequency={2}
                 />
-                <WaveformAxes size={width} showYAxis={false} />
+                <WaveformAxis x strokeWidth={4} waveformSize={width} />
               </Aux>
             )}
           </WaveformPlayer>

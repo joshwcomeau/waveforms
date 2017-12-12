@@ -90,7 +90,7 @@ storiesOf('WaveformPlayer', module)
       <WaveformPlayer isPlaying speed={1}>
         {offset => (
           <span>
-            <WaveformAxes size={DEFAULT_WAVEFORM_SIZE} />
+            <WaveformAxes />
             <Waveform shape="sine" offset={offset} />
           </span>
         )}
