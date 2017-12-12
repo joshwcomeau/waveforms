@@ -7,5 +7,5 @@ export type IntroStep =
   | '0-title'
   | '1-about-this-thing'
   | '2-intro-with-labels'
-  | '3-y-axis-amplitude'
-  | '4-x-axis-time';
+  | '3-x-axis-time'
+  | '4-y-axis-amplitude';

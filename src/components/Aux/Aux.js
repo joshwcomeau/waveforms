@@ -6,6 +6,4 @@
  * should replace this with fragment syntax.
  */
 // @flow
-import React from 'react';
-
 export default ({ children }: { children: any }) => children;

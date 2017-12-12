@@ -66,7 +66,6 @@ const WaveformAxis = ({
     (waveformSize * WAVEFORM_ASPECT_RATIO) + (TOP_AXIS_SPACING * 2);
 
   const halfHeight = Math.round(height / 2);
-  const halfWidth = Math.round(width / 2);
 
   return (
     <WaveformAxisSvg width={width} height={height}>

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { COLORS, INTRO_STEPS } from '../../constants';
+import { COLORS } from '../../constants';
 
 import Aux from '../Aux';
 import AvailableWidth from '../AvailableWidth';
@@ -11,16 +11,15 @@ import WaveformPlayer from '../WaveformPlayer';
 import WaveformAxis from '../WaveformAxis';
 import WaveformIntercept from '../WaveformIntercept';
 
-import type { IntroStep } from '../../types';
-
 type Props = {
   currentStep: number,
+  // TODO: Figure out if `progress` is actually needed.
   progress: number,
 };
 
 class IntroRouteWaveform extends Component<Props> {
   renderContents = (width: number) => {
-    const { currentStep, progress } = this.props;
+    const { currentStep } = this.props;
 
     const isPlaying = [1].includes(currentStep);
 

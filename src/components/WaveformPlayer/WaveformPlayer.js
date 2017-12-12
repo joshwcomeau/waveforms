@@ -1,7 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
-import styled from 'styled-components';
 
 import { DEFAULT_WAVEFORM_NUM_OF_CYCLES } from '../../constants';
 

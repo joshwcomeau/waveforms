@@ -2,7 +2,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { COLORS } from '../../constants';
 import IntersectionObserver from '../IntersectionObserver';
 
 import type { IntroStep } from '../../types';
