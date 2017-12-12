@@ -58,7 +58,7 @@ class IntroRoute extends PureComponent<Props, State> {
       newStep === this.state.currentStep ? 'forwards' : 'backwards';
 
     this.setState(({ currentStep }) => ({
-      currentStep: direction === 'forwards' ? currentStep + 1 : currentStep - 1,
+      currentStep: direction === 'forwards' ? newStep + 1 : newStep,
     }));
   };
 
