@@ -17,7 +17,12 @@ type State = {
   // `cycles` is the number of cycles that have advanced since starting.
   // It can be decimal, and is reset whenever `isPlaying` changes.
   cycles: number,
-  lastTickAt?: Date,
+  lastTickAt: ?Date,
+  // When we receive the request to stop the animation, it's nice to follow
+  // through to the end of the current cycle, so that it winds up in its
+  // original position.
+  // This number controls the cycle the stop was requested in.
+  stopRequestedAtCycle: ?number,
 };
 
 class WaveformPlayer extends PureComponent<Props, State> {
@@ -25,6 +30,8 @@ class WaveformPlayer extends PureComponent<Props, State> {
 
   state = {
     cycles: 0,
+    lastTickAt: null,
+    stopRequestedAtCycle: null,
   };
 
   static defaultProps = {
@@ -54,29 +61,27 @@ class WaveformPlayer extends PureComponent<Props, State> {
   }
 
   start = () => {
-    this.setState(
-      {
-        lastTickAt: new Date(),
-      },
-      this.tick
-    );
+    this.setState({ lastTickAt: new Date() }, this.tick);
   };
 
   stop = () => {
-    // TODO: Might be nice to have a 'gradual' stop, where it waits until the
-    // end of the next cycle?
-    window.cancelAnimationFrame(this.animationFrameId);
+    this.setState({
+      stopRequestedAtCycle: this.state.cycles,
+    });
   };
 
   tick = () => {
     this.animationFrameId = window.requestAnimationFrame(() => {
-      if (!this.state.lastTickAt) {
+      const { frequency } = this.props;
+      const { cycles, stopRequestedAtCycle, lastTickAt } = this.state;
+
+      if (!lastTickAt) {
         return;
       }
 
       const tickAt = new Date();
 
-      const secondsSinceLastTick = (tickAt - this.state.lastTickAt) / 1000;
+      const secondsSinceLastTick = (tickAt - lastTickAt) / 1000;
 
       // At first glance, you might think we're just translating a fixed SVG
       // by `n` pixels to the left on every tick.
@@ -91,14 +96,23 @@ class WaveformPlayer extends PureComponent<Props, State> {
       // By changing that value, we get the illusion of it moving.
       // on every frame.
 
-      // NOTE: This formula is complex, and there's no smart math behind it:
-      // I just wanted the number of cycles-per-second to increase gradually
-      // with the frequency, so that higher-frequency waves appear to be moving
-      // faster. It's just experimentation though.
-      const cyclesPerSecond = this.props.frequency;
+      // prettier-ignore
+      const nextCyclesValue = cycles + (secondsSinceLastTick * frequency);
 
-      const nextCyclesValue =
-        this.state.cycles + secondsSinceLastTick * cyclesPerSecond;
+      // If this is the tick that pushes us into the next cycle, and we've
+      // requested a stop, let's end this animation.
+      if (typeof stopRequestedAtCycle === 'number') {
+        const nextCyclesInteger = Math.floor(nextCyclesValue);
+
+        if (nextCyclesInteger > cycles) {
+          this.setState({
+            cycles: Math.floor(nextCyclesValue),
+            lastTickAt: tickAt,
+            stopRequestedAtCycle: null,
+          });
+          return;
+        }
+      }
 
       this.setState({ cycles: nextCyclesValue, lastTickAt: tickAt }, this.tick);
     });
