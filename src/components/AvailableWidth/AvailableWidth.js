@@ -5,7 +5,7 @@
  */
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
 
 type Props = {
@@ -16,7 +16,7 @@ type State = {
   width?: number,
 };
 
-class AvailableWidth extends PureComponent<Props, State> {
+class AvailableWidth extends Component<Props, State> {
   state = {};
 
   elem: HTMLElement;

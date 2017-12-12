@@ -15,6 +15,8 @@ class IntersectionObserver extends PureComponent<Props> {
   observer: ?IntersectionObserver;
   elem: ?HTMLElement;
 
+  hasStartedObservation: boolean = false;
+
   componentDidMount() {
     if (typeof window.IntersectionObserver === 'undefined') {
       import('../../polyfills/intersection-observer.js')
@@ -49,6 +51,8 @@ class IntersectionObserver extends PureComponent<Props> {
       const [entry] = entries;
 
       this.triggerCallbackIfNecessary(entry);
+
+      this.hasStartedObservation = true;
     }, intersectionOptions);
 
     this.observer.observe(this.elem);
@@ -62,11 +66,7 @@ class IntersectionObserver extends PureComponent<Props> {
     //
     // For this project, I'm choosing to identify and ignore this event.
     // If this were a generalized OSS component, though, I'd trim this bit.
-    const isBogusFirstEvent =
-      entry.boundingClientRect.top > window.innerHeight &&
-      entry.isIntersecting === false;
-
-    if (isBogusFirstEvent) {
+    if (!this.hasStartedObservation) {
       return;
     }
 

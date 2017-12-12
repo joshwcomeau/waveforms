@@ -1,8 +1,19 @@
 // @flow
+import type { IntroStep } from '../types';
+
+// Logic
 export const WAVEFORM_ASPECT_RATIO = 0.5;
 export const DEFAULT_WAVEFORM_SIZE = 200;
 export const DEFAULT_WAVEFORM_FREQUENCY = 1;
 export const DEFAULT_WAVEFORM_AMPLITUDE = 1;
+
+export const INTRO_STEPS: Array<IntroStep> = [
+  '0-title',
+  '1-about-this-thing',
+  '2-intro-with-labels',
+  '3-y-axis-amplitude',
+  '4-x-axis-time',
+];
 
 export const COLORS = {
   red: {

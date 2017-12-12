@@ -16,7 +16,7 @@ const Header = () => {
 const HeaderElem = styled.header`
   position: relative;
   height: 164px;
-  margin: 140px 0;
+  margin-top: 222px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -24,19 +24,21 @@ const HeaderElem = styled.header`
 
 const TitleIntro = styled.h3`
   margin-left: -18px;
-  font-size: 56px;
+  font-size: 50px;
   font-weight: 200;
   color: ${COLORS.gray[700]};
   letter-spacing: 0px;
+  line-height: 1;
   -webkit-font-smoothing: antialiased;
 `;
 
 const Title = styled.h1`
   margin-left: -18px;
-  font-size: 96px;
+  font-size: 90px;
   font-weight: 700;
   color: ${COLORS.gray[900]};
   letter-spacing: -3px;
+  line-height: 1;
   -webkit-font-smoothing: antialiased;
 `;
 

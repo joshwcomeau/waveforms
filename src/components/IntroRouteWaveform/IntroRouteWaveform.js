@@ -1,8 +1,8 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { COLORS } from '../../constants';
+import { COLORS, INTRO_STEPS } from '../../constants';
 
 import Aux from '../Aux';
 import AvailableWidth from '../AvailableWidth';
@@ -14,19 +14,21 @@ import WaveformIntercept from '../WaveformIntercept';
 import type { IntroStep } from '../../types';
 
 type Props = {
-  currentStep: IntroStep,
+  currentStep: number,
   progress: number,
 };
 
-class IntroRouteWaveform extends PureComponent<Props> {
+class IntroRouteWaveform extends Component<Props> {
   renderContents = (width: number) => {
     const { currentStep, progress } = this.props;
 
     switch (currentStep) {
-      case '1-introduction':
-      default:
+      case 0:
+      case 1: {
+        const isPlaying = currentStep === 1;
+
         return (
-          <WaveformPlayer isPlaying={false} frequency={0.4}>
+          <WaveformPlayer isPlaying={isPlaying} frequency={0.4}>
             {offset => (
               <Aux>
                 <Waveform
@@ -42,6 +44,7 @@ class IntroRouteWaveform extends PureComponent<Props> {
             )}
           </WaveformPlayer>
         );
+      }
     }
   };
   render() {
