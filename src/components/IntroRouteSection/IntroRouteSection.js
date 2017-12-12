@@ -24,7 +24,6 @@ const IntroRouteSection = ({
 }: Props) => {
   return (
     <IntersectionObserver id={id} onIntersect={onIntersect} onlyFireOn="exit">
-      {/* prettier-ignore */}
       <IntroRouteSectionElem margin={margin} isSelected={isSelected}>
         {children}
       </IntroRouteSectionElem>
@@ -37,9 +36,10 @@ const IntroRouteSectionElem = styled.div`
   font-weight: 200;
   line-height: 1.4;
   margin-top: ${props => props.margin + 'px'};
-  color: ${props => (props.isSelected ? COLORS.gray[900] : COLORS.gray[500])};
-  -webkit-font-smoothing: ${props =>
-    props.isSelected ? 'subpixel-antialiased' : 'antialiased'};
+  color: ${COLORS.gray[900]};
+  opacity: ${props => (props.isSelected ? 1 : 0.4)};
+  -webkit-font-smoothing: 'antialiased';
+  transition: opacity 400ms;
 `;
 
 export default IntroRouteSection;
