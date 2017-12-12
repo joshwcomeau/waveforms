@@ -101,6 +101,7 @@ const WaveformAxisSvg = styled.svg`
   height: ${props => props.height + 'px'};
   top: ${`-${TOP_AXIS_SPACING}px`};
   left: ${`-${SIDE_AXIS_SPACING}px`};
+  overflow: visible;
 `;
 
 export default WaveformAxis;

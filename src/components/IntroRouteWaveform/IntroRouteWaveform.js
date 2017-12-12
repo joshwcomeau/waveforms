@@ -39,7 +39,12 @@ class IntroRouteWaveform extends Component<Props> {
                   offset={offset}
                   frequency={2}
                 />
-                <WaveformAxis x strokeWidth={4} waveformSize={width} />
+                <WaveformAxis
+                  x
+                  strokeWidth={4}
+                  strokeLinecap="round"
+                  waveformSize={width}
+                />
               </Aux>
             )}
           </WaveformPlayer>

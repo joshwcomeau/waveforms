@@ -12,7 +12,7 @@ import {
   createPathFromWaveformPoints,
 } from '../../helpers/waveform.helpers';
 
-import type { WaveformShape } from '../../types';
+import type { Linecap, WaveformShape } from '../../types';
 
 export type Props = {
   // In most cases, the Waveform simply requires an enum waveform shape, like
@@ -30,6 +30,7 @@ export type Props = {
   // way?
   color?: string,
   strokeWidth?: number,
+  strokeLinecap?: Linecap,
   // numOfCycles is the number of cycles to squeeze into this waveform
   // visualization. The default value of `1` means that a single iteration of
   // the waveform is drawn. `2` means that the cycle is rendered twice, etc
@@ -54,6 +55,7 @@ const Waveform = ({
   size = DEFAULT_WAVEFORM_SIZE,
   color = 'black',
   strokeWidth = 1,
+  strokeLinecap,
   numOfCycles = DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   amplitude = DEFAULT_WAVEFORM_AMPLITUDE,
   offset = 0,
@@ -85,7 +87,7 @@ const Waveform = ({
       <path
         stroke={color}
         strokeWidth={strokeWidth}
-        strokeLinecap="round"
+        strokeLinecap={strokeLinecap}
         fill="none"
         d={svgPath}
       />
