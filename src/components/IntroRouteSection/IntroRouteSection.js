@@ -32,13 +32,8 @@ const IntroRouteSection = ({
 };
 
 const IntroRouteSectionElem = styled.div`
-  font-size: 22px;
-  font-weight: 200;
-  line-height: 1.4;
   margin-top: ${props => props.margin + 'px'};
-  color: ${COLORS.gray[900]};
   opacity: ${props => (props.isSelected ? 1 : 0.4)};
-  -webkit-font-smoothing: 'antialiased';
   transition: opacity 400ms;
 `;
 

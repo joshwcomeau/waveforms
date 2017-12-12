@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { INTRO_STEPS } from '../../constants';
 
 import Header from '../Header';
+import Paragraph from '../Paragraph';
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import Aux from '../Aux';
 import IntroRouteWaveform from '../IntroRouteWaveform';
@@ -21,11 +22,20 @@ const sections = [
   { id: '0-title', margin: 0, children: <Header /> },
   {
     id: '1-about-this-thing',
-    margin: 500,
+    margin: 300,
     children: (
       <Aux>
-        <p>Hi there!</p>
-        <p>Today we'll be looking at waveforms.</p>
+        <Paragraph>Hi there!</Paragraph>
+        <Paragraph>
+          This interactive guide introduces waveforms. We'll go over the
+          fundamental physics of sound, learn how it relates to music and
+          harmony, and discover how to build complex tones from simple ones.
+        </Paragraph>
+        <Paragraph>
+          This guide is primarily geared towards folks who produce music, but no
+          prior knowledge is required. Even if you don't have any interest in
+          music production, this guide may still interest you!
+        </Paragraph>
       </Aux>
     ),
   },
