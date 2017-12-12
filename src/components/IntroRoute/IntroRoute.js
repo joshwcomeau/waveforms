@@ -60,9 +60,9 @@ const sections = [
     children: (
       <Aux>
         <Paragraph>
-          The vertical line, our X axis, represents time. The exact units don't
-          really matter right now, but to make it concrete, let's say that the
-          current graph represents 1 second.
+          The horizontal line, our X axis, represents time. The exact units
+          don't really matter right now, but to make it concrete, let's say that
+          the current graph represents 1 second.
         </Paragraph>
       </Aux>
     ),

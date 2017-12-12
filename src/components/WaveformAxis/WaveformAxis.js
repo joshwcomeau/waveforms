@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import Transition from 'react-transition-group/Transition';
 import styled from 'styled-components';
 
 import {
@@ -11,6 +10,7 @@ import {
 import { range } from '../../utils';
 
 import Aux from '../Aux';
+import FadeTransition from '../FadeTransition';
 
 import type { Linecap } from '../../types';
 
@@ -81,36 +81,29 @@ const WaveformAxis = ({
 
   return (
     <WaveformAxisSvg width={width} height={height}>
-      <Transition in={showXLabels} timeout={400}>
-        {transitionState =>
-          range(0, numOfCycles, 0.5).map(i => {
-            return (
-              <g
-                style={{
-                  transition: `opacity 400ms`,
-                  opacity: transitionState === 'entered' ? 1 : 0,
-                }}
+      <FadeTransition isVisible={showXLabels} typeName="g">
+        {range(0, numOfCycles, 0.5).map(i => {
+          return (
+            <Aux key={i}>
+              <line
+                x1={width * i}
+                y1={0}
+                x2={width * i}
+                y2={height}
+                stroke="rgba(0, 0, 0, 0.5)"
+                strokeDasharray={5}
+              />
+              <text
+                x={width * i + 3}
+                y={height / 2 + 20}
+                style={{ fontSize: 14 }}
               >
-                <line
-                  x1={width * i}
-                  y1={0}
-                  x2={width * i}
-                  y2={height}
-                  stroke={COLORS.gray[500]}
-                  strokeDasharray={5}
-                />
-                <text
-                  x={width * i + 3}
-                  y={height / 2 + 20}
-                  style={{ fontSize: 14 }}
-                >
-                  {i}s
-                </text>
-              </g>
-            );
-          })
-        }
-      </Transition>
+                {i}s
+              </text>
+            </Aux>
+          );
+        })}
+      </FadeTransition>
 
       {x ? (
         <line
