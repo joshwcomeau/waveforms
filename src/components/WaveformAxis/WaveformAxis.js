@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import Transition from 'react-transition-group/Transition';
 import styled from 'styled-components';
 
 import {
@@ -68,47 +69,57 @@ const WaveformAxis = ({
   // positioned; they'll be floating around in their own area. This trick
   // wouldn't work in most situations, but it does here.
 
-  // prettier-ignore
-  const width = waveformSize + (SIDE_AXIS_SPACING * 2);
-  // prettier-ignore
-  const height =
-    (waveformSize * WAVEFORM_ASPECT_RATIO) + (TOP_AXIS_SPACING * 2);
+  const width = waveformSize;
+  const height = waveformSize * WAVEFORM_ASPECT_RATIO;
+
+  const axisWidth = width + SIDE_AXIS_SPACING * 2;
+  const axisHeight = height + TOP_AXIS_SPACING * 2;
 
   const halfHeight = Math.round(height / 2);
 
+  const showXLabels = x && showLabels;
+
   return (
     <WaveformAxisSvg width={width} height={height}>
-      {x &&
-        showLabels &&
-        range(0, numOfCycles, 0.5).map(i => {
-          const constrainedXCoordinate =
-            SIDE_AXIS_SPACING +
-            width * i * (width - SIDE_AXIS_SPACING * 2) / width;
+      <Transition in={showXLabels} timeout={400}>
+        {transitionState =>
+          range(0, numOfCycles, 0.5).map(i => {
+            return (
+              <g
+                style={{
+                  transition: `opacity 400ms`,
+                  opacity: transitionState === 'entered' ? 1 : 0,
+                }}
+              >
+                <line
+                  x1={width * i}
+                  y1={0}
+                  x2={width * i}
+                  y2={height}
+                  stroke={COLORS.gray[500]}
+                  strokeDasharray={5}
+                />
+                <text
+                  x={width * i + 3}
+                  y={height / 2 + 20}
+                  style={{ fontSize: 14 }}
+                >
+                  {i}s
+                </text>
+              </g>
+            );
+          })
+        }
+      </Transition>
 
-          return (
-            <g>
-              <line
-                x1={constrainedXCoordinate}
-                y1={0}
-                x2={constrainedXCoordinate}
-                y2={height}
-                stroke={COLORS.gray[500]}
-                strokeDasharray={5}
-              />
-              <text x={constrainedXCoordinate + 3} y={height / 2 + 20}>
-                {i}s
-              </text>
-            </g>
-          );
-        })}
       {x ? (
         <line
           stroke={color}
           strokeWidth={strokeWidth}
           strokeLinecap={strokeLinecap}
-          x1={0}
+          x1={-SIDE_AXIS_SPACING}
           y1={halfHeight}
-          x2={width}
+          x2={axisWidth}
           y2={halfHeight}
         />
       ) : (
@@ -116,10 +127,10 @@ const WaveformAxis = ({
           stroke={color}
           strokeWidth={strokeWidth}
           strokeLinecap={strokeLinecap}
-          x1={SIDE_AXIS_SPACING}
-          y1={0}
-          x2={SIDE_AXIS_SPACING}
-          y2={height}
+          x1={0}
+          y1={-TOP_AXIS_SPACING}
+          x2={0}
+          y2={axisHeight}
         />
       )}
     </WaveformAxisSvg>
@@ -128,10 +139,10 @@ const WaveformAxis = ({
 
 const WaveformAxisSvg = styled.svg`
   position: absolute;
+  top: 0;
+  left: 0;
   width: ${props => props.width + 'px'};
   height: ${props => props.height + 'px'};
-  top: ${`-${TOP_AXIS_SPACING}px`};
-  left: ${`-${SIDE_AXIS_SPACING}px`};
   overflow: visible;
 `;
 
