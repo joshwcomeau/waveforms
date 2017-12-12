@@ -7,14 +7,14 @@ import type { Props as WaveformProps } from '../components/Waveform';
 /**
  * This method gets an array of axis-relative points that can be used for
  * further calculations.
- * Given a waveform shape, and some information about its frequency/offset/size,
+ * Given a waveform shape, and some information about its numOfCycles/offset/size,
  * this method returns an array of X/Y values that describes the waveform.
  * This is NOT plot-ready, since the Y values range from -1 to 1.
  * Further processing is required to get something drawable.
  */
 export const getPointsForWaveform = ({
   shape,
-  frequency,
+  numOfCycles,
   amplitude,
   width,
   offset,
@@ -34,7 +34,7 @@ export const getPointsForWaveform = ({
       x,
       y: getPositionAtPointRelativeToAxis(
         shape,
-        frequency,
+        numOfCycles,
         amplitude,
         progress
       ),
@@ -72,16 +72,16 @@ export const createPathFromWaveformPoints = (
  */
 export const getPositionAtPointRelativeToAxis = (
   shape: WaveformShape,
-  frequency: number,
+  numOfCycles: number,
   amplitude: number,
   progress: number
 ) => {
   switch (shape) {
     case 'sine': {
       // Each sine cycle is 2Pi long, in trigonometry terms.
-      // The frequency determines how many cycles are in the available space.
+      // The numOfCycles determines how many cycles are in the available space.
       const cycleLength = Math.PI * 2;
-      const totalLength = cycleLength * frequency;
+      const totalLength = cycleLength * numOfCycles;
 
       // Right now, `progress` ranges from 0 to 100.
       // Normalize this value to fit between 0 and `totalLength`
@@ -126,13 +126,13 @@ const translateAxisRelativeYValue = (
 export const getInterceptPosition = (
   shape: WaveformShape,
   height: number,
-  frequency: number,
+  numOfCycles: number,
   amplitude: number,
   progress: number
 ) => {
   const relativePosition = getPositionAtPointRelativeToAxis(
     shape,
-    frequency,
+    numOfCycles,
     amplitude,
     progress
   );

@@ -28,7 +28,7 @@ class IntroRouteWaveform extends Component<Props> {
         const isPlaying = currentStep === 1;
 
         return (
-          <WaveformPlayer isPlaying={isPlaying} frequency={0.4}>
+          <WaveformPlayer isPlaying={isPlaying} numberOfCycles={2} speed={0.4}>
             {offset => (
               <Aux>
                 <Waveform

@@ -11,11 +11,11 @@ import WaveformIntercept from '../WaveformIntercept';
 import WaveformPlayer from './WaveformPlayer';
 
 type Props = {};
-type State = { frequency: number };
+type State = { speed: number };
 
 class VariableFrequency extends Component<Props, State> {
   state = {
-    frequency: 1,
+    speed: 1,
   };
 
   timeoutId: number;
@@ -30,13 +30,13 @@ class VariableFrequency extends Component<Props, State> {
 
   tick = () => {
     this.timeoutId = window.setTimeout(() => {
-      this.setState({ frequency: this.state.frequency + 0.01 }, this.tick);
+      this.setState({ speed: this.state.speed + 0.01 }, this.tick);
     }, 20);
   };
 
   render() {
     return (
-      <WaveformPlayer isPlaying frequency={this.state.frequency}>
+      <WaveformPlayer isPlaying speed={this.state.speed}>
         {offset => <Waveform shape="sine" offset={offset} />}
       </WaveformPlayer>
     );
@@ -51,33 +51,43 @@ storiesOf('WaveformPlayer', module)
   ))
   .add('playing', () => (
     <WaveformPlayer isPlaying>
-      {offset => <Waveform shape="sine" offset={offset} />}
+      {(offset, numOfCycles) => (
+        <Waveform shape="sine" offset={offset} numOfCycles={numOfCycles} />
+      )}
     </WaveformPlayer>
   ))
-  .add('playing (2Hz)', () => (
-    <WaveformPlayer isPlaying frequency={2}>
-      {offset => <Waveform shape="sine" offset={offset} />}
+  .add('playing (2Hz at 1 cycle)', () => (
+    <WaveformPlayer isPlaying speed={2}>
+      {(offset, numOfCycles) => (
+        <Waveform shape="sine" offset={offset} numOfCycles={numOfCycles} />
+      )}
     </WaveformPlayer>
   ))
-  .add('playing (5Hz)', () => (
-    <WaveformPlayer isPlaying frequency={5}>
-      {offset => <Waveform shape="sine" offset={offset} />}
+  .add('playing (2Hz at 2 cycles)', () => (
+    <WaveformPlayer isPlaying speed={2} numOfCycles={2}>
+      {(offset, numOfCycles) => (
+        <Waveform shape="sine" offset={offset} numOfCycles={numOfCycles} />
+      )}
     </WaveformPlayer>
   ))
-  .add('playing (10Hz)', () => (
-    <WaveformPlayer isPlaying frequency={10}>
-      {offset => <Waveform shape="sine" offset={offset} />}
+  .add('playing (5Hz at 2 cycles)', () => (
+    <WaveformPlayer isPlaying speed={5} numOfCycles={2}>
+      {(offset, numOfCycles) => (
+        <Waveform shape="sine" offset={offset} numOfCycles={numOfCycles} />
+      )}
     </WaveformPlayer>
   ))
   .add('playing (0.5Hz)', () => (
-    <WaveformPlayer isPlaying frequency={0.5}>
-      {offset => <Waveform shape="sine" offset={offset} />}
+    <WaveformPlayer isPlaying speed={0.5}>
+      {(offset, numOfCycles) => (
+        <Waveform shape="sine" offset={offset} numOfCycles={numOfCycles} />
+      )}
     </WaveformPlayer>
   ))
   .add('variable speed', () => <VariableFrequency />)
   .add('with axes', () => (
     <div style={{ position: 'relative' }}>
-      <WaveformPlayer isPlaying frequency={1}>
+      <WaveformPlayer isPlaying speed={1}>
         {offset => (
           <span>
             <WaveformAxes size={DEFAULT_WAVEFORM_SIZE} />
@@ -89,7 +99,7 @@ storiesOf('WaveformPlayer', module)
   ))
   .add('with axes and intercept', () => (
     <div style={{ position: 'relative' }}>
-      <WaveformPlayer isPlaying frequency={1}>
+      <WaveformPlayer isPlaying speed={1}>
         {offset => (
           <span>
             <WaveformAxes />

@@ -4,7 +4,7 @@ import React from 'react';
 import {
   WAVEFORM_ASPECT_RATIO,
   DEFAULT_WAVEFORM_SIZE,
-  DEFAULT_WAVEFORM_FREQUENCY,
+  DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   DEFAULT_WAVEFORM_AMPLITUDE,
 } from '../../constants';
 import {
@@ -30,11 +30,13 @@ export type Props = {
   // way?
   color?: string,
   strokeWidth?: number,
-  // Frequency is the number of cycles to squeeze into this waveform
-  // visualization. The default value of `1` means that it plays at 1Hz, and
-  // displays a single cycle in the visible space. A value of `5` would
-  // render the waveform 5 times in the same amount of space.
-  frequency?: number,
+  // numOfCycles is the number of cycles to squeeze into this waveform
+  // visualization. The default value of `1` means that a single iteration of
+  // the waveform is drawn. `2` means that the cycle is rendered twice, etc
+  // This can be thought of as `frequency`, if the X-axis is thought to range
+  // between 0s and 1s. I've avoided naming it `frequency` to avoid ambiguity
+  // with WaveformPlayer, which controls how fast the waveform actually moves.
+  numOfCycles?: number,
   // Amplitude is the strength of the waveform (AKA loudness, volume).
   // it can range from 0 to 1, and affects how 'tall' the waveform is.
   amplitude?: number,
@@ -52,7 +54,7 @@ const Waveform = ({
   size = DEFAULT_WAVEFORM_SIZE,
   color = 'black',
   strokeWidth = 1,
-  frequency = DEFAULT_WAVEFORM_FREQUENCY,
+  numOfCycles = DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   amplitude = DEFAULT_WAVEFORM_AMPLITUDE,
   offset = 0,
 }: Props) => {
@@ -69,7 +71,7 @@ const Waveform = ({
   if (typeof points === 'undefined') {
     points = getPointsForWaveform({
       shape,
-      frequency,
+      numOfCycles,
       amplitude,
       width,
       offset,

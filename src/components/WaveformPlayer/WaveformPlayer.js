@@ -3,20 +3,31 @@ import React, { PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
 import styled from 'styled-components';
 
-import { DEFAULT_WAVEFORM_FREQUENCY } from '../../constants';
+import { DEFAULT_WAVEFORM_NUM_OF_CYCLES } from '../../constants';
 
 import Aux from '../Aux';
 
 type Props = {
   isPlaying: boolean,
-  frequency: number,
-  children: (offset: number) => React$Node,
+  // How many times does the waveform repeat within the viewable area of this
+  // player? Defaults to 1, which shows a single "period" of the waveform.
+  numOfCycles: number,
+  // `speed` is how many times the currently-drawn area repeats itself per
+  // second. This is similar to `frequency`, with one key difference:
+  // Frequency is the number of cycles per second, whereas this player may
+  // be drawing multiple cycles.
+  // If the `speed` is `2` and `numOfCycles` is `2`, the frequency can
+  // be calculated as `1` (since 2 cycles repeat every 2 seconds)
+  speed: number,
+
+  children: (offset: number, numOfCycles: number) => React$Node,
 };
 
 type State = {
-  // `cycles` is the number of cycles that have advanced since starting.
-  // It can be decimal, and is reset whenever `isPlaying` changes.
-  cycles: number,
+  // `progress` is the number of cycles that have advanced since starting.
+  // It can be decimal: eg. a progress of 1.5 means that the waveform has
+  // advanced by 1 and a half iterations.
+  progress: number,
   lastTickAt: ?Date,
   // When we receive the request to stop the animation, it's nice to follow
   // through to the end of the current cycle, so that it winds up in its
@@ -25,18 +36,21 @@ type State = {
   stopRequestedAtCycle: ?number,
 };
 
+const calculateFrequency = (speed, numberOfCycles) => speed / numberOfCycles;
+
 class WaveformPlayer extends PureComponent<Props, State> {
   animationFrameId: number;
 
   state = {
-    cycles: 0,
+    progress: 0,
     lastTickAt: null,
     stopRequestedAtCycle: null,
   };
 
   static defaultProps = {
     isPlaying: false,
-    frequency: DEFAULT_WAVEFORM_FREQUENCY,
+    numOfCycles: 1,
+    speed: DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   };
 
   componentDidMount() {
@@ -66,14 +80,16 @@ class WaveformPlayer extends PureComponent<Props, State> {
 
   stop = () => {
     this.setState({
-      stopRequestedAtCycle: this.state.cycles,
+      stopRequestedAtCycle: this.state.progress,
     });
   };
 
   tick = () => {
     this.animationFrameId = window.requestAnimationFrame(() => {
-      const { frequency } = this.props;
-      const { cycles, stopRequestedAtCycle, lastTickAt } = this.state;
+      const { speed, numOfCycles } = this.props;
+      const { progress, stopRequestedAtCycle, lastTickAt } = this.state;
+
+      const frequency = calculateFrequency(speed, numOfCycles);
 
       if (!lastTickAt) {
         return;
@@ -97,16 +113,16 @@ class WaveformPlayer extends PureComponent<Props, State> {
       // on every frame.
 
       // prettier-ignore
-      const nextCyclesValue = cycles + (secondsSinceLastTick * frequency);
+      const nextProgressVal = progress + (secondsSinceLastTick * frequency);
 
       // If this is the tick that pushes us into the next cycle, and we've
       // requested a stop, let's end this animation.
       if (typeof stopRequestedAtCycle === 'number') {
-        const nextCyclesInteger = Math.floor(nextCyclesValue);
+        const nextCyclesInteger = Math.floor(nextProgressVal);
 
-        if (nextCyclesInteger > cycles) {
+        if (nextCyclesInteger > progress) {
           this.setState({
-            cycles: Math.floor(nextCyclesValue),
+            progress: Math.floor(nextProgressVal),
             lastTickAt: tickAt,
             stopRequestedAtCycle: null,
           });
@@ -114,30 +130,36 @@ class WaveformPlayer extends PureComponent<Props, State> {
         }
       }
 
-      this.setState({ cycles: nextCyclesValue, lastTickAt: tickAt }, this.tick);
+      this.setState(
+        { progress: nextProgressVal, lastTickAt: tickAt },
+        this.tick
+      );
     });
   };
 
-  renderSpringValue = ({ cycles }: { cycles: number }) => {
-    const { children } = this.props;
+  renderSpringValue = ({ progress }: { progress: number }) => {
+    const { children, numOfCycles } = this.props;
 
-    // `cycles` is an ever-increasing decimal value representing how many
+    // `progress` is an ever-increasing decimal value representing how many
     // iterations of the loop have occured.
     // Transform this value into a circular value between 0 and 99.
-    const circularCycles = (cycles * 100) % 100;
+    const offset = (progress * 100) % 100;
 
     // To appease React Motion, we have to return a React element, so we use
     // the self-erasing <Aux>. This is really just a bit of a hack; I shouldn't
     // really be using React Motion for this at all, I should just manage my own
     // spring values.
-    return <Aux>{children((cycles * 100) % 100)}</Aux>;
+    return <Aux>{children(offset, numOfCycles)}</Aux>;
   };
 
   render() {
-    const { cycles } = this.state;
+    const { progress } = this.state;
 
     return (
-      <Motion defaultStyle={{ cycles: 0 }} style={{ cycles: spring(cycles) }}>
+      <Motion
+        defaultStyle={{ progress: 0 }}
+        style={{ progress: spring(progress) }}
+      >
         {this.renderSpringValue}
       </Motion>
     );

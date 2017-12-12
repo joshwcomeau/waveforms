@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import {
   WAVEFORM_ASPECT_RATIO,
   DEFAULT_WAVEFORM_SIZE,
-  DEFAULT_WAVEFORM_FREQUENCY,
+  DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   DEFAULT_WAVEFORM_AMPLITUDE,
 } from '../../constants';
 import { getInterceptPosition } from '../../helpers/waveform.helpers';
@@ -27,7 +27,7 @@ const WaveformIntercept = ({
   size = 16,
   waveformSize = DEFAULT_WAVEFORM_SIZE,
   waveformShape,
-  frequency = DEFAULT_WAVEFORM_FREQUENCY,
+  frequency = DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   amplitude = DEFAULT_WAVEFORM_AMPLITUDE,
   offset,
 }: Props) => {
