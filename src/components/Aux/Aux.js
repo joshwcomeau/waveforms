@@ -8,4 +8,4 @@
 // @flow
 import React from 'react';
 
-export default ({ children }) => children;
+export default ({ children }: { children: any }) => children;

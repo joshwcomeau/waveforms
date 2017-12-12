@@ -1,8 +1,11 @@
 // @flow
 import React, { PureComponent } from 'react';
+import { Motion, spring } from 'react-motion';
 import styled from 'styled-components';
 
 import { DEFAULT_WAVEFORM_FREQUENCY } from '../../constants';
+
+import Aux from '../Aux';
 
 type Props = {
   isPlaying: boolean,
@@ -53,7 +56,6 @@ class WaveformPlayer extends PureComponent<Props, State> {
   start = () => {
     this.setState(
       {
-        cycles: 0,
         lastTickAt: new Date(),
       },
       this.tick
@@ -64,8 +66,6 @@ class WaveformPlayer extends PureComponent<Props, State> {
     // TODO: Might be nice to have a 'gradual' stop, where it waits until the
     // end of the next cycle?
     window.cancelAnimationFrame(this.animationFrameId);
-
-    this.setState({ cycles: 0 });
   };
 
   tick = () => {
@@ -104,14 +104,29 @@ class WaveformPlayer extends PureComponent<Props, State> {
     });
   };
 
+  renderSpringValue = ({ cycles }: { cycles: number }) => {
+    const { children } = this.props;
+
+    // `cycles` is an ever-increasing decimal value representing how many
+    // iterations of the loop have occured.
+    // Transform this value into a circular value between 0 and 99.
+    const circularCycles = (cycles * 100) % 100;
+
+    // To appease React Motion, we have to return a React element, so we use
+    // the self-erasing <Aux>. This is really just a bit of a hack; I shouldn't
+    // really be using React Motion for this at all, I should just manage my own
+    // spring values.
+    return <Aux>{children((cycles * 100) % 100)}</Aux>;
+  };
+
   render() {
-    const { isPlaying, children } = this.props;
     const { cycles } = this.state;
 
-    // Turn cycles into a cyclical value between 0 and 99
-    const offset = (cycles * 100) % 100;
-
-    return children(offset);
+    return (
+      <Motion defaultStyle={{ cycles: 0 }} style={{ cycles: spring(cycles) }}>
+        {this.renderSpringValue}
+      </Motion>
+    );
   }
 }
 
