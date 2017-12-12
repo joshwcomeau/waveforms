@@ -24,10 +24,11 @@ class IntroRouteWaveform extends Component<Props> {
     const isPlaying = [1].includes(currentStep);
 
     const showXAxis = true;
+    const showXAxisLabels = [3].includes(currentStep);
 
     return (
-      <WaveformPlayer isPlaying={isPlaying} numOfCycles={2} speed={0.75}>
-        {(offset, numOfCycles) => (
+      <WaveformPlayer isPlaying={isPlaying} numOfCycles={1} speed={0.75}>
+        {({ progress, offset, numOfCycles }) => (
           <Aux>
             <Waveform
               color={COLORS.blue[500]}
@@ -38,7 +39,14 @@ class IntroRouteWaveform extends Component<Props> {
               numOfCycles={numOfCycles}
             />
             {showXAxis && (
-              <WaveformAxis x strokeWidth={4} waveformSize={width} />
+              <WaveformAxis
+                x
+                strokeWidth={4}
+                waveformSize={width}
+                numOfCycles={numOfCycles}
+                progress={progress}
+                showLabels={showXAxisLabels}
+              />
             )}
           </Aux>
         )}

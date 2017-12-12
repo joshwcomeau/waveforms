@@ -6,6 +6,12 @@ import { DEFAULT_WAVEFORM_NUM_OF_CYCLES } from '../../constants';
 
 import Aux from '../Aux';
 
+type ChildrenValues = {
+  progress: number,
+  offset: number,
+  numOfCycles: number,
+};
+
 type Props = {
   isPlaying: boolean,
   // How many times does the waveform repeat within the viewable area of this
@@ -19,7 +25,7 @@ type Props = {
   // be calculated as `1` (since 2 cycles repeat every 2 seconds)
   speed: number,
 
-  children: (offset: number, numOfCycles: number) => React$Node,
+  children: (values: ChildrenValues) => React$Node,
 };
 
 type State = {
@@ -136,7 +142,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
     });
   };
 
-  renderSpringValue = ({ progress }: { progress: number }) => {
+  renderValues = ({ progress }: { progress: number }) => {
     const { children, numOfCycles } = this.props;
 
     // `progress` is an ever-increasing decimal value representing how many
@@ -148,7 +154,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
     // the self-erasing <Aux>. This is really just a bit of a hack; I shouldn't
     // really be using React Motion for this at all, I should just manage my own
     // spring values.
-    return <Aux>{children(offset, numOfCycles)}</Aux>;
+    return <Aux>{children({ progress, offset, numOfCycles })}</Aux>;
   };
 
   render() {
@@ -159,7 +165,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
         defaultStyle={{ progress: 0 }}
         style={{ progress: spring(progress) }}
       >
-        {this.renderSpringValue}
+        {this.renderValues}
       </Motion>
     );
   }

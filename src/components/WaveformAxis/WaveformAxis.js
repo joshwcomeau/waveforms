@@ -7,6 +7,9 @@ import {
   DEFAULT_WAVEFORM_SIZE,
   WAVEFORM_ASPECT_RATIO,
 } from '../../constants/index';
+import { range } from '../../utils';
+
+import Aux from '../Aux';
 
 import type { Linecap } from '../../types';
 
@@ -20,6 +23,9 @@ type Props = {
   color: string,
   strokeWidth: number,
   strokeLinecap: Linecap,
+  numOfCycles: number,
+  progress: number,
+  showLabels: boolean,
 };
 
 const WaveformAxis = ({
@@ -29,6 +35,9 @@ const WaveformAxis = ({
   color = COLORS.gray[700],
   strokeWidth = 2,
   strokeLinecap,
+  numOfCycles,
+  progress,
+  showLabels,
 }: Props) => {
   // This represents a single axis. Only one of x/y may be passed.
   // I may create a thin wrapper that supplies both, but I like being able to
@@ -69,6 +78,29 @@ const WaveformAxis = ({
 
   return (
     <WaveformAxisSvg width={width} height={height}>
+      {x &&
+        showLabels &&
+        range(0, numOfCycles, 0.5).map(i => {
+          const constrainedXCoordinate =
+            SIDE_AXIS_SPACING +
+            width * i * (width - SIDE_AXIS_SPACING * 2) / width;
+
+          return (
+            <g>
+              <line
+                x1={constrainedXCoordinate}
+                y1={0}
+                x2={constrainedXCoordinate}
+                y2={height}
+                stroke={COLORS.gray[500]}
+                strokeDasharray={5}
+              />
+              <text x={constrainedXCoordinate + 3} y={height / 2 + 20}>
+                {i}s
+              </text>
+            </g>
+          );
+        })}
       {x ? (
         <line
           stroke={color}
