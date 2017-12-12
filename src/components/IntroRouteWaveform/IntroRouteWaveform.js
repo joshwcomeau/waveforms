@@ -22,35 +22,29 @@ class IntroRouteWaveform extends Component<Props> {
   renderContents = (width: number) => {
     const { currentStep, progress } = this.props;
 
-    switch (currentStep) {
-      case 0:
-      case 1: {
-        const isPlaying = currentStep === 1;
+    const isPlaying = [1].includes(currentStep);
 
-        return (
-          <WaveformPlayer isPlaying={isPlaying} numberOfCycles={2} speed={0.75}>
-            {offset => (
-              <Aux>
-                <Waveform
-                  color={COLORS.blue[500]}
-                  strokeWidth={5}
-                  size={width}
-                  shape="sine"
-                  offset={offset}
-                  frequency={2}
-                />
-                <WaveformAxis
-                  x
-                  strokeWidth={4}
-                  strokeLinecap="round"
-                  waveformSize={width}
-                />
-              </Aux>
+    const showXAxis = true;
+
+    return (
+      <WaveformPlayer isPlaying={isPlaying} numOfCycles={2} speed={0.75}>
+        {(offset, numOfCycles) => (
+          <Aux>
+            <Waveform
+              color={COLORS.blue[500]}
+              strokeWidth={5}
+              size={width}
+              shape="sine"
+              offset={offset}
+              numOfCycles={numOfCycles}
+            />
+            {showXAxis && (
+              <WaveformAxis x strokeWidth={4} waveformSize={width} />
             )}
-          </WaveformPlayer>
-        );
-      }
-    }
+          </Aux>
+        )}
+      </WaveformPlayer>
+    );
   };
   render() {
     return (

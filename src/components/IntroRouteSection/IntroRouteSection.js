@@ -12,6 +12,7 @@ type Props = {
   margin?: number,
   onIntersect: (id: IntroStep) => void,
   isSelected: boolean,
+  innerRef: (elem: HTMLElement) => void,
   children: React$Node,
 };
 
@@ -20,11 +21,16 @@ const IntroRouteSection = ({
   onIntersect,
   margin = 0,
   isSelected,
+  innerRef,
   children,
 }: Props) => {
   return (
     <IntersectionObserver id={id} onIntersect={onIntersect} onlyFireOn="exit">
-      <IntroRouteSectionElem margin={margin} isSelected={isSelected}>
+      <IntroRouteSectionElem
+        innerRef={innerRef}
+        margin={margin}
+        isSelected={isSelected}
+      >
         {children}
       </IntroRouteSectionElem>
     </IntersectionObserver>

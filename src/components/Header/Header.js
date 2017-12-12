@@ -23,7 +23,7 @@ const HeaderElem = styled.header`
 `;
 
 const TitleIntro = styled.h3`
-  margin-left: -18px;
+  margin-left: -9px;
   font-size: 50px;
   font-weight: 200;
   color: ${COLORS.gray[700]};
@@ -33,7 +33,7 @@ const TitleIntro = styled.h3`
 `;
 
 const Title = styled.h1`
-  margin-left: -18px;
+  margin-left: -9px;
   font-size: 90px;
   font-weight: 700;
   color: ${COLORS.gray[900]};
