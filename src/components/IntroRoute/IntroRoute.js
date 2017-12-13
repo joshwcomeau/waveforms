@@ -21,7 +21,13 @@ type State = {
   windowHeight: number,
 };
 
-const sections = [
+type Section = {
+  id: IntroStep,
+  getMargin?: (windowHeight: number) => number,
+  children: React$Node,
+};
+
+const sections: Array<Section> = [
   { id: '0-title', getMargin: windowHeight => 0, children: <Header /> },
   {
     id: '1-about-this-thing',
@@ -56,13 +62,27 @@ const sections = [
   },
   {
     id: '3-x-axis-time',
-    getMargin: windowHeight => windowHeight * 0.25,
+    getMargin: windowHeight => windowHeight * 0.35,
     children: (
       <Aux>
         <Paragraph>
           The horizontal line, our X axis, represents time. The exact units
           don't really matter right now, but to make it concrete, let's say that
           the current graph represents 1 second.
+        </Paragraph>
+      </Aux>
+    ),
+  },
+  {
+    id: '4-y-axis-amplitude',
+    getMargin: windowHeight => windowHeight * 0.35,
+    children: (
+      <Aux>
+        <Paragraph>
+          The vertical line, our Y axis, represents <em>amplitude</em>. We'll go
+          into more detail in a bit about what amplitude really is, but for now,
+          you can think of it as volume. The bigger the wave, the louder the
+          sound.
         </Paragraph>
       </Aux>
     ),

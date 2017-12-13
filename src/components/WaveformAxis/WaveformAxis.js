@@ -24,6 +24,7 @@ type Props = {
   color: string,
   strokeWidth: number,
   strokeLinecap: Linecap,
+  opacity?: number,
   numOfCycles: number,
   progress: number,
   showLabels: boolean,
@@ -33,9 +34,10 @@ const WaveformAxis = ({
   y = false,
   x = false,
   waveformSize = DEFAULT_WAVEFORM_SIZE,
-  color = COLORS.gray[700],
+  color = COLORS.gray[900],
   strokeWidth = 2,
   strokeLinecap,
+  opacity = 1,
   numOfCycles,
   progress,
   showLabels,
@@ -79,6 +81,20 @@ const WaveformAxis = ({
 
   const showXLabels = x && showLabels;
 
+  const coordinates = x
+    ? {
+        x1: -SIDE_AXIS_SPACING,
+        y1: halfHeight,
+        x2: axisWidth,
+        y2: halfHeight,
+      }
+    : {
+        x1: 0,
+        y1: -TOP_AXIS_SPACING,
+        x2: 0,
+        y2: axisHeight,
+      };
+
   return (
     <WaveformAxisSvg width={width} height={height}>
       <FadeTransition isVisible={showXLabels} typeName="g">
@@ -93,9 +109,10 @@ const WaveformAxis = ({
                 stroke="rgba(0, 0, 0, 0.5)"
                 strokeDasharray={5}
               />
+
               <text
-                x={width * i + 3}
-                y={height / 2 + 20}
+                x={width * i + 4}
+                y={height / 2 + 16}
                 style={{ fontSize: 14 }}
               >
                 {i}s
@@ -104,27 +121,13 @@ const WaveformAxis = ({
           );
         })}
       </FadeTransition>
-
-      {x ? (
-        <line
-          stroke={color}
-          strokeWidth={strokeWidth}
-          strokeLinecap={strokeLinecap}
-          x1={-SIDE_AXIS_SPACING}
-          y1={halfHeight}
-          x2={axisWidth}
-          y2={halfHeight}
-        />
-      ) : (
-        <line
-          stroke={color}
-          strokeWidth={strokeWidth}
-          strokeLinecap={strokeLinecap}
-          x1={0}
-          y1={-TOP_AXIS_SPACING}
-          x2={0}
-          y2={axisHeight}
-        />
+      <line
+        {...coordinates}
+        stroke={color}
+        strokeWidth={strokeWidth}
+        strokeLinecap={strokeLinecap}
+        style={{ opacity, transition: `opacity ${500}ms` }}
+      />
       )}
     </WaveformAxisSvg>
   );

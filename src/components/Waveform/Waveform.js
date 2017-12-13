@@ -31,6 +31,7 @@ export type Props = {
   color?: string,
   strokeWidth?: number,
   strokeLinecap?: Linecap,
+  opacity?: number,
   // numOfCycles is the number of cycles to squeeze into this waveform
   // visualization. The default value of `1` means that a single iteration of
   // the waveform is drawn. `2` means that the cycle is rendered twice, etc
@@ -56,6 +57,7 @@ const Waveform = ({
   color = 'black',
   strokeWidth = 1,
   strokeLinecap,
+  opacity = 1,
   numOfCycles = DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   amplitude = DEFAULT_WAVEFORM_AMPLITUDE,
   offset = 0,
@@ -85,11 +87,12 @@ const Waveform = ({
   return (
     <svg width={width} height={height} style={{ overflow: 'visible' }}>
       <path
+        d={svgPath}
         stroke={color}
         strokeWidth={strokeWidth}
         strokeLinecap={strokeLinecap}
         fill="none"
-        d={svgPath}
+        style={{ opacity, transition: 'opacity 500ms' }}
       />
     </svg>
   );
