@@ -70,7 +70,6 @@ class IntroRouteWaveform extends Component<Props> {
           ...defaults,
           waveformOpacity: 0.5,
           showXAxisLabels: true,
-          yAxisOpacity: 0.2,
         };
       }
 
@@ -79,7 +78,6 @@ class IntroRouteWaveform extends Component<Props> {
           ...defaults,
           waveformOpacity: 0.5,
           showYAxisLabels: true,
-          xAxisOpacity: 0.2,
         };
       }
 
@@ -129,6 +127,7 @@ class IntroRouteWaveform extends Component<Props> {
                 waveformSize={width}
                 numOfCycles={numOfCycles}
                 progress={progress}
+                showLabels={stepData.showYAxisLabels}
                 opacity={stepData.yAxisOpacity}
               />
             </FadeTransition>

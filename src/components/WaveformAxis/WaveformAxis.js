@@ -14,8 +14,9 @@ import FadeTransition from '../FadeTransition';
 
 import type { Linecap } from '../../types';
 
-const TOP_AXIS_SPACING = 15;
+const TOP_AXIS_SPACING = 10;
 const SIDE_AXIS_SPACING = 10;
+const STROKE_DASHARRAY = 3;
 
 type Props = {
   y: boolean,
@@ -36,7 +37,7 @@ const WaveformAxis = ({
   waveformSize = DEFAULT_WAVEFORM_SIZE,
   color = COLORS.gray[900],
   strokeWidth = 2,
-  strokeLinecap,
+  strokeLinecap = 'square',
   opacity = 1,
   numOfCycles,
   progress,
@@ -80,35 +81,42 @@ const WaveformAxis = ({
   const halfHeight = Math.round(height / 2);
 
   const showXLabels = x && showLabels;
+  const showYLabels = y && showLabels;
 
   const coordinates = x
     ? {
         x1: -SIDE_AXIS_SPACING,
         y1: halfHeight,
-        x2: axisWidth,
+        x2: width + SIDE_AXIS_SPACING,
         y2: halfHeight,
       }
     : {
         x1: 0,
         y1: -TOP_AXIS_SPACING,
         x2: 0,
-        y2: axisHeight,
+        y2: height + TOP_AXIS_SPACING,
       };
+
+  const labelLineStyles = {
+    stroke: 'rgba(0, 0, 0, 0.5)',
+    strokeDasharray: STROKE_DASHARRAY,
+  };
 
   return (
     <WaveformAxisSvg width={width} height={height}>
       <FadeTransition isVisible={showXLabels} typeName="g">
-        {range(0, numOfCycles, 0.5).map(i => {
+        {range(0, numOfCycles, 0.25).map(i => {
           return (
             <Aux key={i}>
-              <line
-                x1={width * i}
-                y1={0}
-                x2={width * i}
-                y2={height}
-                stroke="rgba(0, 0, 0, 0.5)"
-                strokeDasharray={5}
-              />
+              {i > 0 && (
+                <line
+                  x1={width * i}
+                  y1={-TOP_AXIS_SPACING}
+                  x2={width * i}
+                  y2={height + TOP_AXIS_SPACING}
+                  {...labelLineStyles}
+                />
+              )}
 
               <text
                 x={width * i + 4}
@@ -120,6 +128,47 @@ const WaveformAxis = ({
             </Aux>
           );
         })}
+      </FadeTransition>
+      <FadeTransition isVisible={showYLabels} typeName="g">
+        <Aux>
+          <line
+            x1={-SIDE_AXIS_SPACING}
+            y1={0}
+            x2={width + SIDE_AXIS_SPACING}
+            y2={0}
+            {...labelLineStyles}
+          />
+          <text x={axisWidth} y={0} dx={2} dy={4} style={{ fontSize: 14 }}>
+            +1
+          </text>
+
+          <text
+            x={axisWidth}
+            y={axisHeight / 2}
+            dx={8}
+            dy={-6}
+            style={{ fontSize: 14 }}
+          >
+            0
+          </text>
+
+          <line
+            x1={-SIDE_AXIS_SPACING}
+            y1={height}
+            x2={width + SIDE_AXIS_SPACING}
+            y2={height}
+            {...labelLineStyles}
+          />
+          <text
+            x={axisWidth + 4}
+            dx={0}
+            y={axisHeight}
+            dy={-16}
+            style={{ fontSize: 14 }}
+          >
+            -1
+          </text>
+        </Aux>
       </FadeTransition>
       <line
         {...coordinates}
