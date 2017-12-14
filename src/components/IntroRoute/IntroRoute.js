@@ -87,6 +87,15 @@ const sections: Array<Section> = [
       </Aux>
     ),
   },
+  {
+    id: '5-y-axis-amplitude-with-control',
+    getMargin: windowHeight => windowHeight * 0.35,
+    children: (
+      <Aux>
+        <Paragraph>Look its a control!</Paragraph>
+      </Aux>
+    ),
+  },
 ];
 
 class IntroRoute extends PureComponent<Props, State> {

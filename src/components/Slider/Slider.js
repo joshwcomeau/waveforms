@@ -21,13 +21,6 @@ class Slider extends Component<Props> {
     width: 100,
   };
 
-  componentDidMount() {
-    // Argh. So, the React Slider library has some sort of bug with default
-    // values. Requires a re-render to set to the right value :/
-    // TODO: Use a different library
-    window.setTimeout(() => this.forceUpdate(), 0);
-  }
-
   render() {
     const { width, ...delegatedProps } = this.props;
 

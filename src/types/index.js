@@ -8,4 +8,5 @@ export type IntroStep =
   | '1-about-this-thing'
   | '2-intro-with-labels'
   | '3-x-axis-time'
-  | '4-y-axis-amplitude';
+  | '4-y-axis-amplitude'
+  | '5-y-axis-amplitude-with-control';

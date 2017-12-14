@@ -11,11 +11,17 @@ import WaveformPlayer from '../WaveformPlayer';
 import WaveformAxis from '../WaveformAxis';
 import WaveformIntercept from '../WaveformIntercept';
 import FadeTransition from '../FadeTransition';
+import Slider from '../Slider';
 
 type Props = {
   currentStep: number,
   // TODO: Figure out if `progress` is actually needed.
   progress: number,
+};
+
+type State = {
+  frequency: 1,
+  amplitude: 1,
 };
 
 type StepData = {
@@ -30,11 +36,16 @@ type StepData = {
   showYAxisLabels: boolean,
   xAxisOpacity: number,
   yAxisOpacity: number,
+  showAmplitudeSlider: boolean,
 };
 
-class IntroRouteWaveform extends Component<Props> {
+class IntroRouteWaveform extends Component<Props, State> {
+  state = {
+    amplitude: 1,
+  };
+
   getDataForStep = (step: number): StepData => {
-    const defaults = {
+    const defaults: StepData = {
       isPlaying: false,
       waveformColor: COLORS.blue[500],
       waveformOpacity: 1,
@@ -44,7 +55,9 @@ class IntroRouteWaveform extends Component<Props> {
       showYAxisLabels: false,
       xAxisOpacity: 1,
       yAxisOpacity: 1,
+      showAmplitudeSlider: false,
     };
+
     switch (step) {
       case 0: {
         return {
@@ -81,6 +94,15 @@ class IntroRouteWaveform extends Component<Props> {
         };
       }
 
+      case 5: {
+        return {
+          ...defaults,
+          waveformOpacity: 0.5,
+          showYAxisLabels: true,
+          showAmplitudeSlider: true,
+        };
+      }
+
       default:
         console.error(
           'Unrecognized step number!! Returning default values for waveform'
@@ -90,52 +112,67 @@ class IntroRouteWaveform extends Component<Props> {
   };
 
   renderContents = (width: number) => {
-    const stepData = this.getDataForStep(this.props.currentStep);
+    const { currentStep } = this.props;
+    const { amplitude } = this.state;
+
+    const stepData = this.getDataForStep(currentStep);
 
     return (
-      <WaveformPlayer
-        isPlaying={stepData.isPlaying}
-        numOfCycles={1}
-        speed={0.75}
-      >
-        {({ progress, offset, numOfCycles }) => (
-          <Aux>
-            <Waveform
-              color={stepData.waveformColor}
-              strokeWidth={5}
-              opacity={stepData.waveformOpacity}
-              size={width}
-              shape="sine"
-              offset={offset}
-              numOfCycles={numOfCycles}
-            />
-            <FadeTransition isVisible={stepData.showXAxis}>
-              <WaveformAxis
-                x
-                strokeWidth={4}
-                waveformSize={width}
+      <Aux>
+        <WaveformPlayer
+          isPlaying={stepData.isPlaying}
+          numOfCycles={1}
+          speed={0.75}
+        >
+          {({ progress, offset, numOfCycles }) => (
+            <Aux>
+              <Waveform
+                color={stepData.waveformColor}
+                strokeWidth={5}
+                opacity={stepData.waveformOpacity}
+                size={width}
+                shape="sine"
+                offset={offset}
                 numOfCycles={numOfCycles}
-                progress={progress}
-                showLabels={stepData.showXAxisLabels}
-                opacity={stepData.xAxisOpacity}
               />
-            </FadeTransition>
-            <FadeTransition isVisible={stepData.showYAxis}>
-              <WaveformAxis
-                y
-                strokeWidth={4}
-                waveformSize={width}
-                numOfCycles={numOfCycles}
-                progress={progress}
-                showLabels={stepData.showYAxisLabels}
-                opacity={stepData.yAxisOpacity}
-              />
-            </FadeTransition>
-          </Aux>
-        )}
-      </WaveformPlayer>
+              <FadeTransition isVisible={stepData.showXAxis}>
+                <WaveformAxis
+                  x
+                  strokeWidth={4}
+                  waveformSize={width}
+                  numOfCycles={numOfCycles}
+                  progress={progress}
+                  showLabels={stepData.showXAxisLabels}
+                  opacity={stepData.xAxisOpacity}
+                />
+              </FadeTransition>
+              <FadeTransition isVisible={stepData.showYAxis}>
+                <WaveformAxis
+                  y
+                  strokeWidth={4}
+                  waveformSize={width}
+                  numOfCycles={numOfCycles}
+                  progress={progress}
+                  showLabels={stepData.showYAxisLabels}
+                  opacity={stepData.yAxisOpacity}
+                />
+              </FadeTransition>
+            </Aux>
+          )}
+        </WaveformPlayer>
+        <FadeTransition isVisible={stepData.showAmplitudeSlider}>
+          <Slider
+            withBars
+            min={-1}
+            max={1}
+            defaultValue={0}
+            value={amplitude}
+          />
+        </FadeTransition>
+      </Aux>
     );
   };
+
   render() {
     return (
       <Aux>
