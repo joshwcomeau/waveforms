@@ -92,7 +92,10 @@ const sections: Array<Section> = [
     getMargin: windowHeight => windowHeight * 0.35,
     children: (
       <Aux>
-        <Paragraph>Look its a control!</Paragraph>
+        <Paragraph>
+          Go ahead and tweak the waveform's amplitude, using the slider on the
+          left.
+        </Paragraph>
       </Aux>
     ),
   },

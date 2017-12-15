@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import ReactSlider from 'react-slider';
+import RcSlider, { createSliderWithTooltip } from 'rc-slider';
 import { injectGlobal } from 'styled-components';
 
 import { COLORS } from '../../constants';
@@ -26,39 +26,51 @@ class Slider extends Component<Props> {
 
     return (
       <div style={{ width }}>
-        <ReactSlider {...delegatedProps} className="slider-component" />
+        <RcSlider {...delegatedProps} />
       </div>
     );
   }
 }
 
-// NOTE: React-slider uses specific class names to style
+// HACK: RC Slider uses specific class names for styling, so we'll just use
+// those.
+const SLIDER_HEIGHT = 16;
+const SLIDER_BAR_HEIGHT = 2;
+
 injectGlobal`
-  .slider-component {
-    height: 20px;
+  .rc-slider {
+    position: relative;
+    height: ${SLIDER_HEIGHT + 'px'};
   }
 
-  .slider-component .bar {
-    top: 10px;
-    height: 4px;
-    transform: translateY(-50%);
+  .rc-slider .rc-slider-rail, .rc-slider .rc-slider-track {
+    position: absolute;
+    height: ${SLIDER_BAR_HEIGHT + 'px'};
   }
 
-  .slider-component .bar-0 {
-    background: ${COLORS.gray[700]};
-  }
-
-  .slider-component .bar-1 {
+  .rc-slider .rc-slider-rail {
+    width: 100%;
     background: ${COLORS.gray[300]};
   }
 
-  .slider-component .handle {
+  .rc-slider .rc-slider-track {
+    background: ${COLORS.purple[700]};
+  }
+
+  .rc-slider .rc-slider-handle {
     position: absolute;
-    background: ${COLORS.green[500]};
-    width: 20px;
-    height: 20px;
+    top: ${SLIDER_BAR_HEIGHT / 2 + 'px'};
+    background: ${COLORS.purple[500]};
+    width: ${SLIDER_HEIGHT + 'px'};
+    height: ${SLIDER_HEIGHT + 'px'};
+    transform: translate(-50%, -50%);
     border-radius: 50%;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+    cursor: grab;
+    touch-action: pan-x;
+  }
+
+  .rc-slider .rc-slider-handle:active {
+    cursor: grabbing;
   }
 `;
 

@@ -6,6 +6,7 @@ import { COLORS } from '../../constants';
 
 import Aux from '../Aux';
 import AvailableWidth from '../AvailableWidth';
+import Spacer from '../Spacer';
 import Waveform from '../Waveform';
 import WaveformPlayer from '../WaveformPlayer';
 import WaveformAxis from '../WaveformAxis';
@@ -97,7 +98,6 @@ class IntroRouteWaveform extends Component<Props, State> {
       case 5: {
         return {
           ...defaults,
-          waveformOpacity: 0.5,
           showYAxisLabels: true,
           showAmplitudeSlider: true,
         };
@@ -109,6 +109,10 @@ class IntroRouteWaveform extends Component<Props, State> {
         );
         return defaults;
     }
+  };
+
+  handleUpdateAmplitude = val => {
+    this.setState({ amplitude: val });
   };
 
   renderContents = (width: number) => {
@@ -127,6 +131,7 @@ class IntroRouteWaveform extends Component<Props, State> {
           {({ progress, offset, numOfCycles }) => (
             <Aux>
               <Waveform
+                amplitude={amplitude}
                 color={stepData.waveformColor}
                 strokeWidth={5}
                 opacity={stepData.waveformOpacity}
@@ -160,13 +165,17 @@ class IntroRouteWaveform extends Component<Props, State> {
             </Aux>
           )}
         </WaveformPlayer>
-        <FadeTransition isVisible={stepData.showAmplitudeSlider}>
+
+        <Spacer size={40} />
+
+        <FadeTransition typeName="div" isVisible={stepData.showAmplitudeSlider}>
           <Slider
-            withBars
-            min={-1}
-            max={1}
-            defaultValue={0}
+            min={0}
+            max={1.2}
+            step={0.01}
+            defaultValue={1}
             value={amplitude}
+            onChange={this.handleUpdateAmplitude}
           />
         </FadeTransition>
       </Aux>

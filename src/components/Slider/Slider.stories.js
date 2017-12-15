@@ -22,11 +22,13 @@ class SliderWrapper extends PureComponent<Any, State> {
 
   render() {
     return (
-      <Slider
-        {...this.props}
-        onChange={this.handleChange}
-        value={this.state.value}
-      />
+      <div style={{ padding: 30 }}>
+        <Slider
+          {...this.props}
+          onChange={this.handleChange}
+          value={this.state.value}
+        />
+      </div>
     );
   }
 }
