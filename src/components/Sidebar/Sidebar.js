@@ -38,6 +38,9 @@ const SidebarElem = styled.div`
 
   p {
     font-size: 20px;
+  }
+
+  p:last-of-type {
     margin-bottom: 0;
   }
 `;
