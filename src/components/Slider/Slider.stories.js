@@ -35,12 +35,18 @@ class SliderWrapper extends PureComponent<Any, State> {
 
 storiesOf('Slider', module)
   .add('default', () => <SliderWrapper onChange={action('Slider change')} />)
-  .add('with bars', () => (
-    <SliderWrapper withBars onChange={action('Slider change')} />
-  ))
   .add('Different range (-1 to 1, 0.05 step)', () => (
     <SliderWrapper
-      withBars
+      min={-1}
+      max={1}
+      defaultValue={0}
+      step={0.05}
+      onChange={action('Slider change')}
+    />
+  ))
+  .add('With label', () => (
+    <SliderWrapper
+      label="Slider"
       min={-1}
       max={1}
       defaultValue={0}

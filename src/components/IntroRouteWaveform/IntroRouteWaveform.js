@@ -6,6 +6,7 @@ import { COLORS } from '../../constants';
 
 import Aux from '../Aux';
 import AvailableWidth from '../AvailableWidth';
+import Row from '../Row';
 import Spacer from '../Spacer';
 import Waveform from '../Waveform';
 import WaveformPlayer from '../WaveformPlayer';
@@ -43,6 +44,7 @@ type StepData = {
 class IntroRouteWaveform extends Component<Props, State> {
   state = {
     amplitude: 1,
+    frequency: 1,
   };
 
   getDataForStep = (step: number): StepData => {
@@ -57,6 +59,7 @@ class IntroRouteWaveform extends Component<Props, State> {
       xAxisOpacity: 1,
       yAxisOpacity: 1,
       showAmplitudeSlider: false,
+      showFrequencySlider: false,
     };
 
     switch (step) {
@@ -100,6 +103,7 @@ class IntroRouteWaveform extends Component<Props, State> {
           ...defaults,
           showYAxisLabels: true,
           showAmplitudeSlider: true,
+          showFrequencySlider: true,
         };
       }
 
@@ -115,9 +119,13 @@ class IntroRouteWaveform extends Component<Props, State> {
     this.setState({ amplitude: val });
   };
 
+  handleUpdateFrequency = val => {
+    this.setState({ frequency: val });
+  };
+
   renderContents = (width: number) => {
     const { currentStep } = this.props;
-    const { amplitude } = this.state;
+    const { amplitude, frequency } = this.state;
 
     const stepData = this.getDataForStep(currentStep);
 
@@ -125,10 +133,11 @@ class IntroRouteWaveform extends Component<Props, State> {
       <Aux>
         <WaveformPlayer
           isPlaying={stepData.isPlaying}
-          numOfCycles={1}
-          speed={0.75}
+          amplitude={amplitude}
+          numOfCycles={frequency}
+          speed={frequency * 0.75}
         >
-          {({ progress, offset, numOfCycles }) => (
+          {({ amplitude, numOfCycles, progress, offset }) => (
             <Aux>
               <Waveform
                 amplitude={amplitude}
@@ -168,16 +177,39 @@ class IntroRouteWaveform extends Component<Props, State> {
 
         <Spacer size={40} />
 
-        <FadeTransition typeName="div" isVisible={stepData.showAmplitudeSlider}>
-          <Slider
-            min={0}
-            max={1.2}
-            step={0.01}
-            defaultValue={1}
-            value={amplitude}
-            onChange={this.handleUpdateAmplitude}
-          />
-        </FadeTransition>
+        <Row gutter={15}>
+          <FadeTransition
+            typeName="div"
+            isVisible={stepData.showAmplitudeSlider}
+          >
+            <Slider
+              label="Amplitude"
+              width={width / 2 - 15}
+              min={0}
+              max={1.2}
+              step={0.01}
+              defaultValue={1}
+              value={amplitude}
+              onChange={this.handleUpdateAmplitude}
+            />
+          </FadeTransition>
+
+          <FadeTransition
+            typeName="div"
+            isVisible={stepData.showFrequencySlider}
+          >
+            <Slider
+              label="Frequency"
+              width={width / 2 - 15}
+              min={1}
+              max={8}
+              step={0.5}
+              defaultValue={1}
+              value={frequency}
+              onChange={this.handleUpdateFrequency}
+            />
+          </FadeTransition>
+        </Row>
       </Aux>
     );
   };

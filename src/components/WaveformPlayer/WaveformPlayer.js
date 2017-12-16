@@ -12,6 +12,12 @@ type ChildrenValues = {
   numOfCycles: number,
 };
 
+type DynamicValues = {
+  progress: number,
+  amplitude: number,
+  numOfCycles: number,
+};
+
 type Props = {
   isPlaying: boolean,
   // How many times does the waveform repeat within the viewable area of this
@@ -142,8 +148,8 @@ class WaveformPlayer extends PureComponent<Props, State> {
     });
   };
 
-  renderValues = ({ progress }: { progress: number }) => {
-    const { children, numOfCycles } = this.props;
+  renderValues = ({ progress, amplitude, numOfCycles }: DynamicValues) => {
+    const { children } = this.props;
 
     // `progress` is an ever-increasing decimal value representing how many
     // iterations of the loop have occured.
@@ -154,16 +160,21 @@ class WaveformPlayer extends PureComponent<Props, State> {
     // the self-erasing <Aux>. This is really just a bit of a hack; I shouldn't
     // really be using React Motion for this at all, I should just manage my own
     // spring values.
-    return <Aux>{children({ progress, offset, numOfCycles })}</Aux>;
+    return <Aux>{children({ amplitude, numOfCycles, progress, offset })}</Aux>;
   };
 
   render() {
+    const { amplitude, numOfCycles } = this.props;
     const { progress } = this.state;
 
     return (
       <Motion
-        defaultStyle={{ progress: 0 }}
-        style={{ progress: spring(progress) }}
+        defaultStyle={{ progress: 0, amplitude, numOfCycles }}
+        style={{
+          amplitude: spring(amplitude),
+          numOfCycles: spring(numOfCycles),
+          progress: spring(progress),
+        }}
       >
         {this.renderValues}
       </Motion>

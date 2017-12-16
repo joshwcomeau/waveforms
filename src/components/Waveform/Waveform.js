@@ -56,7 +56,7 @@ const Waveform = ({
   size = DEFAULT_WAVEFORM_SIZE,
   color = 'black',
   strokeWidth = 1,
-  strokeLinecap,
+  strokeLinecap = 'square',
   opacity = 1,
   numOfCycles = DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   amplitude = DEFAULT_WAVEFORM_AMPLITUDE,

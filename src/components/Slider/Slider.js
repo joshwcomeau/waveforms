@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import RcSlider, { createSliderWithTooltip } from 'rc-slider';
 import { injectGlobal } from 'styled-components';
 
@@ -7,12 +8,12 @@ import { COLORS } from '../../constants';
 
 type Props = {
   width: number,
+  label: string,
   min?: number,
   max?: number,
   step?: number,
   value?: number,
   defaultValue?: number,
-  withBars?: boolean,
   onChange: (val: number) => void,
 };
 
@@ -22,10 +23,11 @@ class Slider extends Component<Props> {
   };
 
   render() {
-    const { width, ...delegatedProps } = this.props;
+    const { width, label, ...delegatedProps } = this.props;
 
     return (
       <div style={{ width }}>
+        {label && <Label>{label}</Label>}
         <RcSlider {...delegatedProps} />
       </div>
     );
@@ -54,13 +56,13 @@ injectGlobal`
   }
 
   .rc-slider .rc-slider-track {
-    background: ${COLORS.purple[700]};
+    background: ${COLORS.gray[700]};
   }
 
   .rc-slider .rc-slider-handle {
     position: absolute;
     top: ${SLIDER_BAR_HEIGHT / 2 + 'px'};
-    background: ${COLORS.purple[500]};
+    background: ${COLORS.blue[500]};
     width: ${SLIDER_HEIGHT + 'px'};
     height: ${SLIDER_HEIGHT + 'px'};
     transform: translate(-50%, -50%);
@@ -72,6 +74,12 @@ injectGlobal`
   .rc-slider .rc-slider-handle:active {
     cursor: grabbing;
   }
+`;
+
+const Label = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: ${SLIDER_HEIGHT * 0.75 + 'px'};
 `;
 
 export default Slider;
