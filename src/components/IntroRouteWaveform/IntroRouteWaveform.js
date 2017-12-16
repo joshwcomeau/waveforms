@@ -103,7 +103,6 @@ class IntroRouteWaveform extends Component<Props, State> {
           ...defaults,
           showYAxisLabels: true,
           showAmplitudeSlider: true,
-          showFrequencySlider: true,
         };
       }
 
@@ -186,7 +185,7 @@ class IntroRouteWaveform extends Component<Props, State> {
               label="Amplitude"
               width={width / 2 - 15}
               min={0}
-              max={1.2}
+              max={1}
               step={0.01}
               defaultValue={1}
               value={amplitude}
@@ -202,8 +201,7 @@ class IntroRouteWaveform extends Component<Props, State> {
               label="Frequency"
               width={width / 2 - 15}
               min={1}
-              max={8}
-              step={0.5}
+              max={6}
               defaultValue={1}
               value={frequency}
               onChange={this.handleUpdateFrequency}

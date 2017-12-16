@@ -105,7 +105,7 @@ const WaveformAxis = ({
   return (
     <WaveformAxisSvg width={width} height={height}>
       <FadeTransition isVisible={showXLabels} typeName="g">
-        {range(0, numOfCycles, 0.25).map(i => {
+        {range(0, 1, 0.25).map(i => {
           return (
             <Aux key={i}>
               {i > 0 && (

@@ -9,7 +9,9 @@ type Props = {
 const Row = ({ gutter = 0, children } = Props) => (
   <RowElem>
     {Children.toArray(children).map((child, index) => (
-      <FlexChild key={index}>{child}</FlexChild>
+      <FlexChild gutter={gutter} key={index}>
+        {child}
+      </FlexChild>
     ))}
   </RowElem>
 );
