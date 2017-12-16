@@ -13,6 +13,8 @@ import Aux from '../Aux';
 import IntroRouteWaveform from '../IntroRouteWaveform';
 import IntroRouteSection from '../IntroRouteSection';
 
+import { marginFunctions } from './IntroRoute.helpers';
+
 import type { IntroStep } from '../../types';
 
 type Props = {};
@@ -28,10 +30,10 @@ type Section = {
 };
 
 const sections: Array<Section> = [
-  { id: '0-title', getMargin: windowHeight => 0, children: <Header /> },
+  { id: '0-title', getMargin: marginFunctions.none, children: <Header /> },
   {
     id: '1-about-this-thing',
-    getMargin: windowHeight => windowHeight * 0.3,
+    getMargin: marginFunctions.small,
     children: (
       <Aux>
         <Paragraph>Hi there!</Paragraph>
@@ -62,7 +64,7 @@ const sections: Array<Section> = [
   },
   {
     id: '3-x-axis-time',
-    getMargin: windowHeight => windowHeight * 0.35,
+    getMargin: marginFunctions.small,
     children: (
       <Aux>
         <Paragraph>
@@ -75,7 +77,7 @@ const sections: Array<Section> = [
   },
   {
     id: '4-y-axis-amplitude',
-    getMargin: windowHeight => windowHeight * 0.35,
+    getMargin: marginFunctions.small,
     children: (
       <Aux>
         <Paragraph>
@@ -89,12 +91,16 @@ const sections: Array<Section> = [
   },
   {
     id: '5-y-axis-amplitude-with-control',
-    getMargin: windowHeight => windowHeight * 0.35,
+    getMargin: marginFunctions.small,
     children: (
       <Aux>
         <Paragraph>
           Go ahead and tweak the waveform's amplitude, using the slider on the
           left.
+        </Paragraph>
+
+        <Paragraph>
+          Try setting it all the way to 0, and notice how the line disappears.
         </Paragraph>
       </Aux>
     ),
@@ -174,7 +180,7 @@ class IntroRoute extends PureComponent<Props, State> {
                 margin={
                   section.getMargin
                     ? section.getMargin(windowHeight)
-                    : windowHeight * 0.45
+                    : marginFunctions.large
                 }
                 onIntersect={this.handleIntersect}
                 isSelected={currentStep === index}
