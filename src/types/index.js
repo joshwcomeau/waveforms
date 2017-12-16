@@ -9,4 +9,5 @@ export type IntroStep =
   | '2-intro-with-labels'
   | '3-x-axis-time'
   | '4-y-axis-amplitude'
-  | '5-y-axis-amplitude-with-control';
+  | '5-y-axis-amplitude-with-control'
+  | '6-cycle-introduction';

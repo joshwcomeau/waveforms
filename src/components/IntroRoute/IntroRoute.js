@@ -8,6 +8,7 @@ import { debounce } from '../../utils';
 import Header from '../Header';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
+import Sidebar from '../Sidebar';
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import Aux from '../Aux';
 import IntroRouteWaveform from '../IntroRouteWaveform';
@@ -81,10 +82,10 @@ const sections: Array<Section> = [
     children: (
       <Aux>
         <Paragraph>
-          The vertical line, our Y axis, represents <em>amplitude</em>. We'll go
-          into more detail in a bit about what amplitude really is, but for now,
-          you can think of it as volume. The bigger the wave, the louder the
-          sound.
+          The vertical line, our Y axis, represents <strong>amplitude</strong>.
+          We'll go into more detail in a bit about what amplitude really is, but
+          for now, you can think of it as volume. The bigger the wave, the
+          louder the sound.
         </Paragraph>
       </Aux>
     ),
@@ -102,6 +103,34 @@ const sections: Array<Section> = [
         <Paragraph>
           Try setting it all the way to 0, and notice how the line disappears.
         </Paragraph>
+      </Aux>
+    ),
+  },
+  {
+    id: '6-cycle-introduction',
+    children: (
+      <Aux>
+        <Paragraph>
+          Another facet to understanding waveforms is to realize that they loop.
+        </Paragraph>
+
+        <Paragraph>
+          Notice that the waveform on the left repeats. We say that it features
+          two "cycles".
+        </Paragraph>
+
+        <Paragraph>
+          The <strong>frequency</strong> of a waveform is the number of times
+          the waveform repeats in a second. So, the frequency of the waveform on
+          the left is 2.
+        </Paragraph>
+
+        <Sidebar>
+          <Paragraph>
+            For sound to be audible, it needs to be much faster than this: the
+            human hearing range is from 20Hz to 20,000Hz.
+          </Paragraph>
+        </Sidebar>
       </Aux>
     ),
   },
@@ -180,7 +209,7 @@ class IntroRoute extends PureComponent<Props, State> {
                 margin={
                   section.getMargin
                     ? section.getMargin(windowHeight)
-                    : marginFunctions.large
+                    : marginFunctions.large(windowHeight)
                 }
                 onIntersect={this.handleIntersect}
                 isSelected={currentStep === index}
