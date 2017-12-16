@@ -27,6 +27,8 @@ type State = {
 };
 
 type StepData = {
+  frequencyOverride: ?number,
+  amplitudeOverride: ?number,
   isPlaying: boolean,
   waveformColor: string,
   waveformOpacity: number,
@@ -39,6 +41,8 @@ type StepData = {
   xAxisOpacity: number,
   yAxisOpacity: number,
   showAmplitudeSlider: boolean,
+  showFrequencySlider: boolean,
+  showCycleIndicator: boolean,
 };
 
 class IntroRouteWaveform extends Component<Props, State> {
@@ -49,6 +53,8 @@ class IntroRouteWaveform extends Component<Props, State> {
 
   getDataForStep = (step: number): StepData => {
     const defaults: StepData = {
+      frequencyOverride: null,
+      amplitudeOverride: null,
       isPlaying: false,
       waveformColor: COLORS.blue[500],
       waveformOpacity: 1,
@@ -60,6 +66,7 @@ class IntroRouteWaveform extends Component<Props, State> {
       yAxisOpacity: 1,
       showAmplitudeSlider: false,
       showFrequencySlider: false,
+      showCycleIndicator: false,
     };
 
     switch (step) {
@@ -106,6 +113,15 @@ class IntroRouteWaveform extends Component<Props, State> {
         };
       }
 
+      case 6: {
+        return {
+          ...defaults,
+          showXAxisLabels: true,
+          showCycleIndicator: true,
+          frequencyOverride: 2,
+        };
+      }
+
       default:
         console.error(
           'Unrecognized step number!! Returning default values for waveform'
@@ -128,12 +144,22 @@ class IntroRouteWaveform extends Component<Props, State> {
 
     const stepData = this.getDataForStep(currentStep);
 
+    const { amplitudeOverride, frequencyOverride } = stepData;
+
     return (
       <Aux>
         <WaveformPlayer
           isPlaying={stepData.isPlaying}
-          amplitude={amplitude}
-          numOfCycles={frequency}
+          amplitude={
+            typeof amplitudeOverride === 'number'
+              ? amplitudeOverride
+              : amplitude
+          }
+          numOfCycles={
+            typeof frequencyOverride === 'number'
+              ? frequencyOverride
+              : frequency
+          }
           speed={frequency * 0.75}
         >
           {({ amplitude, numOfCycles, progress, offset }) => (

@@ -111,18 +111,23 @@ const sections: Array<Section> = [
     children: (
       <Aux>
         <Paragraph>
-          Another facet to understanding waveforms is to realize that they loop.
+          Next, let's look at <strong>frequency</strong>.
         </Paragraph>
 
         <Paragraph>
-          Notice that the waveform on the left repeats. We say that it features
-          two "cycles".
+          The waveform has been updated to repeat twice. Instead of 1 sine
+          waveform, you now have 2 sine waveforms!
         </Paragraph>
 
         <Paragraph>
-          The <strong>frequency</strong> of a waveform is the number of times
-          the waveform repeats in a second. So, the frequency of the waveform on
-          the left is 2.
+          Important to note, though: The amount of time hasn't changed, though.
+          This is still 1 second of audio.
+        </Paragraph>
+
+        <Paragraph>
+          The number of cycles per second is known as the frequency. The unit of
+          measurement is called the Hertz (abbreviated as 'Hz'). The wave over
+          there is 2Hz, since the waveform repeats twice.
         </Paragraph>
 
         <Sidebar>
