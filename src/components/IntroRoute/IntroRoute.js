@@ -31,9 +31,9 @@ type Section = {
 };
 
 const sections: Array<Section> = [
-  { id: '0-title', getMargin: marginFunctions.none, children: <Header /> },
+  { id: 'title', getMargin: marginFunctions.none, children: <Header /> },
   {
-    id: '1-about-this-thing',
+    id: 'about-this-thing',
     getMargin: marginFunctions.small,
     children: (
       <Aux>
@@ -52,7 +52,7 @@ const sections: Array<Section> = [
     ),
   },
   {
-    id: '2-intro-with-labels',
+    id: 'intro-with-labels',
     children: (
       <Aux>
         <SectionTitle>1. Reading Waveforms</SectionTitle>
@@ -64,7 +64,7 @@ const sections: Array<Section> = [
     ),
   },
   {
-    id: '3-x-axis-time',
+    id: 'x-axis-time',
     getMargin: marginFunctions.small,
     children: (
       <Aux>
@@ -77,7 +77,7 @@ const sections: Array<Section> = [
     ),
   },
   {
-    id: '4-y-axis-amplitude',
+    id: 'y-axis-amplitude',
     getMargin: marginFunctions.small,
     children: (
       <Aux>
@@ -91,7 +91,7 @@ const sections: Array<Section> = [
     ),
   },
   {
-    id: '5-y-axis-amplitude-with-control',
+    id: 'y-axis-amplitude-with-control',
     getMargin: marginFunctions.small,
     children: (
       <Aux>
@@ -107,7 +107,7 @@ const sections: Array<Section> = [
     ),
   },
   {
-    id: '6-cycle-introduction',
+    id: 'frequency-introduction',
     children: (
       <Aux>
         <Paragraph>
@@ -129,13 +129,42 @@ const sections: Array<Section> = [
           measurement is called the Hertz (abbreviated as 'Hz'). The wave over
           there is 2Hz, since the waveform repeats twice.
         </Paragraph>
-
+      </Aux>
+    ),
+  },
+  {
+    id: 'frequency-introduction-pt2',
+    getMargin: marginFunctions.small,
+    children: (
+      <Aux>
+        <Paragraph>
+          Frequency is just the technical term for "pitch". When you sing an
+          "A4" note (The A in the middle of a standard piano), your throat
+          vibrates at 440Hz.
+        </Paragraph>
         <Sidebar>
           <Paragraph>
             For sound to be audible, it needs to be much faster than this: the
             human hearing range is from 20Hz to 20,000Hz.
           </Paragraph>
+          <Paragraph>
+            The frequencies in this guide use slower frequencies to keep the
+            numbers and visualizations simpler, since the concepts are more
+            important than the specific frequencies.
+          </Paragraph>
         </Sidebar>
+      </Aux>
+    ),
+  },
+  {
+    id: 'frequency-with-control',
+    getMargin: marginFunctions.small,
+    children: (
+      <Aux>
+        <Paragraph>
+          As with amplitude, feel free to tweak the frequency to see how the
+          wave changes!
+        </Paragraph>
       </Aux>
     ),
   },

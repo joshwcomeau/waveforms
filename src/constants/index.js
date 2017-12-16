@@ -7,22 +7,26 @@ export const DEFAULT_WAVEFORM_NUM_OF_CYCLES = 1;
 export const DEFAULT_WAVEFORM_AMPLITUDE = 1;
 
 export type IntroStep =
-  | '0-title'
-  | '1-about-this-thing'
-  | '2-intro-with-labels'
-  | '3-x-axis-time'
-  | '4-y-axis-amplitude'
-  | '5-y-axis-amplitude-with-control'
-  | '6-cycle-introduction';
+  | 'title'
+  | 'about-this-thing'
+  | 'intro-with-labels'
+  | 'x-axis-time'
+  | 'y-axis-amplitude'
+  | 'y-axis-amplitude-with-control'
+  | 'frequency-introduction'
+  | 'frequency-introduction-pt2'
+  | 'frequency-with-control';
 
 export const INTRO_STEPS: Array<IntroStep> = [
-  '0-title',
-  '1-about-this-thing',
-  '2-intro-with-labels',
-  '3-x-axis-time',
-  '4-y-axis-amplitude',
-  '5-y-axis-amplitude-with-control',
-  '6-cycle-introduction',
+  'title',
+  'about-this-thing',
+  'intro-with-labels',
+  'x-axis-time',
+  'y-axis-amplitude',
+  'y-axis-amplitude-with-control',
+  'frequency-introduction',
+  'frequency-introduction-pt2',
+  'frequency-with-control',
 ];
 
 export const COLORS = {

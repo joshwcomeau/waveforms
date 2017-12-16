@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { COLORS } from '../../constants';
+import { INTRO_STEPS, COLORS } from '../../constants';
 
 import Aux from '../Aux';
 import AvailableWidth from '../AvailableWidth';
@@ -70,15 +70,17 @@ class IntroRouteWaveform extends Component<Props, State> {
       showCycleIndicator: false,
     };
 
-    switch (step) {
-      case 0: {
+    const stepName = INTRO_STEPS[step];
+
+    switch (stepName) {
+      case 'title': {
         return {
           ...defaults,
           showYAxis: false,
         };
       }
 
-      case 1: {
+      case 'about-this-thing': {
         return {
           ...defaults,
           isPlaying: true,
@@ -86,11 +88,11 @@ class IntroRouteWaveform extends Component<Props, State> {
         };
       }
 
-      case 2: {
+      case 'intro-with-labels': {
         return defaults;
       }
 
-      case 3: {
+      case 'x-axis-time': {
         return {
           ...defaults,
           waveformOpacity: 0.5,
@@ -98,7 +100,7 @@ class IntroRouteWaveform extends Component<Props, State> {
         };
       }
 
-      case 4: {
+      case 'y-axis-amplitude': {
         return {
           ...defaults,
           waveformOpacity: 0.5,
@@ -106,7 +108,7 @@ class IntroRouteWaveform extends Component<Props, State> {
         };
       }
 
-      case 5: {
+      case 'y-axis-amplitude-with-control': {
         return {
           ...defaults,
           showYAxisLabels: true,
@@ -114,12 +116,28 @@ class IntroRouteWaveform extends Component<Props, State> {
         };
       }
 
-      case 6: {
+      case 'frequency-introduction': {
         return {
           ...defaults,
           showXAxisLabels: true,
           showCycleIndicator: true,
           frequencyOverride: 2,
+        };
+      }
+
+      case 'frequency-introduction-pt2': {
+        return {
+          ...defaults,
+          showXAxisLabels: true,
+          frequencyOverride: 2,
+        };
+      }
+
+      case 'frequency-with-control': {
+        return {
+          ...defaults,
+          showAmplitudeSlider: true,
+          showFrequencySlider: true,
         };
       }
 
