@@ -12,6 +12,7 @@ import Waveform from '../Waveform';
 import WaveformPlayer from '../WaveformPlayer';
 import WaveformAxis from '../WaveformAxis';
 import WaveformIntercept from '../WaveformIntercept';
+import WaveformCycleIndicator from '../WaveformCycleIndicator';
 import FadeTransition from '../FadeTransition';
 import Slider from '../Slider';
 
@@ -195,6 +196,13 @@ class IntroRouteWaveform extends Component<Props, State> {
                   showLabels={stepData.showYAxisLabels}
                   opacity={stepData.yAxisOpacity}
                 />
+              </FadeTransition>
+
+              <FadeTransition
+                typeName="div"
+                isVisible={stepData.showCycleIndicator}
+              >
+                <WaveformCycleIndicator numOfCycles={numOfCycles} />
               </FadeTransition>
             </Aux>
           )}

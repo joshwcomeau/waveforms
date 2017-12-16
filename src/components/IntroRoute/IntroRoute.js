@@ -115,8 +115,8 @@ const sections: Array<Section> = [
         </Paragraph>
 
         <Paragraph>
-          The waveform has been updated to repeat twice. Instead of 1 sine
-          waveform, you now have 2 sine waveforms!
+          The wave has been updated to repeat twice. Instead of 1 sine waveform
+          cycle, you now have 2 sine waveform cycles!
         </Paragraph>
 
         <Paragraph>
@@ -164,6 +164,7 @@ class IntroRoute extends PureComponent<Props, State> {
   }, 500);
 
   handleScroll = debounce(() => {
+    console.log('SCROLL');
     // We rely on the IntersectionObserver API within each IntroRouteSection
     // to update the current section, in the `handleIntersect` method.
     //
@@ -183,6 +184,7 @@ class IntroRoute extends PureComponent<Props, State> {
 
   handleIntersect = (id: IntroStep, entry: IntersectionObserverEntry) => {
     const newStep = INTRO_STEPS.indexOf(id);
+    console.log('INTERSECT', newStep);
 
     // We don't yet know which direction they're scrolling in, but we can work
     // it out; when an item leaves through the top of the viewport, its index
