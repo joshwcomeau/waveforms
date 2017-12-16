@@ -16,7 +16,7 @@ import IntroRouteSection from '../IntroRouteSection';
 
 import { marginFunctions } from './IntroRoute.helpers';
 
-import type { IntroStep } from '../../types';
+import type { IntroStep } from '../../constants';
 
 type Props = {};
 type State = {
@@ -164,7 +164,6 @@ class IntroRoute extends PureComponent<Props, State> {
   }, 500);
 
   handleScroll = debounce(() => {
-    console.log('SCROLL');
     // We rely on the IntersectionObserver API within each IntroRouteSection
     // to update the current section, in the `handleIntersect` method.
     //
@@ -184,7 +183,6 @@ class IntroRoute extends PureComponent<Props, State> {
 
   handleIntersect = (id: IntroStep, entry: IntersectionObserverEntry) => {
     const newStep = INTRO_STEPS.indexOf(id);
-    console.log('INTERSECT', newStep);
 
     // We don't yet know which direction they're scrolling in, but we can work
     // it out; when an item leaves through the top of the viewport, its index

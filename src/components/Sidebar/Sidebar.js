@@ -47,10 +47,10 @@ const Title = styled.div`
   top: 0;
   left: ${PADDING};
   color: ${props => titleColors[props.type]};
-  font-size: 16px;
+  font-size: 21px;
   font-weight: 500;
   text-transform: uppercase;
-  transform: translateY(-150%);
+  transform: translateY(-125%);
 `;
 
 export default Sidebar;
