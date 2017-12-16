@@ -17,6 +17,8 @@ type Props = {
   onChange: (val: number) => void,
 };
 
+const RcSliderWithTooltip = createSliderWithTooltip(RcSlider);
+
 class Slider extends Component<Props> {
   static defaultProps = {
     width: 100,
@@ -28,7 +30,11 @@ class Slider extends Component<Props> {
     return (
       <div style={{ width }}>
         {label && <Label>{label}</Label>}
-        <RcSlider {...delegatedProps} />
+
+        <RcSliderWithTooltip
+          {...delegatedProps}
+          tipProps={{ placement: 'bottom' }}
+        />
       </div>
     );
   }
@@ -43,6 +49,7 @@ injectGlobal`
   .rc-slider {
     position: relative;
     height: ${SLIDER_HEIGHT + 'px'};
+    padding-top: ${SLIDER_HEIGHT / 2 + 'px'};
   }
 
   .rc-slider .rc-slider-rail, .rc-slider .rc-slider-track {
@@ -61,7 +68,7 @@ injectGlobal`
 
   .rc-slider .rc-slider-handle {
     position: absolute;
-    top: ${SLIDER_BAR_HEIGHT / 2 + 'px'};
+    top: ${SLIDER_HEIGHT / 2 + SLIDER_BAR_HEIGHT / 2 + 'px'};
     background: ${COLORS.blue[500]};
     width: ${SLIDER_HEIGHT + 'px'};
     height: ${SLIDER_HEIGHT + 'px'};
@@ -73,6 +80,43 @@ injectGlobal`
 
   .rc-slider .rc-slider-handle:active {
     cursor: grabbing;
+  }
+
+  .rc-slider-tooltip {
+    position: absolute;
+    opacity: 1;
+    will-change: opacity;
+    transition: opacity 500ms;
+    border-radius: 2px;
+  }
+
+  .rc-slider-tooltip-content {
+    height: 21px;
+    line-height: 21px;
+    padding: 0 5px;
+    background: ${COLORS.gray[300]};
+    font-size: 11px;
+    font-weight: 300;
+    transform: translateY(5px);
+
+    &:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      border-bottom: 3px solid ${COLORS.gray[300]};
+      border-left: 3px solid transparent;
+      border-right: 3px solid transparent;
+      transform: translateY(-100%);
+    }
+  }
+
+  .rc-slider-tooltip-hidden {
+    opacity: 0;
   }
 `;
 
