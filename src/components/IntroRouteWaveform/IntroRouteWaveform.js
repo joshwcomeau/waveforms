@@ -16,259 +16,88 @@ import WaveformCycleIndicator from '../WaveformCycleIndicator';
 import FadeTransition from '../FadeTransition';
 import Slider from '../Slider';
 
+import type { StepData } from '../IntroRoute/IntroRoute.helpers';
+
 type Props = {
-  currentStep: number,
-  // TODO: Figure out if `progress` is actually needed.
+  amplitude: number,
+  numOfCycles: number,
   progress: number,
+  handleUpdateAmplitude: (amplitude: number) => void,
+  handleUpdateFrequency: (frequency: number) => void,
+  stepData: StepData,
 };
 
-type State = {
-  frequency: 1,
-  amplitude: 1,
-};
-
-type StepData = {
-  frequencyOverride: ?number,
-  amplitudeOverride: ?number,
-  isPlaying: boolean,
-  waveformShape: WaveformShape,
-  waveformColor: string,
-  waveformOpacity: number,
-  // TODO: should just use `xAxisOpacity`. When opacity is 0, we can choose
-  // not to render within the component (or just keep it hidden)
-  showXAxis: boolean,
-  showYAxis: boolean,
-  showXAxisLabels: boolean,
-  showYAxisLabels: boolean,
-  showYAxisIntercept: boolean,
-  xAxisOpacity: number,
-  yAxisOpacity: number,
-  showAmplitudeSlider: boolean,
-  showFrequencySlider: boolean,
-  showCycleIndicator: boolean,
-};
-
-class IntroRouteWaveform extends Component<Props, State> {
-  state = {
-    amplitude: 1,
-    frequency: 1,
-  };
-
-  getDataForStep = (step: number): StepData => {
-    const defaults: StepData = {
-      frequencyOverride: null,
-      amplitudeOverride: null,
-      isPlaying: false,
-      waveformShape: 'sine',
-      waveformColor: COLORS.blue[500],
-      waveformOpacity: 1,
-      showXAxis: true,
-      showYAxis: true,
-      showXAxisLabels: false,
-      showYAxisLabels: false,
-      showYAxisIntercept: false,
-      xAxisOpacity: 1,
-      yAxisOpacity: 1,
-      showAmplitudeSlider: false,
-      showFrequencySlider: false,
-      showCycleIndicator: false,
-    };
-
-    const stepName = INTRO_STEPS[step];
-
-    switch (stepName) {
-      case 'title': {
-        return {
-          ...defaults,
-          showYAxis: false,
-        };
-      }
-
-      case 'about-this-thing': {
-        return {
-          ...defaults,
-          isPlaying: true,
-          showYAxis: false,
-        };
-      }
-
-      case 'intro-with-labels': {
-        return defaults;
-      }
-
-      case 'x-axis-time': {
-        return {
-          ...defaults,
-          waveformOpacity: 0.5,
-          showXAxisLabels: true,
-        };
-      }
-
-      case 'y-axis-amplitude': {
-        return {
-          ...defaults,
-          waveformOpacity: 0.5,
-          showYAxisLabels: true,
-        };
-      }
-
-      case 'y-axis-amplitude-with-control': {
-        return {
-          ...defaults,
-          showYAxisLabels: true,
-          showAmplitudeSlider: true,
-        };
-      }
-
-      case 'frequency-introduction': {
-        return {
-          ...defaults,
-          waveformOpacity: 0.5,
-          showXAxisLabels: true,
-          showCycleIndicator: true,
-          frequencyOverride: 2,
-        };
-      }
-
-      case 'frequency-introduction-pt2': {
-        return {
-          ...defaults,
-          waveformOpacity: 0.5,
-          showXAxisLabels: true,
-          frequencyOverride: 2,
-        };
-      }
-
-      case 'frequency-with-control': {
-        return {
-          ...defaults,
-          showAmplitudeSlider: true,
-          showFrequencySlider: true,
-        };
-      }
-
-      case 'how-sound-works-intro': {
-        return {
-          ...defaults,
-          isPlaying: true,
-          waveformColor: COLORS.gray[700],
-          waveformOpacity: 0.5,
-          xAxisOpacity: 0.5,
-          yAxisOpacity: 0.5,
-          showYAxisIntercept: true,
-        };
-      }
-
-      case 'how-sound-works-air-grid': {
-        return {
-          ...defaults,
-          isPlaying: true,
-          waveformColor: COLORS.gray[700],
-          waveformOpacity: 0.5,
-          xAxisOpacity: 0.5,
-          yAxisOpacity: 0.5,
-          showYAxisIntercept: true,
-          showAmplitudeSlider: true,
-          showFrequencySlider: true,
-        };
-      }
-
-      default:
-        console.error(
-          'Unrecognized step number!! Returning default values for waveform'
-        );
-        return defaults;
-    }
-  };
-
-  handleUpdateAmplitude = val => {
-    this.setState({ amplitude: val });
-  };
-
-  handleUpdateFrequency = val => {
-    this.setState({ frequency: val });
-  };
-
+class IntroRouteWaveform extends Component<Props> {
   renderContents = (width: number) => {
-    const { currentStep } = this.props;
-    const { amplitude, frequency } = this.state;
+    const {
+      amplitude,
+      numOfCycles,
+      progress,
+      handleUpdateAmplitude,
+      handleUpdateFrequency,
+      stepData,
+    } = this.props;
 
-    const stepData = this.getDataForStep(currentStep);
-
-    const { amplitudeOverride, frequencyOverride } = stepData;
+    // `progress` is an ever-increasing decimal value representing how many
+    // iterations of the loop have occured.
+    // Transform this value into a circular value between 0 and 99.
+    const offset = (progress * 100) % 100;
 
     return (
       <Aux>
-        <WaveformPlayer
-          isPlaying={stepData.isPlaying}
-          amplitude={
-            typeof amplitudeOverride === 'number'
-              ? amplitudeOverride
-              : amplitude
-          }
-          numOfCycles={
-            typeof frequencyOverride === 'number'
-              ? frequencyOverride
-              : frequency
-          }
-          speed={frequency * 0.5}
-        >
-          {({ amplitude, numOfCycles, progress, offset }) => (
-            <Aux>
-              <Waveform
-                amplitude={amplitude}
-                color={stepData.waveformColor}
-                strokeWidth={5}
-                opacity={stepData.waveformOpacity}
-                size={width}
-                shape="sine"
-                offset={offset}
-                numOfCycles={numOfCycles}
-              />
-              <FadeTransition isVisible={stepData.showXAxis}>
-                <WaveformAxis
-                  x
-                  strokeWidth={4}
-                  waveformSize={width}
-                  numOfCycles={numOfCycles}
-                  progress={progress}
-                  showLabels={stepData.showXAxisLabels}
-                  opacity={stepData.xAxisOpacity}
-                />
-              </FadeTransition>
-              <FadeTransition isVisible={stepData.showYAxis}>
-                <WaveformAxis
-                  y
-                  strokeWidth={4}
-                  waveformSize={width}
-                  numOfCycles={numOfCycles}
-                  progress={progress}
-                  showLabels={stepData.showYAxisLabels}
-                  opacity={stepData.yAxisOpacity}
-                />
-              </FadeTransition>
+        <Aux>
+          <Waveform
+            amplitude={amplitude}
+            color={stepData.waveformColor}
+            strokeWidth={5}
+            opacity={stepData.waveformOpacity}
+            size={width}
+            shape="sine"
+            offset={offset}
+            numOfCycles={numOfCycles}
+          />
+          <FadeTransition isVisible={stepData.showXAxis}>
+            <WaveformAxis
+              x
+              strokeWidth={4}
+              waveformSize={width}
+              numOfCycles={numOfCycles}
+              progress={progress}
+              showLabels={stepData.showXAxisLabels}
+              opacity={stepData.xAxisOpacity}
+            />
+          </FadeTransition>
+          <FadeTransition isVisible={stepData.showYAxis}>
+            <WaveformAxis
+              y
+              strokeWidth={4}
+              waveformSize={width}
+              numOfCycles={numOfCycles}
+              progress={progress}
+              showLabels={stepData.showYAxisLabels}
+              opacity={stepData.yAxisOpacity}
+            />
+          </FadeTransition>
 
-              <FadeTransition isVisible={stepData.showYAxisIntercept}>
-                <WaveformIntercept
-                  size={20}
-                  color={COLORS.blue[500]}
-                  waveformSize={width}
-                  waveformShape={stepData.waveformShape}
-                  frequency={numOfCycles}
-                  amplitude={amplitude}
-                  offset={offset}
-                />
-              </FadeTransition>
+          <FadeTransition isVisible={stepData.showYAxisIntercept}>
+            <WaveformIntercept
+              size={20}
+              color={COLORS.blue[500]}
+              waveformSize={width}
+              waveformShape={stepData.waveformShape}
+              frequency={numOfCycles}
+              amplitude={amplitude}
+              offset={offset}
+            />
+          </FadeTransition>
 
-              <FadeTransition
-                typeName="div"
-                isVisible={stepData.showCycleIndicator}
-              >
-                <WaveformCycleIndicator numOfCycles={numOfCycles} />
-              </FadeTransition>
-            </Aux>
-          )}
-        </WaveformPlayer>
+          <FadeTransition
+            typeName="div"
+            isVisible={stepData.showCycleIndicator}
+          >
+            <WaveformCycleIndicator numOfCycles={numOfCycles} />
+          </FadeTransition>
+        </Aux>
 
         <Spacer size={40} />
 
@@ -285,7 +114,7 @@ class IntroRouteWaveform extends Component<Props, State> {
               step={0.01}
               defaultValue={1}
               value={amplitude}
-              onChange={this.handleUpdateAmplitude}
+              onChange={handleUpdateAmplitude}
             />
           </FadeTransition>
 
@@ -299,8 +128,8 @@ class IntroRouteWaveform extends Component<Props, State> {
               min={1}
               max={6}
               defaultValue={1}
-              value={frequency}
-              onChange={this.handleUpdateFrequency}
+              value={numOfCycles}
+              onChange={handleUpdateFrequency}
             />
           </FadeTransition>
         </Row>

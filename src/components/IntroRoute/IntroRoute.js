@@ -11,10 +11,11 @@ import SectionTitle from '../SectionTitle';
 import Sidebar from '../Sidebar';
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import Aux from '../Aux';
+import WaveformPlayer from '../WaveformPlayer';
 import IntroRouteWaveform from '../IntroRouteWaveform';
 import IntroRouteSection from '../IntroRouteSection';
 
-import { marginFunctions } from './IntroRoute.helpers';
+import { getDataForStep } from './IntroRoute.helpers';
 
 import type { IntroStep } from '../../constants';
 
@@ -28,6 +29,12 @@ type Section = {
   id: IntroStep,
   getMargin?: (windowHeight: number) => number,
   children: React$Node,
+};
+
+const marginFunctions = {
+  none: windowHeight => 0,
+  small: windowHeight => windowHeight * 0.35,
+  large: windowHeight => windowHeight * 0.45,
 };
 
 const sections: Array<Section> = [
@@ -221,6 +228,8 @@ class IntroRoute extends PureComponent<Props, State> {
   state = {
     currentStep: 0,
     windowHeight: window.innerHeight,
+    amplitude: 1,
+    frequency: 1,
   };
 
   sectionRefs: Array<HTMLElement> = [];
@@ -234,6 +243,14 @@ class IntroRoute extends PureComponent<Props, State> {
     window.removeEventListener('resize', this.handleResize);
     window.removeEventListener('scroll', this.handleScroll);
   }
+
+  handleUpdateAmplitude = val => {
+    this.setState({ amplitude: val });
+  };
+
+  handleUpdateFrequency = val => {
+    this.setState({ frequency: val });
+  };
 
   handleResize = debounce(() => {
     this.setState({ windowHeight: window.innerHeight });
@@ -274,13 +291,39 @@ class IntroRoute extends PureComponent<Props, State> {
   };
 
   render() {
-    const { currentStep, windowHeight } = this.state;
+    const { currentStep, windowHeight, amplitude, frequency } = this.state;
+
+    const stepData = getDataForStep(currentStep);
 
     return (
       <MaxWidthWrapper>
         <MainContent>
           <WaveformWrapper>
-            <IntroRouteWaveform currentStep={currentStep} />
+            <WaveformPlayer
+              isPlaying={stepData.isPlaying}
+              amplitude={
+                typeof stepData.amplitudeOverride === 'number'
+                  ? stepData.amplitudeOverride
+                  : amplitude
+              }
+              numOfCycles={
+                typeof stepData.frequencyOverride === 'number'
+                  ? stepData.frequencyOverride
+                  : frequency
+              }
+              speed={frequency}
+            >
+              {({ amplitude, numOfCycles, progress }) => (
+                <IntroRouteWaveform
+                  amplitude={amplitude}
+                  numOfCycles={numOfCycles}
+                  progress={progress}
+                  handleUpdateAmplitude={this.handleUpdateAmplitude}
+                  handleUpdateFrequency={this.handleUpdateFrequency}
+                  stepData={stepData}
+                />
+              )}
+            </WaveformPlayer>
           </WaveformWrapper>
           <ScrollableTextWrapper>
             {sections.map((section, index) => (
