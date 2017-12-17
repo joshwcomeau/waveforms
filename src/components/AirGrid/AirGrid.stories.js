@@ -8,7 +8,7 @@ import WaveformPlayer from '../WaveformPlayer';
 import AirGrid from './AirGrid';
 
 storiesOf('AirGrid', module).add('Default (1Hz, 4x4)', () => (
-  <WaveformPlayer>
+  <WaveformPlayer isPlaying>
     {({ amplitude, numOfCycles, progress }) => (
       <AirGrid
         shape="sine"

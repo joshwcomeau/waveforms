@@ -2,7 +2,10 @@
 import React, { PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
 
-import { DEFAULT_WAVEFORM_NUM_OF_CYCLES } from '../../constants';
+import {
+  DEFAULT_WAVEFORM_NUM_OF_CYCLES,
+  DEFAULT_WAVEFORM_AMPLITUDE,
+} from '../../constants';
 
 import Aux from '../Aux';
 
@@ -14,6 +17,7 @@ type DynamicValues = {
 
 type Props = {
   isPlaying: boolean,
+  amplitude: number,
   // How many times does the waveform repeat within the viewable area of this
   // player? Defaults to 1, which shows a single "period" of the waveform.
   numOfCycles: number,
@@ -54,7 +58,8 @@ class WaveformPlayer extends PureComponent<Props, State> {
 
   static defaultProps = {
     isPlaying: false,
-    numOfCycles: 1,
+    numOfCycles: DEFAULT_WAVEFORM_NUM_OF_CYCLES,
+    amplitude: DEFAULT_WAVEFORM_AMPLITUDE,
     speed: DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   };
 

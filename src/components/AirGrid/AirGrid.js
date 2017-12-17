@@ -43,21 +43,23 @@ class AirGrid extends PureComponent {
       waveformProgress,
     } = this.props;
 
+    const cycle = (waveformProgress * 100) % 100;
+
     return (
       <Grid>
         {range(0, numOfCols).map(y => (
           <Column key={y}>
             {range(0, numOfRows).map(x => (
-              <AirGridCell
-                key={x}
-                cellSize={size / numOfRows}
-                position={getPositionAtPointRelativeToAxis(
-                  waveformShape,
-                  waveformFrequency,
-                  waveformAmplitude,
-                  waveformProgress
-                )}
-              />
+              <CellWrapper key={x} cellSize={size / numOfRows}>
+                <Cell
+                  position={getPositionAtPointRelativeToAxis(
+                    waveformShape,
+                    1,
+                    1,
+                    cycle + (100 - y * waveformFrequency * 10)
+                  )}
+                />
+              </CellWrapper>
             ))}
           </Column>
         ))}
@@ -75,13 +77,22 @@ const Column = styled.div`
   flex-direction: column;
 `;
 
-const AirGridCell = styled.div.attrs({
+const CellWrapper = styled.div`
+  position: relative;
+  width: ${({ cellSize }) => cellSize + 'px'};
+  height: ${({ cellSize }) => cellSize + 'px'};
+`;
+
+const Cell = styled.div.attrs({
   style: ({ position }) => ({
     transform: `translateX(${position * 100 + '%'}`,
   }),
 })`
-  width: ${({ cellSize }) => cellSize + 'px'};
-  height: ${({ cellSize }) => cellSize + 'px'};
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: 50%;
+  height: 50%;
   background: red;
   border-radius: 50%;
 `;
