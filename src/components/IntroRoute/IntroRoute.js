@@ -168,6 +168,53 @@ const sections: Array<Section> = [
       </Aux>
     ),
   },
+  {
+    id: 'how-sound-works-intro',
+    children: (
+      <Aux>
+        <SectionTitle>1. How Sound Works</SectionTitle>
+        <Paragraph>
+          So, we now know that waves like the one on the right are a graph
+          representing the change in amplitude over time. But what is amplitude,
+          exactly? What does this mean, in terms of the real world?
+        </Paragraph>
+
+        <Paragraph>
+          The wave on the left is animating now; you can think of it "playing"
+          the wave that was previously paused.
+        </Paragraph>
+
+        <Paragraph>
+          The blue dot on the Y axis shows how amplitude actually changes, in
+          real-time. Note that it has this smooth, swinging quality.
+        </Paragraph>
+      </Aux>
+    ),
+  },
+  {
+    id: 'how-sound-works-air-grid',
+    children: (
+      <Aux>
+        <Paragraph>
+          Sound is vibration. That blue dot's motion? That's what molecules in
+          the air do, when a sine wave is played.
+        </Paragraph>
+
+        <Paragraph>
+          The grid on the left below the waveform represents a bunch of air
+          molecules floating in the air. Notice how the molecules themselves
+          aren't travelling through the air; the wave travels by causing a
+          rippling effect through the air molecules.
+        </Paragraph>
+
+        <Paragraph>
+          This is similar to what happens when you throw a stone in a smooth
+          pond. Waves radiate outwards, but the actual water molecules don't
+          move from the center out; the wave ripples through the water.
+        </Paragraph>
+      </Aux>
+    ),
+  },
 ];
 
 class IntroRoute extends PureComponent<Props, State> {

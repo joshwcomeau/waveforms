@@ -15,7 +15,9 @@ export type IntroStep =
   | 'y-axis-amplitude-with-control'
   | 'frequency-introduction'
   | 'frequency-introduction-pt2'
-  | 'frequency-with-control';
+  | 'frequency-with-control'
+  | 'how-sound-works-intro'
+  | 'how-sound-works-air-grid';
 
 export const INTRO_STEPS: Array<IntroStep> = [
   'title',
@@ -27,6 +29,8 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'frequency-introduction',
   'frequency-introduction-pt2',
   'frequency-with-control',
+  'how-sound-works-intro',
+  'how-sound-works-air-grid',
 ];
 
 export const COLORS = {

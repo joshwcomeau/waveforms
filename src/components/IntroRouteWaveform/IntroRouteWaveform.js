@@ -31,6 +31,7 @@ type StepData = {
   frequencyOverride: ?number,
   amplitudeOverride: ?number,
   isPlaying: boolean,
+  waveformShape: WaveformShape,
   waveformColor: string,
   waveformOpacity: number,
   // TODO: should just use `xAxisOpacity`. When opacity is 0, we can choose
@@ -39,6 +40,7 @@ type StepData = {
   showYAxis: boolean,
   showXAxisLabels: boolean,
   showYAxisLabels: boolean,
+  showYAxisIntercept: boolean,
   xAxisOpacity: number,
   yAxisOpacity: number,
   showAmplitudeSlider: boolean,
@@ -57,12 +59,14 @@ class IntroRouteWaveform extends Component<Props, State> {
       frequencyOverride: null,
       amplitudeOverride: null,
       isPlaying: false,
+      waveformShape: 'sine',
       waveformColor: COLORS.blue[500],
       waveformOpacity: 1,
       showXAxis: true,
       showYAxis: true,
       showXAxisLabels: false,
       showYAxisLabels: false,
+      showYAxisIntercept: false,
       xAxisOpacity: 1,
       yAxisOpacity: 1,
       showAmplitudeSlider: false,
@@ -119,6 +123,7 @@ class IntroRouteWaveform extends Component<Props, State> {
       case 'frequency-introduction': {
         return {
           ...defaults,
+          waveformOpacity: 0.5,
           showXAxisLabels: true,
           showCycleIndicator: true,
           frequencyOverride: 2,
@@ -128,6 +133,7 @@ class IntroRouteWaveform extends Component<Props, State> {
       case 'frequency-introduction-pt2': {
         return {
           ...defaults,
+          waveformOpacity: 0.5,
           showXAxisLabels: true,
           frequencyOverride: 2,
         };
@@ -136,6 +142,32 @@ class IntroRouteWaveform extends Component<Props, State> {
       case 'frequency-with-control': {
         return {
           ...defaults,
+          showAmplitudeSlider: true,
+          showFrequencySlider: true,
+        };
+      }
+
+      case 'how-sound-works-intro': {
+        return {
+          ...defaults,
+          isPlaying: true,
+          waveformColor: COLORS.gray[700],
+          waveformOpacity: 0.5,
+          xAxisOpacity: 0.5,
+          yAxisOpacity: 0.5,
+          showYAxisIntercept: true,
+        };
+      }
+
+      case 'how-sound-works-air-grid': {
+        return {
+          ...defaults,
+          isPlaying: true,
+          waveformColor: COLORS.gray[700],
+          waveformOpacity: 0.5,
+          xAxisOpacity: 0.5,
+          yAxisOpacity: 0.5,
+          showYAxisIntercept: true,
           showAmplitudeSlider: true,
           showFrequencySlider: true,
         };
@@ -179,7 +211,7 @@ class IntroRouteWaveform extends Component<Props, State> {
               ? frequencyOverride
               : frequency
           }
-          speed={frequency * 0.75}
+          speed={frequency * 0.5}
         >
           {({ amplitude, numOfCycles, progress, offset }) => (
             <Aux>
@@ -213,6 +245,18 @@ class IntroRouteWaveform extends Component<Props, State> {
                   progress={progress}
                   showLabels={stepData.showYAxisLabels}
                   opacity={stepData.yAxisOpacity}
+                />
+              </FadeTransition>
+
+              <FadeTransition isVisible={stepData.showYAxisIntercept}>
+                <WaveformIntercept
+                  size={20}
+                  color={COLORS.blue[500]}
+                  waveformSize={width}
+                  waveformShape={stepData.waveformShape}
+                  frequency={numOfCycles}
+                  amplitude={amplitude}
+                  offset={offset}
                 />
               </FadeTransition>
 

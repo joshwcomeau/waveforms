@@ -18,7 +18,9 @@ const WaveformCycleIndicator = ({ numOfCycles }: Props) => (
 );
 
 const WaveformCycleIndicatorWrapper = styled.div.attrs({
-  width: getWidthFor1Cycle,
+  style: ({ numOfCycles }) => ({
+    width: getWidthFor1Cycle(numOfCycles),
+  }),
 })`
   position: absolute;
   top: -25px;
