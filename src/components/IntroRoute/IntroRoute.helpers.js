@@ -26,7 +26,7 @@ type StepData = {
   showCycleIndicator: boolean,
 };
 
-export const getDataForStep = (step: number): StepData => {
+export const getDataForStep = (step: IntroStep): StepData => {
   const defaults: StepData = {
     showWaveform: true,
     showAirGrid: false,
@@ -48,9 +48,7 @@ export const getDataForStep = (step: number): StepData => {
     showCycleIndicator: false,
   };
 
-  const stepName = INTRO_STEPS[step];
-
-  switch (stepName) {
+  switch (step) {
     case 'title': {
       return {
         ...defaults,

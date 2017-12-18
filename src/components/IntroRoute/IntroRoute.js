@@ -254,7 +254,7 @@ const sections: Array<Section> = [
 
 class IntroRoute extends PureComponent<Props, State> {
   state = {
-    currentStep: 0,
+    currentStep: INTRO_STEPS[0],
     windowHeight: window.innerHeight,
     amplitude: 1,
     frequency: 1,
@@ -273,11 +273,11 @@ class IntroRoute extends PureComponent<Props, State> {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-  handleUpdateAmplitude = val => {
+  handleUpdateAmplitude = (val: number) => {
     this.setState({ amplitude: val });
   };
 
-  handleUpdateFrequency = val => {
+  handleUpdateFrequency = (val: number) => {
     this.setState({ frequency: val });
   };
 
@@ -299,24 +299,27 @@ class IntroRoute extends PureComponent<Props, State> {
     );
 
     if (activeSectionIndex !== this.state.currentStep) {
-      this.setState({ currentStep: activeSectionIndex });
+      this.setState({ currentStep: INTRO_STEPS[activeSectionIndex] });
     }
   }, 500);
 
   handleIntersect = (id: IntroStep, entry: IntersectionObserverEntry) => {
-    const newStep = INTRO_STEPS.indexOf(id);
+    const currentStepIndex = INTRO_STEPS.indexOf(this.state.currentStep);
+    const intersectStepIndex = INTRO_STEPS.indexOf(id);
 
     // We don't yet know which direction they're scrolling in, but we can work
     // it out; when an item leaves through the top of the viewport, its index
     // matches the current step (after all, the current step is on the way out).
     // When scrolling back up, the item enters the viewport, which means the
     // item's step number will be less than the current one.
-    const direction =
-      newStep === this.state.currentStep ? 'forwards' : 'backwards';
+    const direction = id === this.state.currentStep ? 'forwards' : 'backwards';
 
-    this.setState(({ currentStep }) => ({
-      currentStep: direction === 'forwards' ? newStep + 1 : newStep,
-    }));
+    const nextStep =
+      direction === 'forwards'
+        ? INTRO_STEPS[intersectStepIndex + 1]
+        : INTRO_STEPS[intersectStepIndex];
+
+    this.setState({ currentStep: nextStep });
   };
 
   render() {
@@ -381,7 +384,7 @@ class IntroRoute extends PureComponent<Props, State> {
                     : marginFunctions.large(windowHeight)
                 }
                 onIntersect={this.handleIntersect}
-                isSelected={currentStep === index}
+                isSelected={currentStep === section.id}
                 innerRef={elem => (this.sectionRefs[index] = elem)}
               >
                 {section.children}
