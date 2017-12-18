@@ -67,6 +67,13 @@ class WaveformPlayer extends PureComponent<Props, State> {
     if (this.props.isPlaying) {
       this.start();
     }
+
+    if (typeof document.addEventListener === 'function') {
+      document.addEventListener(
+        'visibilitychange',
+        this.handleVisibilityChange
+      );
+    }
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -83,6 +90,20 @@ class WaveformPlayer extends PureComponent<Props, State> {
   componentWillUnmount() {
     window.cancelAnimationFrame(this.animationFrameId);
   }
+
+  handleVisibilityChange = () => {
+    // When the user switches tabs or applications, the animation will
+    // automatically pause (due to `requestAnimationFrame` implementation).
+    // Our animation uses a timestamp, though, and so when it resumes, it
+    // frantically does a bunch of work until it's caught up.
+    // By detecting visibility changes, we can update that timestamp when the
+    // user returns to the tab. This way, the animation restarts smoothly.
+    const userReturnedToPage = !document.hidden;
+
+    if (userReturnedToPage) {
+      this.setState({ lastTickAt: new Date() });
+    }
+  };
 
   start = () => {
     this.setState({ lastTickAt: new Date() }, this.tick);
