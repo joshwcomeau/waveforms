@@ -4,6 +4,8 @@ import { INTRO_STEPS, COLORS } from '../../constants';
 import type { WaveformShape } from '../../types';
 
 type StepData = {
+  showWaveform: boolean,
+  showAirGrid: boolean,
   frequencyOverride: ?number,
   amplitudeOverride: ?number,
   isPlaying: boolean,
@@ -26,6 +28,8 @@ type StepData = {
 
 export const getDataForStep = (step: number): StepData => {
   const defaults: StepData = {
+    showWaveform: true,
+    showAirGrid: false,
     frequencyOverride: null,
     amplitudeOverride: null,
     isPlaying: false,
@@ -132,6 +136,8 @@ export const getDataForStep = (step: number): StepData => {
     case 'how-sound-works-air-grid': {
       return {
         ...defaults,
+        showWaveform: false,
+        showAirGrid: true,
         isPlaying: true,
         waveformColor: COLORS.gray[700],
         waveformOpacity: 0.5,

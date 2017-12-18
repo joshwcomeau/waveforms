@@ -34,7 +34,7 @@ const FadeTransition = ({
               position: 'static',
               transition: `opacity ${duration}ms`,
               opacity: transitionState === 'entered' ? 1 : 0,
-              visibility: transitionState === 'exited' ? 'hidden' : 'visible',
+              pointerEvents: transitionState === 'exited' ? 'none' : 'normal',
             },
           },
           children

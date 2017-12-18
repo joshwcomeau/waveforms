@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 import {
+  COLORS,
   DEFAULT_WAVEFORM_SIZE,
   DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   DEFAULT_WAVEFORM_AMPLITUDE,
@@ -43,14 +44,16 @@ class AirGrid extends PureComponent {
       waveformProgress,
     } = this.props;
 
+    const width = size * 0.9;
+
     const cycle = (waveformProgress * 100) % 100;
 
     return (
-      <Grid>
-        {range(0, numOfCols).map(y => (
+      <Grid width={width}>
+        {range(0, numOfCols - 1).map(y => (
           <Column key={y}>
-            {range(0, numOfRows).map(x => (
-              <CellWrapper key={x} cellSize={size / numOfRows}>
+            {range(0, numOfRows - 1).map(x => (
+              <CellWrapper key={x} cellSize={width / numOfCols}>
                 <Cell
                   position={getPositionAtPointRelativeToAxis(
                     waveformShape,
@@ -70,6 +73,8 @@ class AirGrid extends PureComponent {
 
 const Grid = styled.div`
   display: flex;
+  width: ${props => props.width + 'px'};
+  margin: auto;
 `;
 
 const Column = styled.div`
@@ -81,6 +86,14 @@ const CellWrapper = styled.div`
   position: relative;
   width: ${({ cellSize }) => cellSize + 'px'};
   height: ${({ cellSize }) => cellSize + 'px'};
+
+  & > div {
+    background: ${COLORS.gray[500]};
+  }
+
+  &:hover > div {
+    background: ${COLORS.blue[500]};
+  }
 `;
 
 const Cell = styled.div.attrs({
@@ -93,7 +106,6 @@ const Cell = styled.div.attrs({
   left: 25%;
   width: 50%;
   height: 50%;
-  background: red;
   border-radius: 50%;
 `;
 

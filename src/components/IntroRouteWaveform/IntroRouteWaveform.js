@@ -45,7 +45,7 @@ class IntroRouteWaveform extends Component<Props> {
 
     return (
       <Aux>
-        <Aux>
+        <FadeTransition isVisible={stepData.showWaveform}>
           <Waveform
             amplitude={amplitude}
             color={stepData.waveformColor}
@@ -56,48 +56,50 @@ class IntroRouteWaveform extends Component<Props> {
             offset={offset}
             numOfCycles={numOfCycles}
           />
-          <FadeTransition isVisible={stepData.showXAxis}>
-            <WaveformAxis
-              x
-              strokeWidth={4}
-              waveformSize={width}
-              numOfCycles={numOfCycles}
-              progress={progress}
-              showLabels={stepData.showXAxisLabels}
-              opacity={stepData.xAxisOpacity}
-            />
-          </FadeTransition>
-          <FadeTransition isVisible={stepData.showYAxis}>
-            <WaveformAxis
-              y
-              strokeWidth={4}
-              waveformSize={width}
-              numOfCycles={numOfCycles}
-              progress={progress}
-              showLabels={stepData.showYAxisLabels}
-              opacity={stepData.yAxisOpacity}
-            />
-          </FadeTransition>
+        </FadeTransition>
+        <FadeTransition isVisible={stepData.showWaveform && stepData.showXAxis}>
+          <WaveformAxis
+            x
+            strokeWidth={4}
+            waveformSize={width}
+            numOfCycles={numOfCycles}
+            progress={progress}
+            showLabels={stepData.showXAxisLabels}
+            opacity={stepData.xAxisOpacity}
+          />
+        </FadeTransition>
+        <FadeTransition isVisible={stepData.showWaveform && stepData.showYAxis}>
+          <WaveformAxis
+            y
+            strokeWidth={4}
+            waveformSize={width}
+            numOfCycles={numOfCycles}
+            progress={progress}
+            showLabels={stepData.showYAxisLabels}
+            opacity={stepData.yAxisOpacity}
+          />
+        </FadeTransition>
 
-          <FadeTransition isVisible={stepData.showYAxisIntercept}>
-            <WaveformIntercept
-              size={20}
-              color={COLORS.blue[500]}
-              waveformSize={width}
-              waveformShape={stepData.waveformShape}
-              frequency={numOfCycles}
-              amplitude={amplitude}
-              offset={offset}
-            />
-          </FadeTransition>
+        <FadeTransition
+          isVisible={stepData.showWaveform && stepData.showYAxisIntercept}
+        >
+          <WaveformIntercept
+            size={20}
+            color={COLORS.blue[500]}
+            waveformSize={width}
+            waveformShape={stepData.waveformShape}
+            frequency={numOfCycles}
+            amplitude={amplitude}
+            offset={offset}
+          />
+        </FadeTransition>
 
-          <FadeTransition
-            typeName="div"
-            isVisible={stepData.showCycleIndicator}
-          >
-            <WaveformCycleIndicator numOfCycles={numOfCycles} />
-          </FadeTransition>
-        </Aux>
+        <FadeTransition
+          typeName="div"
+          isVisible={stepData.showWaveform && stepData.showCycleIndicator}
+        >
+          <WaveformCycleIndicator numOfCycles={numOfCycles} />
+        </FadeTransition>
 
         <Spacer size={40} />
 

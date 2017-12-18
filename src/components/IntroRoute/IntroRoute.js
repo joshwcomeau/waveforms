@@ -8,21 +8,28 @@ import { debounce } from '../../utils';
 import Header from '../Header';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
+import AvailableWidth from '../AvailableWidth';
 import Sidebar from '../Sidebar';
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import Aux from '../Aux';
 import WaveformPlayer from '../WaveformPlayer';
 import IntroRouteWaveform from '../IntroRouteWaveform';
+import IntroRouteAirGrid from '../IntroRouteAirGrid';
+import AirGrid from '../AirGrid';
 import IntroRouteSection from '../IntroRouteSection';
 
 import { getDataForStep } from './IntroRoute.helpers';
 
 import type { IntroStep } from '../../constants';
+import type { WaveformShape } from '../../types';
 
 type Props = {};
 type State = {
   currentStep: IntroStep,
   windowHeight: number,
+  amplitude: number,
+  frequency: number,
+  shape: WaveformShape,
 };
 
 type Section = {
@@ -230,6 +237,7 @@ class IntroRoute extends PureComponent<Props, State> {
     windowHeight: window.innerHeight,
     amplitude: 1,
     frequency: 1,
+    shape: 'sine',
   };
 
   sectionRefs: Array<HTMLElement> = [];
@@ -291,7 +299,13 @@ class IntroRoute extends PureComponent<Props, State> {
   };
 
   render() {
-    const { currentStep, windowHeight, amplitude, frequency } = this.state;
+    const {
+      currentStep,
+      windowHeight,
+      shape,
+      amplitude,
+      frequency,
+    } = this.state;
 
     const stepData = getDataForStep(currentStep);
 
@@ -314,14 +328,24 @@ class IntroRoute extends PureComponent<Props, State> {
               speed={frequency}
             >
               {({ amplitude, numOfCycles, progress }) => (
-                <IntroRouteWaveform
-                  amplitude={amplitude}
-                  numOfCycles={numOfCycles}
-                  progress={progress}
-                  handleUpdateAmplitude={this.handleUpdateAmplitude}
-                  handleUpdateFrequency={this.handleUpdateFrequency}
-                  stepData={stepData}
-                />
+                <Aux>
+                  <IntroRouteWaveform
+                    amplitude={amplitude}
+                    numOfCycles={numOfCycles}
+                    progress={progress}
+                    handleUpdateAmplitude={this.handleUpdateAmplitude}
+                    handleUpdateFrequency={this.handleUpdateFrequency}
+                    stepData={stepData}
+                  />
+                  <IntroRouteAirGrid
+                    numOfRows={6}
+                    numOfCols={10}
+                    amplitude={amplitude}
+                    numOfCycles={numOfCycles}
+                    progress={progress}
+                    stepData={stepData}
+                  />
+                </Aux>
               )}
             </WaveformPlayer>
           </WaveformWrapper>

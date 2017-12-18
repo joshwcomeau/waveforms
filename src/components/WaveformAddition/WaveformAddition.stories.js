@@ -127,6 +127,18 @@ storiesOf('WaveformAddition', module)
               frequency: 9,
               amplitude: 1 / 18,
             },
+            {
+              ...defaultWaveformProps,
+              color: BLUE,
+              frequency: 11,
+              amplitude: 1 / 22,
+            },
+            {
+              ...defaultWaveformProps,
+              color: BLUE,
+              frequency: 13,
+              amplitude: 1 / 26,
+            },
           ]}
           progress={value / 100}
         />
