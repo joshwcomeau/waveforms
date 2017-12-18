@@ -7,14 +7,18 @@ import {
   DEFAULT_WAVEFORM_SIZE,
   DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   DEFAULT_WAVEFORM_AMPLITUDE,
+  WAVEFORM_ASPECT_RATIO,
 } from '../../constants';
 import { range } from '../../utils';
 import { getPositionAtPointRelativeToAxis } from '../../helpers/waveform.helpers';
 
+import Canvas from '../Canvas';
+
 import type { WaveformShape } from '../../types';
 
 type Props = {
-  size: number,
+  width: number,
+  height: number,
   numOfRows: number,
   numOfCols: number,
   waveformShape: WaveformShape,
@@ -25,7 +29,8 @@ type Props = {
 
 class AirGrid extends PureComponent<Props> {
   static defaultProps = {
-    size: DEFAULT_WAVEFORM_SIZE,
+    width: DEFAULT_WAVEFORM_SIZE,
+    height: DEFAULT_WAVEFORM_SIZE * WAVEFORM_ASPECT_RATIO,
     numOfRows: 4,
     numOfCols: 4,
     waveformShape: 'sine',
@@ -33,9 +38,10 @@ class AirGrid extends PureComponent<Props> {
     waveformAmplitude: DEFAULT_WAVEFORM_AMPLITUDE,
   };
 
-  render() {
+  componentDidUpdate() {
     const {
-      size,
+      width,
+      height,
       numOfRows,
       numOfCols,
       waveformFrequency,
@@ -44,30 +50,65 @@ class AirGrid extends PureComponent<Props> {
       waveformProgress,
     } = this.props;
 
-    const width = size * 0.9;
-
     const cycle = (waveformProgress * 100) % 100;
 
-    return (
-      <Grid width={width}>
-        {range(0, numOfCols - 1).map(y => (
-          <Column key={y}>
-            {range(0, numOfRows - 1).map(x => (
-              <CellWrapper key={x} cellSize={width / numOfCols}>
-                <Cell
-                  position={getPositionAtPointRelativeToAxis(
-                    waveformShape,
-                    waveformFrequency,
-                    waveformAmplitude,
-                    cycle + waveformAmplitude * (100 - y * waveformFrequency)
-                  )}
-                />
-              </CellWrapper>
-            ))}
-          </Column>
-        ))}
-      </Grid>
+    const colWidth = width / numOfCols;
+    const rowHeight = height / numOfRows;
+    const particleRadius = Math.min(colWidth, rowHeight) * 0.3;
+
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    range(0, numOfCols - 1).map(y =>
+      range(0, numOfRows - 1).map(x => {
+        const xInPixels = y * colWidth + colWidth / 2;
+        const yInPixels = x * rowHeight + rowHeight / 2;
+
+        this.ctx.beginPath();
+        this.ctx.arc(xInPixels, yInPixels, particleRadius, 0, 2 * Math.PI);
+        this.ctx.fill();
+      })
     );
+  }
+
+  captureRefs = (canvas, ctx) => {
+    this.canvas = canvas;
+    this.ctx = ctx;
+  };
+
+  render() {
+    const {
+      width,
+      height,
+      numOfRows,
+      numOfCols,
+      waveformFrequency,
+      waveformShape,
+      waveformAmplitude,
+      waveformProgress,
+    } = this.props;
+
+    return <Canvas width={width} height={height} innerRef={this.captureRefs} />;
+
+    // return (
+    //   <Grid width={width}>
+    //     {range(0, numOfCols - 1).map(y => (
+    //       <Column key={y}>
+    //         {range(0, numOfRows - 1).map(x => (
+    //           <CellWrapper key={x} cellSize={width / numOfCols}>
+    //             <Cell
+    //               position={getPositionAtPointRelativeToAxis(
+    //                 waveformShape,
+    //                 waveformFrequency,
+    //                 waveformAmplitude,
+    //                 cycle + waveformAmplitude * (100 - y * waveformFrequency)
+    //               )}
+    //             />
+    //           </CellWrapper>
+    //         ))}
+    //       </Column>
+    //     ))}
+    //   </Grid>
+    // );
   }
 }
 
