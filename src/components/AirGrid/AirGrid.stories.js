@@ -7,15 +7,28 @@ import { DEFAULT_WAVEFORM_SIZE } from '../../constants';
 import WaveformPlayer from '../WaveformPlayer';
 import AirGrid from './AirGrid';
 
-storiesOf('AirGrid', module).add('Default (1Hz, 4x4)', () => (
-  <WaveformPlayer isPlaying>
-    {({ amplitude, numOfCycles, progress }) => (
-      <AirGrid
-        shape="sine"
-        waveformAmplitude={amplitude}
-        waveformFrequency={numOfCycles}
-        waveformProgress={progress}
-      />
-    )}
-  </WaveformPlayer>
-));
+storiesOf('AirGrid', module)
+  .add('Default (1Hz, 1dB, 4x4)', () => (
+    <WaveformPlayer isPlaying>
+      {({ amplitude, numOfCycles, progress }) => (
+        <AirGrid
+          shape="sine"
+          waveformAmplitude={amplitude}
+          waveformFrequency={numOfCycles}
+          waveformProgress={progress}
+        />
+      )}
+    </WaveformPlayer>
+  ))
+  .add('Quiet (1Hz, 0.5dB, 4x4)', () => (
+    <WaveformPlayer isPlaying amplitude={0.5}>
+      {({ amplitude, numOfCycles, progress }) => (
+        <AirGrid
+          shape="sine"
+          waveformAmplitude={amplitude}
+          waveformFrequency={numOfCycles}
+          waveformProgress={progress}
+        />
+      )}
+    </WaveformPlayer>
+  ));

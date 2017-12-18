@@ -188,20 +188,18 @@ const sections: Array<Section> = [
       <Aux>
         <SectionTitle>1. How Sound Works</SectionTitle>
         <Paragraph>
-          So, we now know that waves like the one on the right are a graph
-          representing the change in amplitude over time. But what is amplitude,
-          exactly? What does this mean, in terms of the real world?
+          So, we've learned that waveforms are a graph showing amplitude changes
+          over time, where amplitude swings between negative and positive
+          values. But what the heck does that mean, in real-world terms?
         </Paragraph>
 
         <Paragraph>
-          The wave on the left is animating now; you can think of it "playing"
-          the wave that was previously paused.
+          To help us understand, the waveform on the left now has a blue circle
+          that follows the changes in amplitude over time. Because we're using a
+          sine waveform, the motion is smooth.
         </Paragraph>
 
-        <Paragraph>
-          The blue dot on the Y axis shows how amplitude actually changes, in
-          real-time. Note that it has this smooth, swinging quality.
-        </Paragraph>
+        <Paragraph>That blue dot</Paragraph>
       </Aux>
     ),
   },
@@ -226,6 +224,29 @@ const sections: Array<Section> = [
           pond. Waves radiate outwards, but the actual water molecules don't
           move from the center out; the wave ripples through the water.
         </Paragraph>
+
+        <Paragraph>
+          Ever notice how, when you blast a song from a speaker, you can see the
+          speaker cone vibrating? Speakers work by kicking off this chain
+          reaction of vibrations.
+        </Paragraph>
+
+        <Sidebar>
+          <Paragraph>
+            Curious about how our ears translate these waves into sound that the
+            brain understands? It's outside the scope of this guide, but it's
+            super interesting stuff!
+          </Paragraph>
+          <Paragraph>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.nidcd.nih.gov/health/how-do-we-hear"
+            >
+              Learn more about our ears and sound.
+            </a>
+          </Paragraph>
+        </Sidebar>
       </Aux>
     ),
   },

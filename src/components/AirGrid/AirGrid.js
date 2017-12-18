@@ -57,9 +57,9 @@ class AirGrid extends PureComponent {
                 <Cell
                   position={getPositionAtPointRelativeToAxis(
                     waveformShape,
-                    1,
-                    1,
-                    cycle + (100 - y * waveformFrequency * 10)
+                    waveformFrequency,
+                    waveformAmplitude,
+                    cycle + waveformAmplitude * (100 - y * waveformFrequency)
                   )}
                 />
               </CellWrapper>
