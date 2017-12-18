@@ -165,3 +165,6 @@ export const applyWaveformAddition = (
     };
   });
 };
+
+export const convertProgressToCycle = (progress: number) =>
+  (progress * 100) % 100;

@@ -1,9 +1,10 @@
 // @flow
 import { INTRO_STEPS, COLORS } from '../../constants';
 
+import type { IntroStep } from '../../constants';
 import type { WaveformShape } from '../../types';
 
-type StepData = {
+export type StepData = {
   showWaveform: boolean,
   showAirGrid: boolean,
   frequencyOverride: ?number,

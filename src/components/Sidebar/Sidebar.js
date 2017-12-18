@@ -7,7 +7,7 @@ import { COLORS } from '../../constants';
 const PADDING = 25;
 
 type Props = {
-  type: 'note' | 'warning',
+  type?: 'notice' | 'warning',
   children: React$Node,
 };
 

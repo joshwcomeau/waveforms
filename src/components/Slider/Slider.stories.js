@@ -8,7 +8,7 @@ import Slider from './Slider';
 type State = {
   value: number,
 };
-class SliderWrapper extends PureComponent<Any, State> {
+class SliderWrapper extends PureComponent<any, State> {
   state = {
     value: 0,
   };

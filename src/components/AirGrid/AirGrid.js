@@ -14,16 +14,16 @@ import { getPositionAtPointRelativeToAxis } from '../../helpers/waveform.helpers
 import type { WaveformShape } from '../../types';
 
 type Props = {
-  size?: number,
-  numOfRows?: number,
-  numOfCols?: number,
-  waveformShape?: WaveformShape,
-  waveformFrequency?: number,
-  waveformAmplitude?: number,
+  size: number,
+  numOfRows: number,
+  numOfCols: number,
+  waveformShape: WaveformShape,
+  waveformFrequency: number,
+  waveformAmplitude: number,
   waveformProgress: number,
 };
 
-class AirGrid extends PureComponent {
+class AirGrid extends PureComponent<Props> {
   static defaultProps = {
     size: DEFAULT_WAVEFORM_SIZE,
     numOfRows: 4,

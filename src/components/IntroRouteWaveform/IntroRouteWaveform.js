@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import { INTRO_STEPS, COLORS } from '../../constants';
+import { convertProgressToCycle } from '../../helpers/waveform.helpers';
 
 import Aux from '../Aux';
 import AvailableWidth from '../AvailableWidth';
@@ -41,7 +42,7 @@ class IntroRouteWaveform extends Component<Props> {
     // `progress` is an ever-increasing decimal value representing how many
     // iterations of the loop have occured.
     // Transform this value into a circular value between 0 and 99.
-    const offset = (progress * 100) % 100;
+    const offset = convertProgressToCycle(progress);
 
     return (
       <Aux>

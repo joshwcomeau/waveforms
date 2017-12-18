@@ -4,9 +4,10 @@ import styled from 'styled-components';
 
 type Props = {
   gutter?: number,
+  children: React$Node,
 };
 
-const Row = ({ gutter = 0, children } = Props) => (
+const Row = ({ gutter = 0, children }: Props) => (
   <RowElem>
     {Children.toArray(children).map((child, index) => (
       <FlexChild gutter={gutter} key={index}>

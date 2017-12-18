@@ -19,7 +19,6 @@ class FadeTransition extends PureComponent<Props> {
 
   render() {
     const {
-      log,
       isVisible,
       mountOnEnter,
       unmountOnExit,

@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import { storiesOf } from '@storybook/react';
 
 import { DEFAULT_WAVEFORM_SIZE } from '../../constants/index';
+import { convertProgressToCycle } from '../../helpers/waveform.helpers';
 
 import Waveform from '../Waveform';
 import WaveformAxes from '../WaveformAxes';
 import WaveformIntercept from '../WaveformIntercept';
-
 import WaveformPlayer from './WaveformPlayer';
 
 type Props = {};
@@ -37,7 +37,9 @@ class VariableFrequency extends Component<Props, State> {
   render() {
     return (
       <WaveformPlayer isPlaying speed={this.state.speed}>
-        {({ offset }) => <Waveform shape="sine" offset={offset} />}
+        {({ progress }) => (
+          <Waveform shape="sine" offset={convertProgressToCycle(progress)} />
+        )}
       </WaveformPlayer>
     );
   }
@@ -46,41 +48,63 @@ class VariableFrequency extends Component<Props, State> {
 storiesOf('WaveformPlayer', module)
   .add('default (paused)', () => (
     <WaveformPlayer>
-      {({ offset }) => <Waveform shape="sine" offset={offset} />}
+      {({ progress }) => (
+        <Waveform shape="sine" offset={convertProgressToCycle(progress)} />
+      )}
     </WaveformPlayer>
   ))
   .add('playing', () => (
     <WaveformPlayer isPlaying>
-      {({ offset, numOfCycles }) => (
-        <Waveform shape="sine" offset={offset} numOfCycles={numOfCycles} />
+      {({ progress, numOfCycles }) => (
+        <Waveform
+          shape="sine"
+          offset={convertProgressToCycle(progress)}
+          numOfCycles={numOfCycles}
+        />
       )}
     </WaveformPlayer>
   ))
   .add('playing (2Hz at 1 cycle)', () => (
     <WaveformPlayer isPlaying speed={2}>
-      {({ offset, numOfCycles }) => (
-        <Waveform shape="sine" offset={offset} numOfCycles={numOfCycles} />
+      {({ progress, numOfCycles }) => (
+        <Waveform
+          shape="sine"
+          offset={convertProgressToCycle(progress)}
+          numOfCycles={numOfCycles}
+        />
       )}
     </WaveformPlayer>
   ))
   .add('playing (2Hz at 2 cycles)', () => (
     <WaveformPlayer isPlaying speed={2} numOfCycles={2}>
-      {({ offset, numOfCycles }) => (
-        <Waveform shape="sine" offset={offset} numOfCycles={numOfCycles} />
+      {({ progress, numOfCycles }) => (
+        <Waveform
+          shape="sine"
+          offset={convertProgressToCycle(progress)}
+          numOfCycles={numOfCycles}
+        />
       )}
     </WaveformPlayer>
   ))
   .add('playing (5Hz at 2 cycles)', () => (
     <WaveformPlayer isPlaying speed={5} numOfCycles={2}>
-      {({ offset, numOfCycles }) => (
-        <Waveform shape="sine" offset={offset} numOfCycles={numOfCycles} />
+      {({ progress, numOfCycles }) => (
+        <Waveform
+          shape="sine"
+          offset={convertProgressToCycle(progress)}
+          numOfCycles={numOfCycles}
+        />
       )}
     </WaveformPlayer>
   ))
   .add('playing (0.5Hz)', () => (
     <WaveformPlayer isPlaying speed={0.5}>
-      {({ offset, numOfCycles }) => (
-        <Waveform shape="sine" offset={offset} numOfCycles={numOfCycles} />
+      {({ progress, numOfCycles }) => (
+        <Waveform
+          shape="sine"
+          offset={convertProgressToCycle(progress)}
+          numOfCycles={numOfCycles}
+        />
       )}
     </WaveformPlayer>
   ))
@@ -88,10 +112,10 @@ storiesOf('WaveformPlayer', module)
   .add('with axes', () => (
     <div style={{ position: 'relative' }}>
       <WaveformPlayer isPlaying speed={1}>
-        {({ offset }) => (
+        {({ progress }) => (
           <span>
             <WaveformAxes />
-            <Waveform shape="sine" offset={offset} />
+            <Waveform shape="sine" offset={convertProgressToCycle(progress)} />
           </span>
         )}
       </WaveformPlayer>
@@ -100,11 +124,14 @@ storiesOf('WaveformPlayer', module)
   .add('with axes and intercept', () => (
     <div style={{ position: 'relative' }}>
       <WaveformPlayer isPlaying speed={1}>
-        {({ offset }) => (
+        {({ progress }) => (
           <span>
             <WaveformAxes />
-            <Waveform shape="sine" offset={offset} />
-            <WaveformIntercept waveformShape="sine" offset={offset} />
+            <Waveform shape="sine" offset={convertProgressToCycle(progress)} />
+            <WaveformIntercept
+              waveformShape="sine"
+              offset={convertProgressToCycle(progress)}
+            />
           </span>
         )}
       </WaveformPlayer>
