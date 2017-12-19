@@ -19,7 +19,7 @@ export function scaleCanvas(
     ctx.backingStorePixelRatio ||
     1;
 
-  // eslint-disable-next-line no-undef
+  // $FlowFixMe - apparently backingStoreRatio can contain non-numbers?
   const ratio = (window.devicePixelRatio || 1) / backingStoreRatio;
 
   if (ratio > 1) {

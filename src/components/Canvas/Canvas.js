@@ -13,6 +13,7 @@ class Canvas extends PureComponent<Props> {
   };
 
   canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
 
   handleRef = (canvas: HTMLCanvasElement) => {
     this.canvas = canvas;
