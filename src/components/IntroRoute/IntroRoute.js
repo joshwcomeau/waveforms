@@ -18,7 +18,7 @@ import IntroRouteAirGrid from '../IntroRouteAirGrid';
 import AirGrid from '../AirGrid';
 import IntroRouteSection from '../IntroRouteSection';
 
-import { getDataForStep } from './IntroRoute.helpers';
+import { steps, stepsArray } from './IntroRoute.steps';
 
 import type { IntroStep } from '../../constants';
 import type { WaveformShape } from '../../types';
@@ -43,214 +43,6 @@ const marginFunctions = {
   small: windowHeight => windowHeight * 0.35,
   large: windowHeight => windowHeight * 0.45,
 };
-
-const sections: Array<Section> = [
-  { id: 'title', getMargin: marginFunctions.none, children: <Header /> },
-  {
-    id: 'about-this-thing',
-    getMargin: marginFunctions.small,
-    children: (
-      <Aux>
-        <Paragraph>Hi there!</Paragraph>
-        <Paragraph>
-          This interactive guide introduces waveforms. We'll go over the
-          fundamental physics of sound, learn how it relates to music and
-          harmony, and discover how to build complex tones from simple ones.
-        </Paragraph>
-        <Paragraph>
-          This guide is primarily geared towards folks who produce music, but no
-          prior knowledge is required. Even if you don't have any interest in
-          music production, this guide may still interest you!
-        </Paragraph>
-      </Aux>
-    ),
-  },
-  {
-    id: 'intro-with-labels',
-    children: (
-      <Aux>
-        <SectionTitle>1. Reading Waveforms</SectionTitle>
-        <Paragraph>
-          The waveform over there is a graph, a cartesian plane. It's showing
-          the relationship between two dimensions.
-        </Paragraph>
-      </Aux>
-    ),
-  },
-  {
-    id: 'x-axis-time',
-    getMargin: marginFunctions.small,
-    children: (
-      <Aux>
-        <Paragraph>
-          The horizontal line, our X axis, represents time. The exact units
-          don't really matter right now, but to make it concrete, let's say that
-          the current graph represents 1 second.
-        </Paragraph>
-      </Aux>
-    ),
-  },
-  {
-    id: 'y-axis-amplitude',
-    getMargin: marginFunctions.small,
-    children: (
-      <Aux>
-        <Paragraph>
-          The vertical line, our Y axis, represents <strong>amplitude</strong>.
-          We'll go into more detail in a bit about what amplitude really is, but
-          for now, you can think of it as volume. The bigger the wave, the
-          louder the sound.
-        </Paragraph>
-      </Aux>
-    ),
-  },
-  {
-    id: 'y-axis-amplitude-with-control',
-    getMargin: marginFunctions.small,
-    children: (
-      <Aux>
-        <Paragraph>
-          Go ahead and tweak the waveform's amplitude, using the slider on the
-          left.
-        </Paragraph>
-
-        <Paragraph>
-          Try setting it all the way to 0, and notice how the line disappears.
-        </Paragraph>
-      </Aux>
-    ),
-  },
-  {
-    id: 'frequency-introduction',
-    children: (
-      <Aux>
-        <Paragraph>
-          Next, let's look at <strong>frequency</strong>.
-        </Paragraph>
-
-        <Paragraph>
-          The wave has been updated to repeat twice. Instead of 1 sine waveform
-          cycle, you now have 2 sine waveform cycles!
-        </Paragraph>
-
-        <Paragraph>
-          Important to note, though: The amount of time hasn't changed, though.
-          This is still 1 second of audio.
-        </Paragraph>
-
-        <Paragraph>
-          The number of cycles per second is known as the frequency. The unit of
-          measurement is called the Hertz (abbreviated as 'Hz'). The wave over
-          there is 2Hz, since the waveform repeats twice.
-        </Paragraph>
-      </Aux>
-    ),
-  },
-  {
-    id: 'frequency-introduction-pt2',
-    getMargin: marginFunctions.small,
-    children: (
-      <Aux>
-        <Paragraph>
-          Frequency is just the technical term for "pitch". When you sing an
-          "A4" note (The A in the middle of a standard piano), your throat
-          vibrates at 440Hz.
-        </Paragraph>
-        <Sidebar>
-          <Paragraph>
-            For sound to be audible, it needs to be much faster than this: the
-            human hearing range is from 20Hz to 20,000Hz.
-          </Paragraph>
-          <Paragraph>
-            The frequencies in this guide use slower frequencies to keep the
-            numbers and visualizations simpler, since the concepts are more
-            important than the specific frequencies.
-          </Paragraph>
-        </Sidebar>
-      </Aux>
-    ),
-  },
-  {
-    id: 'frequency-with-control',
-    getMargin: marginFunctions.small,
-    children: (
-      <Aux>
-        <Paragraph>
-          As with amplitude, feel free to tweak the frequency to see how the
-          wave changes!
-        </Paragraph>
-      </Aux>
-    ),
-  },
-  {
-    id: 'how-sound-works-intro',
-    children: (
-      <Aux>
-        <SectionTitle>1. How Sound Works</SectionTitle>
-        <Paragraph>
-          So, we've learned that waveforms are a graph showing amplitude changes
-          over time, where amplitude swings between negative and positive
-          values. But what the heck does that mean, in real-world terms?
-        </Paragraph>
-
-        <Paragraph>
-          To help us understand, the waveform on the left now has a blue circle
-          that follows the changes in amplitude over time. Because we're using a
-          sine waveform, the motion is smooth.
-        </Paragraph>
-
-        <Paragraph>That blue dot</Paragraph>
-      </Aux>
-    ),
-  },
-  {
-    id: 'how-sound-works-air-grid',
-    children: (
-      <Aux>
-        <Paragraph>
-          Sound is vibration. That blue dot's motion? That's what molecules in
-          the air do, when a sine wave is played.
-        </Paragraph>
-
-        <Paragraph>
-          The grid on the left below the waveform represents a bunch of air
-          molecules floating in the air. Notice how the molecules themselves
-          aren't travelling through the air; the wave travels by causing a
-          rippling effect through the air molecules.
-        </Paragraph>
-
-        <Paragraph>
-          This is similar to what happens when you throw a stone in a smooth
-          pond. Waves radiate outwards, but the actual water molecules don't
-          move from the center out; the wave ripples through the water.
-        </Paragraph>
-
-        <Paragraph>
-          Ever notice how, when you blast a song from a speaker, you can see the
-          speaker cone vibrating? Speakers work by kicking off this chain
-          reaction of vibrations.
-        </Paragraph>
-
-        <Sidebar>
-          <Paragraph>
-            Curious about how our ears translate these waves into sound that the
-            brain understands? It's outside the scope of this guide, but it's
-            super interesting stuff!
-          </Paragraph>
-          <Paragraph>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.nidcd.nih.gov/health/how-do-we-hear"
-            >
-              Learn more about our ears and sound.
-            </a>
-          </Paragraph>
-        </Sidebar>
-      </Aux>
-    ),
-  },
-];
 
 class IntroRoute extends PureComponent<Props, State> {
   state = {
@@ -331,7 +123,7 @@ class IntroRoute extends PureComponent<Props, State> {
       frequency,
     } = this.state;
 
-    const stepData = getDataForStep(currentStep);
+    const stepData = steps[currentStep];
 
     return (
       <MaxWidthWrapper>
@@ -374,7 +166,7 @@ class IntroRoute extends PureComponent<Props, State> {
           </LeftColumnWrapper>
 
           <RightColumnWrapper>
-            {sections.map((section, index) => (
+            {stepsArray.map((section, index) => (
               <IntroRouteSection
                 key={section.id}
                 id={section.id}
