@@ -12,6 +12,7 @@ import type { Props as WaveformProps } from '../components/Waveform';
  * This is NOT plot-ready, since the Y values range from -1 to 1.
  * Further processing is required to get something drawable.
  */
+let logged = false;
 export const getPointsForWaveform = ({
   shape,
   frequency,
@@ -19,6 +20,8 @@ export const getPointsForWaveform = ({
   width,
   offset,
 }: WaveformProps): Array<WaveformPoint> => {
+  const period = 1 / frequency;
+
   // Get an array of `x` values.
   // For now, we're drawing lines at every second point, for performance.
   // After experimentation, this may change.
@@ -28,7 +31,8 @@ export const getPointsForWaveform = ({
   // Convert each X value to a proper coordinate system, relative to the axis
   // (so, Y values will be from -1 to 1)
   return xValues.map(x => {
-    const progress = x / width * 100 + offset;
+    // We need to figure out the
+    const progress = x / (width * period) * 100 + offset;
 
     return {
       x,
@@ -85,11 +89,16 @@ export const getPositionAtPointRelativeToAxis = (
 
       // the progress is through the given cycle, but we may be rendering
       // multiple cycles.
-      const progressThroughDrawableArea = progress * 1 / frequency;
+      const progressThroughDrawableArea = progress * (1 / frequency);
 
       // Right now, `progress` ranges from 0 to 100.
-      // Normalize this value to fit between 0 and `totalLength`
-      // (just cross-multiplying to get the normalized value).
+      // Normalize this value to fit between 0 and `totalLength`.
+      // Just cross-multiplying to get the normalized value:
+      //
+      // progress         positionInRads
+      // --------  =      --------------
+      //   100             totalLength
+      //
       // prettier-ignore
       const positionInRads = (progressThroughDrawableArea * totalLength) / 100;
 

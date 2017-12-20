@@ -5,11 +5,7 @@ import styled from 'styled-components';
 import { INTRO_STEPS, WAVEFORM_ASPECT_RATIO } from '../../constants';
 import { debounce } from '../../utils';
 
-import Header from '../Header';
-import Paragraph from '../Paragraph';
-import SectionTitle from '../SectionTitle';
 import AvailableWidth from '../AvailableWidth';
-import Sidebar from '../Sidebar';
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import Aux from '../Aux';
 import WaveformPlayer from '../WaveformPlayer';
