@@ -110,6 +110,8 @@ class WaveformPlayer extends PureComponent<Props, State> {
       const { frequency } = this.props;
       const { progress, stopRequestedAtCycle, lastTickAt } = this.state;
 
+      const period = 1 / frequency;
+
       if (!lastTickAt) {
         return;
       }
@@ -117,6 +119,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
       const tickAt = new Date();
 
       const secondsSinceLastTick = (tickAt - lastTickAt) / 1000;
+      const periodsSinceLastTick = secondsSinceLastTick * frequency;
 
       // At first glance, you might think we're just translating a fixed SVG
       // by `n` pixels to the left on every tick.
@@ -131,8 +134,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
       // By changing that value, we get the illusion of it moving.
       // on every frame.
 
-      // prettier-ignore
-      const nextProgressVal = progress + (secondsSinceLastTick *  (1 / frequency));
+      const nextProgressVal = progress + periodsSinceLastTick;
 
       // If this is the tick that pushes us into the next cycle, and we've
       // requested a stop, let's end this animation.

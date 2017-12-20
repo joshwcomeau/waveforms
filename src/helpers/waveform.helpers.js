@@ -83,11 +83,15 @@ export const getPositionAtPointRelativeToAxis = (
       const cycleLength = Math.PI * 2;
       const totalLength = cycleLength * frequency;
 
+      // the progress is through the given cycle, but we may be rendering
+      // multiple cycles.
+      const progressThroughDrawableArea = progress * 1 / frequency;
+
       // Right now, `progress` ranges from 0 to 100.
       // Normalize this value to fit between 0 and `totalLength`
       // (just cross-multiplying to get the normalized value).
       // prettier-ignore
-      const positionInRads = (progress * totalLength) / 100;
+      const positionInRads = (progressThroughDrawableArea * totalLength) / 100;
 
       // Now we can simply take the sin of the rad position to get a value,
       // from -1 to 1. We multiply by amplitude (a value between 0 and 1) to
