@@ -12,7 +12,6 @@ import type { Props as WaveformProps } from '../components/Waveform';
  * This is NOT plot-ready, since the Y values range from -1 to 1.
  * Further processing is required to get something drawable.
  */
-let logged = false;
 export const getPointsForWaveform = ({
   shape,
   frequency,
@@ -20,8 +19,6 @@ export const getPointsForWaveform = ({
   width,
   offset,
 }: WaveformProps): Array<WaveformPoint> => {
-  const period = 1 / frequency;
-
   // Get an array of `x` values.
   // For now, we're drawing lines at every second point, for performance.
   // After experimentation, this may change.
@@ -31,8 +28,26 @@ export const getPointsForWaveform = ({
   // Convert each X value to a proper coordinate system, relative to the axis
   // (so, Y values will be from -1 to 1)
   return xValues.map(x => {
-    // We need to figure out the
-    const progress = x / (width * period) * 100 + offset;
+    // We need a progress value, to help inform where this `x` value is, in
+    // terms of the cycles drawn.
+
+    // Start by getting the width of a single cycle.
+    // If `frequency` is `1`, then this is just the whole width.
+    // If we're drawing more/less than a single cycle, though, we need to do
+    // some division.
+    const widthOfSingleCycle = width / frequency;
+
+    // Next, we need to figure out the progress in terms of the cycle.
+    // If the frequency is 4, This progress will be a value from 0 to 4.
+    const progressRelativeToCycles = x / widthOfSingleCycle;
+
+    // Finally, we have to take the waveform's offset into account.
+    // As a refresher: `offset` ranges from 0 to 99, and it controls how much
+    // to shift the waveform by.
+    // Example: A sine wave with 50 offset will look like an inverted sine wave.
+    // The `* 100` is necessary since offset is 0-99 instead of 0-1.
+    // TODO: Probably makes sense to keep it from 0-1, makes more semantic sense
+    const progress = progressRelativeToCycles * 100 + offset;
 
     return {
       x,

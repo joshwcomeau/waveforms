@@ -68,9 +68,9 @@ const defaults: StepData = {
   yAxisOpacity: 1,
   showAmplitudeSlider: false,
   showFrequencySlider: false,
-  frequencySliderMin: 1,
-  frequencySliderMax: 6,
-  frequencySliderStep: 1,
+  frequencySliderMin: 0.2,
+  frequencySliderMax: 3,
+  frequencySliderStep: 0.1,
   showCycleIndicator: false,
 };
 
@@ -273,9 +273,7 @@ export const steps = {
     showYAxisIntercept: true,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
-    frequencySliderMin: 0.2,
-    frequencySliderMax: 2.5,
-    frequencySliderStep: 0.1,
+
     children: (
       <Aux>
         <Paragraph>
