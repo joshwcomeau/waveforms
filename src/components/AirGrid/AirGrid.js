@@ -57,17 +57,14 @@ class AirGrid extends PureComponent<Props> {
       waveformProgress,
     } = this.props;
 
-    const { colWidth, rowHeight } = getDimensions(
-      width,
-      height,
-      numOfRows,
-      numOfCols
-    );
+    const {
+      colWidth,
+      rowHeight,
+      sidePadding,
+      topBottomPadding,
+    } = getDimensions(width, height, numOfRows, numOfCols);
 
     const particleRadius = Math.min(colWidth, rowHeight) * 0.3;
-
-    const sidePadding = colWidth;
-    const topBottomPadding = rowHeight;
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -93,9 +90,12 @@ class AirGrid extends PureComponent<Props> {
         const xBaselineInPixels =
           columnNum * colWidth + xCenterOffset + sidePadding;
 
+        const totalDisplacementAmount = sidePadding;
+
         // Each molecule can move +/- by the column width (less, if the
         // amplitude is less than 1). This
-        const xInPixels = xBaselineInPixels + wavePosition * colWidth;
+        const xInPixels =
+          xBaselineInPixels + wavePosition * totalDisplacementAmount;
 
         this.ctx.beginPath();
         this.ctx.arc(xInPixels, yInPixels, particleRadius, 0, 2 * Math.PI);
@@ -120,10 +120,7 @@ class AirGrid extends PureComponent<Props> {
     // Let's assume that the total grid represents 1 second (same as waveform).
     // Then, we can get the progress through the waveform by adding the number
     // of milliseconds to the current offset
-    let columnOffset = columnNum / numOfCols;
-
-    // The effect is a little extreme, so let's reduce the influence of the
-    // columnOffset.
+    let columnOffset = columnNum / numOfCols * 1.25;
 
     const progress = ((waveformProgress - columnOffset) * 100) % 100;
 
@@ -157,6 +154,8 @@ class AirGrid extends PureComponent<Props> {
       rowHeight,
       widthWithPadding,
       heightWithPadding,
+      topBottomPadding,
+      sidePadding,
     } = getDimensions(width, height, numOfRows, numOfCols);
 
     // We want to allow our canvas to show a bit of overflow (if the molecules
@@ -164,17 +163,16 @@ class AirGrid extends PureComponent<Props> {
     // larger. We want to "inset" it so that the primary content area is still
     // where you'd expect (we're essentially just adding a 1 row/column buffer
     // around each edge, and then moving it back to center it)
-    const topBottomPadding = rowHeight;
-    const sidePadding = colWidth;
+    const style = {
+      marginTop: -topBottomPadding,
+      marginBottom: -topBottomPadding,
+      marginLeft: -sidePadding,
+      marginRight: -sidePadding,
+    };
 
     return (
       <Canvas
-        style={{
-          marginTop: -topBottomPadding,
-          marginBottom: -topBottomPadding,
-          marginLeft: -sidePadding,
-          marginRight: -sidePadding,
-        }}
+        style={style}
         width={widthWithPadding}
         height={heightWithPadding}
         innerRef={this.captureRefs}

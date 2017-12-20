@@ -15,8 +15,18 @@ export const getDimensions = (
   const colWidth = baseWidth / numOfCols;
   const rowHeight = baseHeight / numOfRows;
 
-  const widthWithPadding = baseWidth + colWidth * 2;
-  const heightWithPadding = baseHeight + rowHeight * 2;
+  const topBottomPadding = rowHeight;
+  const sidePadding = colWidth * 2;
 
-  return { colWidth, rowHeight, widthWithPadding, heightWithPadding };
+  const heightWithPadding = baseHeight + topBottomPadding * 2;
+  const widthWithPadding = baseWidth + sidePadding * 2;
+
+  return {
+    colWidth,
+    rowHeight,
+    widthWithPadding,
+    heightWithPadding,
+    topBottomPadding,
+    sidePadding,
+  };
 };
