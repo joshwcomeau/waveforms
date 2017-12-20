@@ -169,7 +169,12 @@ class AirGrid extends PureComponent<Props> {
 
     return (
       <Canvas
-        style={{ marginTop: -topBottomPadding, marginLeft: -sidePadding }}
+        style={{
+          marginTop: -topBottomPadding,
+          marginBottom: -topBottomPadding,
+          marginLeft: -sidePadding,
+          marginRight: -sidePadding,
+        }}
         width={widthWithPadding}
         height={heightWithPadding}
         innerRef={this.captureRefs}
