@@ -32,13 +32,13 @@ export type Props = {
   strokeWidth?: number,
   strokeLinecap?: Linecap,
   opacity?: number,
-  // numOfCycles is the number of cycles to squeeze into this waveform
+  // frequency is the number of cycles to squeeze into this waveform
   // visualization. The default value of `1` means that a single iteration of
   // the waveform is drawn. `2` means that the cycle is rendered twice, etc
   // This can be thought of as `frequency`, if the X-axis is thought to range
   // between 0s and 1s. I've avoided naming it `frequency` to avoid ambiguity
   // with WaveformPlayer, which controls how fast the waveform actually moves.
-  numOfCycles?: number,
+  frequency?: number,
   // Amplitude is the strength of the waveform (AKA loudness, volume).
   // it can range from 0 to 1, and affects how 'tall' the waveform is.
   amplitude?: number,
@@ -58,7 +58,7 @@ const Waveform = ({
   strokeWidth = 1,
   strokeLinecap = 'square',
   opacity = 1,
-  numOfCycles = DEFAULT_WAVEFORM_NUM_OF_CYCLES,
+  frequency = DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   amplitude = DEFAULT_WAVEFORM_AMPLITUDE,
   offset = 0,
 }: Props) => {
@@ -75,7 +75,7 @@ const Waveform = ({
   if (typeof points === 'undefined') {
     points = getPointsForWaveform({
       shape,
-      numOfCycles,
+      frequency,
       amplitude,
       width,
       offset,

@@ -1,3 +1,3 @@
 // @flow
-export const getWidthFor1Cycle = (numOfCycles: number) =>
-  1 / numOfCycles * 100 + '%';
+export const getWidthFor1Cycle = (frequency: number) =>
+  1 / frequency * 100 + '%';

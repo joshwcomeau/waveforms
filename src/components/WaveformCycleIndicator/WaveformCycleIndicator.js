@@ -7,19 +7,19 @@ import { COLORS } from '../../constants';
 import { getWidthFor1Cycle } from './WaveformCycleIndicator.helpers';
 
 type Props = {
-  numOfCycles: number,
+  frequency: number,
 };
 
-const WaveformCycleIndicator = ({ numOfCycles }: Props) => (
-  <WaveformCycleIndicatorWrapper numOfCycles={numOfCycles}>
+const WaveformCycleIndicator = ({ frequency }: Props) => (
+  <WaveformCycleIndicatorWrapper frequency={frequency}>
     <CycleLabel>1 Cycle</CycleLabel>
     <CycleIndicator />
   </WaveformCycleIndicatorWrapper>
 );
 
 const WaveformCycleIndicatorWrapper = styled.div.attrs({
-  style: ({ numOfCycles }) => ({
-    width: getWidthFor1Cycle(numOfCycles),
+  style: ({ frequency }) => ({
+    width: getWidthFor1Cycle(frequency),
   }),
 })`
   position: absolute;

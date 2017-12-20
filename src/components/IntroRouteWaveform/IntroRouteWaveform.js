@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 import { INTRO_STEPS, COLORS } from '../../constants';
@@ -21,18 +21,18 @@ import type { StepData } from '../IntroRoute/IntroRoute.helpers';
 
 type Props = {
   amplitude: number,
-  numOfCycles: number,
+  frequency: number,
   progress: number,
   handleUpdateAmplitude: (amplitude: number) => void,
   handleUpdateFrequency: (frequency: number) => void,
   stepData: StepData,
 };
 
-class IntroRouteWaveform extends Component<Props> {
+class IntroRouteWaveform extends PureComponent<Props> {
   renderContents = (width: number) => {
     const {
       amplitude,
-      numOfCycles,
+      frequency,
       progress,
       handleUpdateAmplitude,
       handleUpdateFrequency,
@@ -55,7 +55,7 @@ class IntroRouteWaveform extends Component<Props> {
             size={width}
             shape="sine"
             offset={offset}
-            numOfCycles={numOfCycles}
+            frequency={frequency}
           />
         </FadeTransition>
         <FadeTransition isVisible={stepData.showWaveform && stepData.showXAxis}>
@@ -63,7 +63,7 @@ class IntroRouteWaveform extends Component<Props> {
             x
             strokeWidth={4}
             waveformSize={width}
-            numOfCycles={numOfCycles}
+            frequency={frequency}
             progress={progress}
             showLabels={stepData.showXAxisLabels}
             opacity={stepData.xAxisOpacity}
@@ -74,7 +74,7 @@ class IntroRouteWaveform extends Component<Props> {
             y
             strokeWidth={4}
             waveformSize={width}
-            numOfCycles={numOfCycles}
+            frequency={frequency}
             progress={progress}
             showLabels={stepData.showYAxisLabels}
             opacity={stepData.yAxisOpacity}
@@ -89,7 +89,7 @@ class IntroRouteWaveform extends Component<Props> {
             color={COLORS.blue[500]}
             waveformSize={width}
             waveformShape={stepData.waveformShape}
-            frequency={numOfCycles}
+            frequency={frequency}
             amplitude={amplitude}
             offset={offset}
           />
@@ -99,7 +99,7 @@ class IntroRouteWaveform extends Component<Props> {
           typeName="div"
           isVisible={stepData.showWaveform && stepData.showCycleIndicator}
         >
-          <WaveformCycleIndicator numOfCycles={numOfCycles} />
+          <WaveformCycleIndicator frequency={frequency} />
         </FadeTransition>
 
         <Spacer size={40} />
@@ -128,10 +128,11 @@ class IntroRouteWaveform extends Component<Props> {
             <Slider
               label="Frequency"
               width={width / 2 - 15}
-              min={1}
-              max={6}
+              min={stepData.frequencySliderMin}
+              max={stepData.frequencySliderMax}
+              step={stepData.frequencySliderStep}
               defaultValue={1}
-              value={numOfCycles}
+              value={frequency}
               onChange={handleUpdateFrequency}
             />
           </FadeTransition>

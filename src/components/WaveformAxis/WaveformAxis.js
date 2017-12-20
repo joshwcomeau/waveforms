@@ -26,7 +26,7 @@ type Props = {
   strokeWidth: number,
   strokeLinecap: Linecap,
   opacity?: number,
-  numOfCycles: number,
+  frequency: number,
   progress: number,
   showLabels: boolean,
 };
@@ -39,7 +39,7 @@ const WaveformAxis = ({
   strokeWidth = 2,
   strokeLinecap = 'square',
   opacity = 1,
-  numOfCycles,
+  frequency,
   progress,
   showLabels,
 }: Props) => {

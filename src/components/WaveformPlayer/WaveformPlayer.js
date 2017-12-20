@@ -11,7 +11,7 @@ import Aux from '../Aux';
 
 type DynamicValues = {
   amplitude: number,
-  numOfCycles: number,
+  frequency: number,
   progress: number,
 };
 
@@ -20,14 +20,7 @@ type Props = {
   amplitude: number,
   // How many times does the waveform repeat within the viewable area of this
   // player? Defaults to 1, which shows a single "period" of the waveform.
-  numOfCycles: number,
-  // `speed` is how many times the currently-drawn area repeats itself per
-  // second. This is similar to `frequency`, with one key difference:
-  // Frequency is the number of cycles per second, whereas this player may
-  // be drawing multiple cycles.
-  // If the `speed` is `2` and `numOfCycles` is `2`, the frequency can
-  // be calculated as `1` (since 2 cycles repeat every 2 seconds)
-  speed: number,
+  frequency: number,
 
   children: (values: DynamicValues) => React$Node,
 };
@@ -45,8 +38,6 @@ type State = {
   stopRequestedAtCycle: ?number,
 };
 
-const calculateFrequency = (speed, numberOfCycles) => speed / numberOfCycles;
-
 class WaveformPlayer extends PureComponent<Props, State> {
   animationFrameId: number;
 
@@ -58,9 +49,8 @@ class WaveformPlayer extends PureComponent<Props, State> {
 
   static defaultProps = {
     isPlaying: false,
-    numOfCycles: DEFAULT_WAVEFORM_NUM_OF_CYCLES,
+    frequency: DEFAULT_WAVEFORM_NUM_OF_CYCLES,
     amplitude: DEFAULT_WAVEFORM_AMPLITUDE,
-    speed: DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   };
 
   componentDidMount() {
@@ -117,10 +107,8 @@ class WaveformPlayer extends PureComponent<Props, State> {
 
   tick = () => {
     this.animationFrameId = window.requestAnimationFrame(() => {
-      const { speed, numOfCycles } = this.props;
+      const { frequency } = this.props;
       const { progress, stopRequestedAtCycle, lastTickAt } = this.state;
-
-      const frequency = calculateFrequency(speed, numOfCycles);
 
       if (!lastTickAt) {
         return;
@@ -144,7 +132,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
       // on every frame.
 
       // prettier-ignore
-      const nextProgressVal = progress + (secondsSinceLastTick * frequency);
+      const nextProgressVal = progress + (secondsSinceLastTick *  (1 / frequency));
 
       // If this is the tick that pushes us into the next cycle, and we've
       // requested a stop, let's end this animation.
@@ -168,26 +156,26 @@ class WaveformPlayer extends PureComponent<Props, State> {
     });
   };
 
-  renderValues = ({ progress, amplitude, numOfCycles }: DynamicValues) => {
+  renderValues = ({ progress, amplitude, frequency }: DynamicValues) => {
     const { children } = this.props;
 
     // To appease React Motion, we have to return a React element, so we use
     // the self-erasing <Aux>. This is really just a bit of a hack; I shouldn't
     // really be using React Motion for this at all, I should just manage my own
     // spring values.
-    return <Aux>{children({ amplitude, numOfCycles, progress })}</Aux>;
+    return <Aux>{children({ amplitude, frequency, progress })}</Aux>;
   };
 
   render() {
-    const { amplitude, numOfCycles } = this.props;
+    const { amplitude, frequency } = this.props;
     const { progress } = this.state;
 
     return (
       <Motion
-        defaultStyle={{ progress: 0, amplitude, numOfCycles }}
+        defaultStyle={{ progress: 0, amplitude, frequency }}
         style={{
           amplitude: spring(amplitude),
-          numOfCycles: spring(numOfCycles),
+          frequency: spring(frequency),
           progress: spring(progress),
         }}
       >

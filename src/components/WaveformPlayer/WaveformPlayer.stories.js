@@ -55,55 +55,55 @@ storiesOf('WaveformPlayer', module)
   ))
   .add('playing', () => (
     <WaveformPlayer isPlaying>
-      {({ progress, numOfCycles }) => (
+      {({ progress, frequency }) => (
         <Waveform
           shape="sine"
           offset={convertProgressToCycle(progress)}
-          numOfCycles={numOfCycles}
+          frequency={frequency}
         />
       )}
     </WaveformPlayer>
   ))
   .add('playing (2Hz at 1 cycle)', () => (
     <WaveformPlayer isPlaying speed={2}>
-      {({ progress, numOfCycles }) => (
+      {({ progress, frequency }) => (
         <Waveform
           shape="sine"
           offset={convertProgressToCycle(progress)}
-          numOfCycles={numOfCycles}
+          frequency={frequency}
         />
       )}
     </WaveformPlayer>
   ))
   .add('playing (2Hz at 2 cycles)', () => (
-    <WaveformPlayer isPlaying speed={2} numOfCycles={2}>
-      {({ progress, numOfCycles }) => (
+    <WaveformPlayer isPlaying speed={2} frequency={2}>
+      {({ progress, frequency }) => (
         <Waveform
           shape="sine"
           offset={convertProgressToCycle(progress)}
-          numOfCycles={numOfCycles}
+          frequency={frequency}
         />
       )}
     </WaveformPlayer>
   ))
   .add('playing (5Hz at 2 cycles)', () => (
-    <WaveformPlayer isPlaying speed={5} numOfCycles={2}>
-      {({ progress, numOfCycles }) => (
+    <WaveformPlayer isPlaying speed={5} frequency={2}>
+      {({ progress, frequency }) => (
         <Waveform
           shape="sine"
           offset={convertProgressToCycle(progress)}
-          numOfCycles={numOfCycles}
+          frequency={frequency}
         />
       )}
     </WaveformPlayer>
   ))
   .add('playing (0.5Hz)', () => (
     <WaveformPlayer isPlaying speed={0.5}>
-      {({ progress, numOfCycles }) => (
+      {({ progress, frequency }) => (
         <Waveform
           shape="sine"
           offset={convertProgressToCycle(progress)}
-          numOfCycles={numOfCycles}
+          frequency={frequency}
         />
       )}
     </WaveformPlayer>

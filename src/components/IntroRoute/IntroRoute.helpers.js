@@ -24,6 +24,9 @@ export type StepData = {
   yAxisOpacity: number,
   showAmplitudeSlider: boolean,
   showFrequencySlider: boolean,
+  frequencySliderMin: number,
+  frequencySliderMax: number,
+  frequencySliderStep: number,
   showCycleIndicator: boolean,
 };
 
@@ -46,6 +49,9 @@ export const getDataForStep = (step: IntroStep): StepData => {
     yAxisOpacity: 1,
     showAmplitudeSlider: false,
     showFrequencySlider: false,
+    frequencySliderMin: 1,
+    frequencySliderMax: 6,
+    frequencySliderStep: 1,
     showCycleIndicator: false,
   };
 
@@ -145,6 +151,9 @@ export const getDataForStep = (step: IntroStep): StepData => {
         showYAxisIntercept: true,
         showAmplitudeSlider: true,
         showFrequencySlider: true,
+        frequencySliderMin: 0.2,
+        frequencySliderMax: 2.5,
+        frequencySliderStep: 0.1,
       };
     }
 

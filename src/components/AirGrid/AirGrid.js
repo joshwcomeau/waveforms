@@ -57,8 +57,6 @@ class AirGrid extends PureComponent<Props> {
       waveformProgress,
     } = this.props;
 
-    const cycle = (waveformProgress * 100) % 100;
-
     const { colWidth, rowHeight } = getDimensions(
       width,
       height,
@@ -68,37 +66,35 @@ class AirGrid extends PureComponent<Props> {
 
     const particleRadius = Math.min(colWidth, rowHeight) * 0.3;
 
-    // Canvases won't allow us to overflow. and our molecules can move outside
-    // the standard canvas dimensions.
-    // To maintain consistency with how I use SVG in this project (which is,
-    // the width/height isn't guaranteed to contain the SVG entirely).
-    // To solve this, we'll make it 2 rows/columns larger, and then offset that
-    // using margin so that it's "centered" with where it needs to be.
     const sidePadding = colWidth;
     const topBottomPadding = rowHeight;
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    range(0, numOfCols - 1).map(y => {
-      // Each cell will vibrate left/right depending on its current offset.
-      // The cells in a given column all move the same way, and so we'll do the
-      // calculation up here to avoid repeating work.
-      const wavePosition = getPositionAtPointRelativeToAxis(
-        waveformShape,
-        waveformFrequency,
-        waveformAmplitude,
-        cycle + waveformAmplitude * (100 - y * waveformFrequency)
-      );
+    range(0, numOfCols - 1).map(columnNum => {
+      const wavePosition = this.getCellDisplacement(columnNum);
 
-      return range(0, numOfRows - 1).map(x => {
-        const yInPixels = x * rowHeight + rowHeight / 2 + topBottomPadding;
+      return range(0, numOfRows - 1).map(rowNum => {
+        // We want to offset each molecule by half of the row/column size, so that
+        // the molecules sit in the center of the cell (rather than in the top
+        // left corner)
+        const yCenterOffset = rowHeight / 2;
+        const xCenterOffset = colWidth / 2;
 
-        // `xBaselineInPixels` gives us the center position for each molecule,
-        // before the current oscillation is applied.
-        const xBaselineInPixels = y * colWidth + colWidth / 2 + sidePadding;
+        // The `y` position is simple since cells don't move up and down.
+        // Put it in the right cell, move it to the center of the cell, and
+        // add the padding amount (see jsdoc of `getDimensions` in the helper
+        // file)
+        const yInPixels = rowNum * rowHeight + yCenterOffset + topBottomPadding;
+
+        // `x` is a bit more complicated since it moves side-to-side depending
+        // on the offset (and the column). Start by getting the 'baseline'
+        // position.
+        const xBaselineInPixels =
+          columnNum * colWidth + xCenterOffset + sidePadding;
 
         // Each molecule can move +/- by the column width (less, if the
-        // amplitude is less than 1).
+        // amplitude is less than 1). This
         const xInPixels = xBaselineInPixels + wavePosition * colWidth;
 
         this.ctx.beginPath();
@@ -107,6 +103,37 @@ class AirGrid extends PureComponent<Props> {
       });
     });
   }
+
+  getCellDisplacement = columnNum => {
+    // Each cell will translate from side to side. The columns are staggered,
+    // to represent how a wave moves through space.
+    const {
+      numOfCols,
+      waveformShape,
+      waveformFrequency,
+      waveformAmplitude,
+      waveformProgress,
+    } = this.props;
+
+    // if every column operated the same way, we could simply use `progress`,
+    // but we want to stagger them baed on their frequency.
+    // Let's assume that the total grid represents 1 second (same as waveform).
+    // Then, we can get the progress through the waveform by adding the number
+    // of milliseconds to the current offset
+    let columnOffset = columnNum / numOfCols;
+
+    // The effect is a little extreme, so let's reduce the influence of the
+    // columnOffset.
+
+    const progress = ((waveformProgress - columnOffset) * 100) % 100;
+
+    return getPositionAtPointRelativeToAxis(
+      waveformShape,
+      waveformFrequency,
+      waveformAmplitude,
+      progress
+    );
+  };
 
   captureRefs = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
     this.canvas = canvas;

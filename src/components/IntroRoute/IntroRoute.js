@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
-import { INTRO_STEPS } from '../../constants';
+import { INTRO_STEPS, WAVEFORM_ASPECT_RATIO } from '../../constants';
 import { debounce } from '../../utils';
 
 import Header from '../Header';
@@ -336,7 +336,7 @@ class IntroRoute extends PureComponent<Props, State> {
     return (
       <MaxWidthWrapper>
         <MainContent>
-          <WaveformWrapper>
+          <LeftColumnWrapper>
             <WaveformPlayer
               isPlaying={stepData.isPlaying}
               amplitude={
@@ -344,36 +344,36 @@ class IntroRoute extends PureComponent<Props, State> {
                   ? stepData.amplitudeOverride
                   : amplitude
               }
-              numOfCycles={
+              frequency={
                 typeof stepData.frequencyOverride === 'number'
                   ? stepData.frequencyOverride
                   : frequency
               }
-              speed={frequency}
             >
-              {({ amplitude, numOfCycles, progress }) => (
+              {({ amplitude, frequency, progress }) => (
                 <Aux>
                   <IntroRouteWaveform
                     amplitude={amplitude}
-                    numOfCycles={numOfCycles}
+                    frequency={frequency}
                     progress={progress}
                     handleUpdateAmplitude={this.handleUpdateAmplitude}
                     handleUpdateFrequency={this.handleUpdateFrequency}
                     stepData={stepData}
                   />
                   <IntroRouteAirGrid
-                    numOfRows={6}
-                    numOfCols={10}
+                    numOfRows={32}
+                    numOfCols={26}
                     amplitude={amplitude}
-                    numOfCycles={numOfCycles}
+                    frequency={frequency}
                     progress={progress}
                     stepData={stepData}
                   />
                 </Aux>
               )}
             </WaveformPlayer>
-          </WaveformWrapper>
-          <ScrollableTextWrapper>
+          </LeftColumnWrapper>
+
+          <RightColumnWrapper>
             {sections.map((section, index) => (
               <IntroRouteSection
                 key={section.id}
@@ -391,7 +391,7 @@ class IntroRoute extends PureComponent<Props, State> {
               </IntroRouteSection>
             ))}
             <BottomTextSpacer height={window.innerHeight} />
-          </ScrollableTextWrapper>
+          </RightColumnWrapper>
         </MainContent>
       </MaxWidthWrapper>
     );
@@ -403,12 +403,12 @@ const MainContent = styled.div`
   flex-direction: row;
 `;
 
-const WaveformWrapper = styled.div`
+const LeftColumnWrapper = styled.div`
   flex: 1;
   margin-right: 65px;
 `;
 
-const ScrollableTextWrapper = styled.div`
+const RightColumnWrapper = styled.div`
   margin-left: 50px;
   flex: 1;
 `;

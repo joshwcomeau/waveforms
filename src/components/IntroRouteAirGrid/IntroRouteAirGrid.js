@@ -2,6 +2,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { WAVEFORM_ASPECT_RATIO } from '../../constants';
+
 import AvailableWidth from '../AvailableWidth';
 import AirGrid from '../AirGrid';
 import FadeTransition from '../FadeTransition';
@@ -14,7 +16,7 @@ type Props = {
   numOfCols: number,
   shape: WaveformShape,
   amplitude: number,
-  numOfCycles: number,
+  frequency: number,
   progress: number,
   stepData: StepData,
 };
@@ -24,7 +26,7 @@ const IntroRouteAirGrid = ({
   numOfCols,
   shape,
   amplitude,
-  numOfCycles,
+  frequency,
   progress,
   stepData,
 }: Props) => {
@@ -38,12 +40,13 @@ const IntroRouteAirGrid = ({
         <AvailableWidth>
           {width => (
             <AirGrid
-              size={Math.round(width)}
+              width={Math.round(width)}
+              height={Math.round(width * WAVEFORM_ASPECT_RATIO + 30)}
               numOfRows={numOfRows}
-              numOfCols={numOfCols}
+              numOfCols={1 || numOfCols}
               waveformShape={shape}
               waveformAmplitude={amplitude}
-              waveformFrequency={numOfCycles}
+              waveformFrequency={frequency}
               waveformProgress={progress}
             />
           )}

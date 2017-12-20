@@ -10,11 +10,11 @@ import AirGrid from './AirGrid';
 storiesOf('AirGrid', module)
   .add('Default (1Hz, 1dB, 4x4)', () => (
     <WaveformPlayer isPlaying>
-      {({ amplitude, numOfCycles, progress }) => (
+      {({ amplitude, frequency, progress }) => (
         <AirGrid
           shape="sine"
           waveformAmplitude={amplitude}
-          waveformFrequency={numOfCycles}
+          waveformFrequency={frequency}
           waveformProgress={progress}
         />
       )}
@@ -22,11 +22,11 @@ storiesOf('AirGrid', module)
   ))
   .add('Quiet (1Hz, 0.5dB, 4x4)', () => (
     <WaveformPlayer isPlaying amplitude={0.5}>
-      {({ amplitude, numOfCycles, progress }) => (
+      {({ amplitude, frequency, progress }) => (
         <AirGrid
           shape="sine"
           waveformAmplitude={amplitude}
-          waveformFrequency={numOfCycles}
+          waveformFrequency={frequency}
           waveformProgress={progress}
         />
       )}
