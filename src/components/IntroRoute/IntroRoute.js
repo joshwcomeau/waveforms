@@ -15,7 +15,7 @@ import Aux from '../Aux';
 import WaveformPlayer from '../WaveformPlayer';
 import IntroRouteWaveform from '../IntroRouteWaveform';
 import IntroRouteAirGrid from '../IntroRouteAirGrid';
-import AirGrid from '../AirGrid';
+import Oscillator from '../Oscillator';
 import IntroRouteSection from '../IntroRouteSection';
 
 import { steps, stepsArray } from './IntroRoute.steps';
@@ -52,7 +52,7 @@ class IntroRoute extends PureComponent<Props, State> {
     amplitude: 1,
     frequency: 1,
     shape: DEFAULT_WAVEFORM_SHAPE,
-    isAudible: false,
+    isAudible: true, // TEMP
   };
 
   sectionRefs: Array<HTMLElement> = [];
@@ -73,6 +73,10 @@ class IntroRoute extends PureComponent<Props, State> {
 
   handleUpdateFrequency = (val: number) => {
     this.setState({ frequency: val });
+  };
+
+  handleToggleAudibility = (val: boolean) => {
+    this.setState({ isAudible: val });
   };
 
   handleResize = debounce(() => {
@@ -123,12 +127,19 @@ class IntroRoute extends PureComponent<Props, State> {
       shape,
       amplitude,
       frequency,
+      isAudible,
     } = this.state;
 
     const stepData = steps[currentStep];
 
     return (
       <MaxWidthWrapper>
+        <Oscillator
+          shape={shape}
+          amplitude={amplitude}
+          frequency={frequency * 100 + 100}
+          isAudible={isAudible}
+        />
         <MainContent>
           <LeftColumnWrapper>
             <WaveformPlayer

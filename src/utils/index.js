@@ -74,6 +74,18 @@ export const debounce = (callback, wait, timeoutId = null) => (...args) => {
 
 export const isEmpty = obj => Object.keys(obj).length === 0;
 
+const omit = function(obj, key) {
+  var newObj = {};
+
+  for (var name in obj) {
+    if (name !== key) {
+      newObj[name] = obj[name];
+    }
+  }
+
+  return newObj;
+};
+
 export const convertArrayToMap = list =>
   list.reduce(
     (acc, item) => ({
@@ -112,4 +124,37 @@ export const deleteCookie = key => {
   document.cookie = `${encodeURIComponent(
     key
   )}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+};
+
+type MapLikeObject = { [key: string]: any };
+
+// This method is used when comparing two sets of props
+// (eg. `componentDidUpdate`).
+// It's helpful for determining if only a single prop changed, and all others
+// remained the same
+export const allPropsSameExcept = (
+  changedPropKey: string,
+  oldProps: MapLikeObject,
+  newProps: MapLikeObject
+) => {
+  const oldPropsChangedProp = oldProps[changedPropKey];
+  const newPropsChangedProp = newProps[changedPropKey];
+
+  const oldPropsOtherProps = omit(oldProps, changedPropKey);
+  const newPropsOtherProps = omit(newProps, changedPropKey);
+
+  const isExceptionPropUnchanged = oldPropsChangedProp === newPropsChangedProp;
+
+  // If our main prop hasn't changed, we know this method is false, since that's
+  // a key part of the condition.
+  if (isExceptionPropUnchanged) {
+    return false;
+  }
+
+  // TODO: Check that both objects contain the same keys (no values absent in 1)
+
+  // If all other props are the same, our conditions have been met!
+  return Object.keys(oldPropsOtherProps).every(
+    key => oldProps[key] === newProps[key]
+  );
 };
