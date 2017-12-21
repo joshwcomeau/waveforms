@@ -18,7 +18,8 @@ export type IntroStep =
   | 'frequency-with-control'
   | 'how-sound-works-intro'
   | 'how-sound-works-air-grid'
-  | 'how-sound-works-air-grid-pt2';
+  | 'how-sound-works-air-grid-pt2'
+  | 'harmonics-intro';
 
 export const INTRO_STEPS: Array<IntroStep> = [
   'title',
@@ -33,6 +34,7 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'how-sound-works-intro',
   'how-sound-works-air-grid',
   'how-sound-works-air-grid-pt2',
+  'harmonics-intro',
 ];
 
 export const COLORS = {

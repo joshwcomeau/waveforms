@@ -246,7 +246,7 @@ export const steps = {
     showYAxisIntercept: true,
     children: (
       <Aux>
-        <SectionTitle>1. How Sound Works</SectionTitle>
+        <SectionTitle>2. How Sound Works</SectionTitle>
         <Paragraph>
           So, we've learned that waveforms are a graph showing amplitude changes
           over time, where amplitude swings between negative and positive
@@ -275,6 +275,7 @@ export const steps = {
     showYAxisIntercept: true,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
+    frequencySliderMax: 2,
 
     children: (
       <Aux>
@@ -334,6 +335,7 @@ export const steps = {
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     highlightAirGridColumn: true,
+    frequencySliderMax: 2,
 
     children: (
       <Aux>
@@ -342,6 +344,26 @@ export const steps = {
           particle moves back and forth. Does the pattern seem familiar? Each
           particle is moving in a sine wave, same as our waveform.
         </Paragraph>
+      </Aux>
+    ),
+  },
+  'harmonics-intro': {
+    ...defaults,
+    isPlaying: true,
+    frequencyOverride: 1,
+    amplitudeOverride: 1,
+    children: (
+      <Aux>
+        <SectionTitle>3. Harmonics</SectionTitle>
+        <Paragraph>
+          So far, we've been looking at the sine waveform exclusively, but there
+          are plenty of other waveforms!
+        </Paragraph>
+        <Paragraph>
+          We started with the sine because it is the purest-sounding: when a
+          sine wave plays at 440Hz, the only frequency you hear is 440Hz.
+        </Paragraph>
+        <Paragraph>Below the waveform, a</Paragraph>
       </Aux>
     ),
   },

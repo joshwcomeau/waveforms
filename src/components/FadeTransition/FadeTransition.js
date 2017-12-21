@@ -40,6 +40,7 @@ class FadeTransition extends PureComponent<Props> {
             {
               style: {
                 position: 'static',
+                display: 'block',
                 transition: `opacity ${duration}ms`,
                 opacity: transitionState === 'entered' ? 1 : 0,
                 pointerEvents: transitionState === 'entered' ? 'auto' : 'none',

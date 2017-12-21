@@ -149,7 +149,7 @@ class IntroRoute extends PureComponent<Props, State> {
                     stepData={stepData}
                   />
                   <IntroRouteAirGrid
-                    numOfRows={32}
+                    numOfRows={26}
                     numOfCols={26}
                     amplitude={amplitude}
                     frequency={frequency}
