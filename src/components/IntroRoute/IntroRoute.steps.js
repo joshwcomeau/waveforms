@@ -74,6 +74,7 @@ const defaults: StepData = {
   frequencySliderStep: 0.1,
   showCycleIndicator: false,
   highlightAirGridColumn: false,
+  getMargin: marginFunctions.large,
 };
 
 export const steps = {
@@ -178,19 +179,26 @@ export const steps = {
         </Paragraph>
 
         <Paragraph>
-          The wave has been updated to repeat twice. Instead of 1 sine waveform
-          cycle, you now have 2 sine waveform cycles!
+          The waveform we've been looking at is of a <em>sine wave</em>. This
+          refers to the "shape" of the line in the waveform graph. The sine wave
+          is "periodic": This means that the wave repeats.
         </Paragraph>
 
         <Paragraph>
-          Important to note, though: The amount of time hasn't changed, though.
-          This is still 1 second of audio.
+          Waveforms are windows into a wave over a specific amount of time. In
+          this case, our waveform covers two "periods" of a sine wave.
         </Paragraph>
 
         <Paragraph>
-          The number of cycles per second is known as the frequency. The unit of
-          measurement is called the Hertz (abbreviated as 'Hz'). The wave over
-          there is 2Hz, since the waveform repeats twice.
+          Important to note: The amount of time hasn't changed. This is still 1
+          second of audio. We've just squeezed two periods of the sine wave into
+          our waveform, instead of 1.
+        </Paragraph>
+
+        <Paragraph>
+          The number of periods per second is known as the frequency. The unit
+          of measurement is called the Hertz (abbreviated as 'Hz'). The wave
+          over there is 2Hz, since the waveform repeats twice.
         </Paragraph>
       </Aux>
     ),
@@ -204,9 +212,9 @@ export const steps = {
     children: (
       <Aux>
         <Paragraph>
-          Frequency is just the technical term for "pitch". When you sing an
-          "A4" note (The A in the middle of a standard piano), your throat
-          vibrates at 440Hz.
+          Frequency is just the technical term for "pitch". For example, When
+          you sing an "A4" note (The "A" in the middle of a typical piano), your
+          throat vibrates at 440Hz.
         </Paragraph>
         <Sidebar>
           <Paragraph>
@@ -230,8 +238,13 @@ export const steps = {
     children: (
       <Aux>
         <Paragraph>
-          As with amplitude, feel free to tweak the frequency to see how the
-          wave changes!
+          So, we now have control over 2 settings: <strong>amplitude</strong>{' '}
+          and <strong>frequency</strong>.
+        </Paragraph>
+
+        <Paragraph>
+          Play around with the sliders to see how they affect the waveform. If
+          you'd like, you can also enable sound, to hear how it sounds:
         </Paragraph>
       </Aux>
     ),

@@ -12,7 +12,7 @@ type Props = {
 
 const WaveformCycleIndicator = ({ frequency }: Props) => (
   <WaveformCycleIndicatorWrapper frequency={frequency}>
-    <CycleLabel>1 Cycle</CycleLabel>
+    <CycleLabel>1 Period</CycleLabel>
     <CycleIndicator />
   </WaveformCycleIndicatorWrapper>
 );

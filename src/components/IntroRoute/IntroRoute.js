@@ -30,6 +30,7 @@ type State = {
   amplitude: number,
   frequency: number,
   shape: WaveformShape,
+  isAudible: boolean,
 };
 
 type Section = {
@@ -51,6 +52,7 @@ class IntroRoute extends PureComponent<Props, State> {
     amplitude: 1,
     frequency: 1,
     shape: DEFAULT_WAVEFORM_SHAPE,
+    isAudible: false,
   };
 
   sectionRefs: Array<HTMLElement> = [];
@@ -170,11 +172,7 @@ class IntroRoute extends PureComponent<Props, State> {
               <IntroRouteSection
                 key={section.id}
                 id={section.id}
-                margin={
-                  section.getMargin
-                    ? section.getMargin(windowHeight)
-                    : marginFunctions.large(windowHeight)
-                }
+                margin={section.getMargin(windowHeight)}
                 onIntersect={this.handleIntersect}
                 isSelected={currentStep === section.id}
                 innerRef={elem => (this.sectionRefs[index] = elem)}
