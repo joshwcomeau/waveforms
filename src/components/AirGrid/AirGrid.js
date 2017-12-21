@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 
 import {
   COLORS,
+  DEFAULT_WAVEFORM_SHAPE,
   DEFAULT_WAVEFORM_SIZE,
   DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   DEFAULT_WAVEFORM_AMPLITUDE,
@@ -41,7 +42,7 @@ class AirGrid extends PureComponent<Props> {
     height: DEFAULT_WAVEFORM_SIZE * WAVEFORM_ASPECT_RATIO,
     numOfRows: DEFAULT_ROWS,
     numOfCols: DEFAULT_COLS,
-    waveformShape: 'sine',
+    waveformShape: DEFAULT_WAVEFORM_SHAPE,
     waveformFrequency: DEFAULT_WAVEFORM_NUM_OF_CYCLES,
     waveformAmplitude: DEFAULT_WAVEFORM_AMPLITUDE,
     highlightColumnIndex: null,

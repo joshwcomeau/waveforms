@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { INTRO_STEPS, COLORS } from '../../constants';
+import { INTRO_STEPS, COLORS, DEFAULT_WAVEFORM_SHAPE } from '../../constants';
 
 import Header from '../Header';
 import Paragraph from '../Paragraph';
@@ -57,7 +57,7 @@ const defaults: StepData = {
   frequencyOverride: null,
   amplitudeOverride: null,
   isPlaying: false,
-  waveformShape: 'sine',
+  waveformShape: DEFAULT_WAVEFORM_SHAPE,
   waveformColor: COLORS.blue[500],
   waveformOpacity: 1,
   showXAxis: true,

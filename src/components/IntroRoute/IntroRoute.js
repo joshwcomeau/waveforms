@@ -2,7 +2,11 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
-import { INTRO_STEPS, WAVEFORM_ASPECT_RATIO } from '../../constants';
+import {
+  INTRO_STEPS,
+  DEFAULT_WAVEFORM_SHAPE,
+  WAVEFORM_ASPECT_RATIO,
+} from '../../constants';
 import { debounce } from '../../utils';
 
 import AvailableWidth from '../AvailableWidth';
@@ -46,7 +50,7 @@ class IntroRoute extends PureComponent<Props, State> {
     windowHeight: window.innerHeight,
     amplitude: 1,
     frequency: 1,
-    shape: 'sine',
+    shape: DEFAULT_WAVEFORM_SHAPE,
   };
 
   sectionRefs: Array<HTMLElement> = [];

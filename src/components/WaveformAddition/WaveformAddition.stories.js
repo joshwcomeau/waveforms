@@ -2,11 +2,13 @@
 import React, { Component } from 'react';
 import { storiesOf } from '@storybook/react';
 
+import { DEFAULT_WAVEFORM_SHAPE } from '../../constants';
+
 import ValueGenerator from '../ValueGenerator';
 import WaveformAddition from './WaveformAddition';
 
 const defaultWaveformProps = {
-  shape: 'sine',
+  shape: DEFAULT_WAVEFORM_SHAPE,
   frequency: 1,
   amplitude: 0.5,
   offset: 0,
