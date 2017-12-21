@@ -41,13 +41,18 @@ const IntroRouteAirGrid = ({
           {width => (
             <AirGrid
               width={Math.round(width)}
-              height={Math.round(width * WAVEFORM_ASPECT_RATIO + 30)}
+              height={Math.round(width * WAVEFORM_ASPECT_RATIO + 10)}
               numOfRows={numOfRows}
               numOfCols={numOfCols}
               waveformShape={shape}
               waveformAmplitude={amplitude}
               waveformFrequency={frequency}
               waveformProgress={progress}
+              highlightColumnIndex={
+                stepData.highlightAirGridColumn
+                  ? Math.round(numOfCols / 2)
+                  : null
+              }
             />
           )}
         </AvailableWidth>

@@ -17,7 +17,8 @@ export type IntroStep =
   | 'frequency-introduction-pt2'
   | 'frequency-with-control'
   | 'how-sound-works-intro'
-  | 'how-sound-works-air-grid';
+  | 'how-sound-works-air-grid'
+  | 'how-sound-works-air-grid-pt2';
 
 export const INTRO_STEPS: Array<IntroStep> = [
   'title',
@@ -31,6 +32,7 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'frequency-with-control',
   'how-sound-works-intro',
   'how-sound-works-air-grid',
+  'how-sound-works-air-grid-pt2',
 ];
 
 export const COLORS = {
@@ -82,6 +84,8 @@ export const COLORS = {
     '50': '#FFFEFC',
   },
 };
+
+COLORS.primary = COLORS.blue;
 
 // Media queries
 export const BREAKPOINT_SIZES = {

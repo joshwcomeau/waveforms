@@ -38,6 +38,7 @@ export type StepData = {
   frequencySliderMax: number,
   frequencySliderStep: number,
   showCycleIndicator: boolean,
+  highlightAirGridColumn: boolean,
 
   // Section parameters
   getMargin: (windowWidth: number) => number,
@@ -72,6 +73,7 @@ const defaults: StepData = {
   frequencySliderMax: 3,
   frequencySliderStep: 0.1,
   showCycleIndicator: false,
+  highlightAirGridColumn: false,
 };
 
 export const steps = {
@@ -316,6 +318,30 @@ export const steps = {
             </a>
           </Paragraph>
         </Sidebar>
+      </Aux>
+    ),
+  },
+  'how-sound-works-air-grid-pt2': {
+    ...defaults,
+    showWaveform: false,
+    showAirGrid: true,
+    isPlaying: true,
+    waveformColor: COLORS.gray[700],
+    waveformOpacity: 0.5,
+    xAxisOpacity: 0.5,
+    yAxisOpacity: 0.5,
+    showYAxisIntercept: true,
+    showAmplitudeSlider: true,
+    showFrequencySlider: true,
+    highlightAirGridColumn: true,
+
+    children: (
+      <Aux>
+        <Paragraph>
+          How does this relate to our previous waveforms? Notice how a single
+          particle moves back and forth. Does the pattern seem familiar? Each
+          particle is moving in a sine wave, same as our waveform.
+        </Paragraph>
       </Aux>
     ),
   },

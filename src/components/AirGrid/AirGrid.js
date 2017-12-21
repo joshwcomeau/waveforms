@@ -29,6 +29,7 @@ type Props = {
   waveformFrequency: number,
   waveformAmplitude: number,
   waveformProgress: number,
+  highlightColumnIndex: ?number,
 };
 
 class AirGrid extends PureComponent<Props> {
@@ -43,6 +44,7 @@ class AirGrid extends PureComponent<Props> {
     waveformShape: 'sine',
     waveformFrequency: DEFAULT_WAVEFORM_NUM_OF_CYCLES,
     waveformAmplitude: DEFAULT_WAVEFORM_AMPLITUDE,
+    highlightColumnIndex: null,
   };
 
   componentDidUpdate() {
@@ -55,6 +57,7 @@ class AirGrid extends PureComponent<Props> {
       waveformShape,
       waveformAmplitude,
       waveformProgress,
+      highlightColumnIndex,
     } = this.props;
 
     const {
@@ -63,8 +66,6 @@ class AirGrid extends PureComponent<Props> {
       sidePadding,
       topBottomPadding,
     } = getDimensions(width, height, numOfRows, numOfCols);
-
-    const particleRadius = Math.min(colWidth, rowHeight) * 0.3;
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -97,8 +98,25 @@ class AirGrid extends PureComponent<Props> {
         const xInPixels =
           xBaselineInPixels + wavePosition * totalDisplacementAmount;
 
+        const particleRadius = Math.min(colWidth, rowHeight) * 0.3;
+
         this.ctx.beginPath();
         this.ctx.arc(xInPixels, yInPixels, particleRadius, 0, 2 * Math.PI);
+
+        // If we've provided a `highlightColumnIndex`, we want to color a
+        // specific column with our primary color.
+        // Additionally, if ANY `highlightColumnIndex` is provided, we want to
+        // soften all un-highlighted columns to a lighter gray.
+        // prettier-ignore
+        const baseColor = typeof highlightColumnIndex === 'number'
+          ? COLORS.gray[300]
+          : COLORS.gray[500];
+
+        // prettier-ignore
+        this.ctx.fillStyle = columnNum === highlightColumnIndex
+          ? COLORS.primary[500]
+          : baseColor;
+
         this.ctx.fill();
       });
     });
