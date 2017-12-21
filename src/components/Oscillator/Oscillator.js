@@ -45,11 +45,6 @@ class Oscillator extends PureComponent<Props> {
   componentDidUpdate(prevProps: Props) {
     const { shape, frequency, amplitude, isAudible } = this.props;
 
-    if (allPropsSameExcept('isAudible', this.props, prevProps)) {
-      this.updateAmplitude(isAudible ? amplitude : 0);
-      return;
-    }
-
     if (allPropsSameExcept('amplitude', this.props, prevProps)) {
       this.updateAmplitude(amplitude);
       return;
@@ -63,7 +58,7 @@ class Oscillator extends PureComponent<Props> {
     // For other changes like changes to the shape or the audible status
     if (this.props.isAudible) {
       this.stop();
-      window.setTimeout(this.play, FADE_DURATION);
+      this.play();
     } else {
       this.stop();
     }

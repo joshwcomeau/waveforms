@@ -17,6 +17,7 @@ import IntroRouteWaveform from '../IntroRouteWaveform';
 import IntroRouteAirGrid from '../IntroRouteAirGrid';
 import Oscillator from '../Oscillator';
 import IntroRouteSection from '../IntroRouteSection';
+import SoundButtonToggle from '../SoundButtonToggle';
 
 import { steps, stepsArray } from './IntroRoute.steps';
 
@@ -132,14 +133,26 @@ class IntroRoute extends PureComponent<Props, State> {
 
     const stepData = steps[currentStep];
 
+    // While our waveforms will render between 0.2Hz and 3Hz, we also have an
+    // oscillator that needs to vibrate at normal ranges.
+    // By multiplying by 100, we ensure that doubling the unit still augments
+    // the pitch by an octave. We also add 100 to make the low-end audible.
+    const adjustedAudibleFrequency = frequency * 100 + 100;
+
     return (
       <MaxWidthWrapper>
+        <SoundButtonToggle
+          isAudible={isAudible}
+          handleToggleAudibility={this.handleToggleAudibility}
+        />
+
         <Oscillator
           shape={shape}
           amplitude={amplitude}
-          frequency={frequency * 100 + 100}
+          frequency={adjustedAudibleFrequency}
           isAudible={isAudible}
         />
+
         <MainContent>
           <LeftColumnWrapper>
             <WaveformPlayer
@@ -168,7 +181,7 @@ class IntroRoute extends PureComponent<Props, State> {
                   <IntroRouteAirGrid
                     numOfRows={26}
                     numOfCols={26}
-                    amplitude={amplitude}
+                    adjustedAudibleFrequencyamplitude={amplitude}
                     frequency={frequency}
                     progress={progress}
                     stepData={stepData}

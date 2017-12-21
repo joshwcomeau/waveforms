@@ -18,13 +18,13 @@ const ICON_SIZE = 24;
 type Props = {
   icon?: AvailableIcon,
   type?: 'primary' | 'secondary',
-  onClick: () => void,
+  onClick?: () => void,
   children: React$Node,
 };
 
-const Button = ({ icon, type = 'primary', children }: Props) => {
+const Button = ({ icon, type = 'primary', onClick, children }: Props) => {
   return (
-    <ButtonElem type={type} hasIcon={!!icon}>
+    <ButtonElem type={type} hasIcon={!!icon} onClick={onClick}>
       {children}
       {icon && (
         <IconWrapper>
