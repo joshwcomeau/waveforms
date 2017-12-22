@@ -141,7 +141,6 @@ export const allPropsSameExcept = (
   const newPropsChangedProp = newProps[changedPropKey];
 
   const oldPropsOtherProps = omit(oldProps, changedPropKey);
-  const newPropsOtherProps = omit(newProps, changedPropKey);
 
   const isExceptionPropUnchanged = oldPropsChangedProp === newPropsChangedProp;
 

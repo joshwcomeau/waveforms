@@ -54,10 +54,6 @@ class AirGrid extends PureComponent<Props> {
       height,
       numOfRows,
       numOfCols,
-      waveformFrequency,
-      waveformShape,
-      waveformAmplitude,
-      waveformProgress,
       highlightColumnIndex,
     } = this.props;
 
@@ -73,7 +69,7 @@ class AirGrid extends PureComponent<Props> {
     range(0, numOfCols - 1).map(columnNum => {
       const wavePosition = this.getCellDisplacement(columnNum);
 
-      return range(0, numOfRows - 1).map(rowNum => {
+      return range(0, numOfRows - 1).forEach(rowNum => {
         // We want to offset each molecule by half of the row/column size, so that
         // the molecules sit in the center of the cell (rather than in the top
         // left corner)
@@ -157,20 +153,9 @@ class AirGrid extends PureComponent<Props> {
   };
 
   render() {
-    const {
-      width,
-      height,
-      numOfRows,
-      numOfCols,
-      waveformFrequency,
-      waveformShape,
-      waveformAmplitude,
-      waveformProgress,
-    } = this.props;
+    const { width, height, numOfRows, numOfCols } = this.props;
 
     const {
-      colWidth,
-      rowHeight,
       widthWithPadding,
       heightWithPadding,
       topBottomPadding,

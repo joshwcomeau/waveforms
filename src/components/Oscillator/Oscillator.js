@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 
 import { DEFAULT_WAVEFORM_SHAPE } from '../../constants';
 import { allPropsSameExcept } from '../../utils';
@@ -43,7 +43,7 @@ class Oscillator extends PureComponent<Props> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { shape, frequency, amplitude, isAudible } = this.props;
+    const { frequency, amplitude } = this.props;
 
     if (allPropsSameExcept('amplitude', this.props, prevProps)) {
       this.updateAmplitude(amplitude);

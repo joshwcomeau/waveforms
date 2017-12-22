@@ -2,14 +2,9 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
-import {
-  INTRO_STEPS,
-  DEFAULT_WAVEFORM_SHAPE,
-  WAVEFORM_ASPECT_RATIO,
-} from '../../constants';
+import { INTRO_STEPS, DEFAULT_WAVEFORM_SHAPE } from '../../constants';
 import { debounce } from '../../utils';
 
-import AvailableWidth from '../AvailableWidth';
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import Aux from '../Aux';
 import WaveformPlayer from '../WaveformPlayer';
@@ -18,7 +13,6 @@ import IntroRouteAirGrid from '../IntroRouteAirGrid';
 import Oscillator from '../Oscillator';
 import IntroRouteSection from '../IntroRouteSection';
 import SoundButtonToggle from '../SoundButtonToggle';
-import FadeTransition from '../FadeTransition';
 
 import { steps, stepsArray } from './IntroRoute.steps';
 
@@ -33,18 +27,6 @@ type State = {
   frequency: number,
   shape: WaveformShape,
   userEnabledSound: boolean,
-};
-
-type Section = {
-  id: IntroStep,
-  getMargin?: (windowHeight: number) => number,
-  children: React$Node,
-};
-
-const marginFunctions = {
-  none: windowHeight => 0,
-  small: windowHeight => windowHeight * 0.35,
-  large: windowHeight => windowHeight * 0.45,
 };
 
 class IntroRoute extends PureComponent<Props, State> {
@@ -104,7 +86,6 @@ class IntroRoute extends PureComponent<Props, State> {
   }, 500);
 
   handleIntersect = (id: IntroStep, entry: IntersectionObserverEntry) => {
-    const currentStepIndex = INTRO_STEPS.indexOf(this.state.currentStep);
     const intersectStepIndex = INTRO_STEPS.indexOf(id);
 
     // We don't yet know which direction they're scrolling in, but we can work

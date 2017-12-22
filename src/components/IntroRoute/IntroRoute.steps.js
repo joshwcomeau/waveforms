@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
-import { INTRO_STEPS, COLORS, DEFAULT_WAVEFORM_SHAPE } from '../../constants';
+import { COLORS, DEFAULT_WAVEFORM_SHAPE } from '../../constants';
 
 import Header from '../Header';
 import Paragraph from '../Paragraph';
@@ -8,7 +8,6 @@ import SectionTitle from '../SectionTitle';
 import Sidebar from '../Sidebar';
 import Aux from '../Aux';
 
-import type { IntroStep } from '../../constants';
 import type { WaveformShape } from '../../types';
 
 export type StepData = {

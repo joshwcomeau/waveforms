@@ -110,8 +110,6 @@ class WaveformPlayer extends PureComponent<Props, State> {
       const { frequency } = this.props;
       const { progress, stopRequestedAtCycle, lastTickAt } = this.state;
 
-      const period = 1 / frequency;
-
       if (!lastTickAt) {
         return;
       }

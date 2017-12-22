@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
-import { INTRO_STEPS, COLORS } from '../../constants';
+import { COLORS } from '../../constants';
 import { convertProgressToCycle } from '../../helpers/waveform.helpers';
 
 import Aux from '../Aux';
@@ -10,14 +10,13 @@ import AvailableWidth from '../AvailableWidth';
 import Row from '../Row';
 import Spacer from '../Spacer';
 import Waveform from '../Waveform';
-import WaveformPlayer from '../WaveformPlayer';
 import WaveformAxis from '../WaveformAxis';
 import WaveformIntercept from '../WaveformIntercept';
 import WaveformCycleIndicator from '../WaveformCycleIndicator';
 import FadeTransition from '../FadeTransition';
 import Slider from '../Slider';
 
-import type { StepData } from '../IntroRoute/IntroRoute.helpers';
+import type { StepData } from '../IntroRoute/IntroRoute.steps';
 
 type Props = {
   amplitude: number,

@@ -6,5 +6,6 @@ import { action } from '@storybook/addon-actions';
 import FrequencyGraph from './FrequencyGraph';
 
 storiesOf('FrequencyGraph', module)
-  .add('default', () => <FrequencyGraph />)
-  .add('Base frequency of 2', () => <FrequencyGraph baseFrequency={2} />);
+  .add('default (sine)', () => <FrequencyGraph />)
+  .add('sine, base frequency 2', () => <FrequencyGraph baseFrequency={2} />)
+  .add('triangle', () => <FrequencyGraph shape="triangle" />);
