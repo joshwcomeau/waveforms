@@ -196,3 +196,26 @@ export const applyWaveformAddition = (
 
 export const convertProgressToCycle = (progress: number) =>
   (progress * 100) % 100;
+
+type GetHarmonicsForWaveArgs = {
+  shape: WaveformShape,
+  baseFrequency: number,
+  baseAmplitude: number,
+  maxNumberToGenerate: number,
+};
+
+export const getHarmonicsForWave = ({
+  shape,
+  baseFrequency,
+  baseAmplitude,
+  maxNumberToGenerate,
+}: GetHarmonicsForWaveArgs) => {
+  switch (shape) {
+    // Sine waves have no harmonics
+    case 'sine':
+      return [];
+
+    default:
+      return [];
+  }
+};
