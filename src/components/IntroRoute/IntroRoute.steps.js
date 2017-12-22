@@ -39,6 +39,8 @@ export type StepData = {
   frequencySliderStep: number,
   showCycleIndicator: boolean,
   highlightAirGridColumn: boolean,
+  makeSoundToggleable: boolean,
+  showSoundTogglePlaceholder: boolean,
 
   // Section parameters
   getMargin: (windowWidth: number) => number,
@@ -58,7 +60,7 @@ const defaults: StepData = {
   amplitudeOverride: null,
   isPlaying: false,
   waveformShape: DEFAULT_WAVEFORM_SHAPE,
-  waveformColor: COLORS.blue[500],
+  waveformColor: COLORS.primary[500],
   waveformOpacity: 1,
   showXAxis: true,
   showYAxis: true,
@@ -74,6 +76,8 @@ const defaults: StepData = {
   frequencySliderStep: 0.1,
   showCycleIndicator: false,
   highlightAirGridColumn: false,
+  makeSoundToggleable: false,
+  showSoundTogglePlaceholder: false,
   getMargin: marginFunctions.large,
 };
 
@@ -101,6 +105,27 @@ export const steps = {
           This guide is primarily geared towards folks who produce music, but no
           prior knowledge is required. Even if you don't have any interest in
           music production, this guide may still interest you!
+        </Paragraph>
+      </Aux>
+    ),
+  },
+  'about-sound-toggling': {
+    ...defaults,
+    isPlaying: true,
+    showYAxis: false,
+    showSoundTogglePlaceholder: true,
+    getMargin: marginFunctions.small,
+    children: (
+      <Aux>
+        <Paragraph>
+          Because this guide deals with audio waveforms, it's beneficial to be
+          able to hear stuff. This way, when you change parameters, you can hear
+          the difference it makes.
+        </Paragraph>
+        <Paragraph>
+          That said, nobody likes webpages that autoplay sound. So, when there's
+          something to hear, a button will pop up in the top right corner to
+          toggle audio on/off.
         </Paragraph>
       </Aux>
     ),
@@ -235,6 +260,7 @@ export const steps = {
     getMargin: marginFunctions.small,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
+    makeSoundToggleable: true,
     children: (
       <Aux>
         <Paragraph>
@@ -244,7 +270,8 @@ export const steps = {
 
         <Paragraph>
           Play around with the sliders to see how they affect the waveform. If
-          you'd like, you can also enable sound, to hear how it sounds:
+          you'd like, you can also enable sound using the button in the top
+          right. This way, you can hear how these parameters affect the sound.
         </Paragraph>
       </Aux>
     ),

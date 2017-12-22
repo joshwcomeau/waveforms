@@ -20,12 +20,14 @@ const ButtonToggle = ({
   offIcon,
   handleClick = noop,
   children,
+  ...delegatedProps
 }: Props) => {
   return (
     <Button
       type={isToggled ? 'primary' : 'secondary'}
       icon={isToggled ? onIcon : offIcon}
       onClick={() => handleClick(!isToggled)}
+      {...delegatedProps}
     >
       {children}
     </Button>

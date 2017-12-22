@@ -18,6 +18,7 @@ import IntroRouteAirGrid from '../IntroRouteAirGrid';
 import Oscillator from '../Oscillator';
 import IntroRouteSection from '../IntroRouteSection';
 import SoundButtonToggle from '../SoundButtonToggle';
+import FadeTransition from '../FadeTransition';
 
 import { steps, stepsArray } from './IntroRoute.steps';
 
@@ -31,7 +32,7 @@ type State = {
   amplitude: number,
   frequency: number,
   shape: WaveformShape,
-  isAudible: boolean,
+  userEnabledSound: boolean,
 };
 
 type Section = {
@@ -53,7 +54,7 @@ class IntroRoute extends PureComponent<Props, State> {
     amplitude: 1,
     frequency: 1,
     shape: DEFAULT_WAVEFORM_SHAPE,
-    isAudible: true, // TEMP
+    userEnabledSound: false,
   };
 
   sectionRefs: Array<HTMLElement> = [];
@@ -77,7 +78,7 @@ class IntroRoute extends PureComponent<Props, State> {
   };
 
   handleToggleAudibility = (val: boolean) => {
-    this.setState({ isAudible: val });
+    this.setState({ userEnabledSound: val });
   };
 
   handleResize = debounce(() => {
@@ -128,10 +129,12 @@ class IntroRoute extends PureComponent<Props, State> {
       shape,
       amplitude,
       frequency,
-      isAudible,
+      userEnabledSound,
     } = this.state;
 
     const stepData = steps[currentStep];
+
+    const isAudible = userEnabledSound && stepData.makeSoundToggleable;
 
     // While our waveforms will render between 0.2Hz and 3Hz, we also have an
     // oscillator that needs to vibrate at normal ranges.
@@ -142,7 +145,8 @@ class IntroRoute extends PureComponent<Props, State> {
     return (
       <MaxWidthWrapper>
         <SoundButtonToggle
-          isAudible={isAudible}
+          isVisible={stepData.makeSoundToggleable}
+          isAudible={userEnabledSound}
           handleToggleAudibility={this.handleToggleAudibility}
         />
 

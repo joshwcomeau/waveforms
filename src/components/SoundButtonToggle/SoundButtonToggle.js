@@ -1,18 +1,35 @@
+// @flow
 import React from 'react';
 import styled from 'styled-components';
 
 import ButtonToggle from '../ButtonToggle';
+import FadeTransition from '../FadeTransition';
 
-const SoundButtonToggle = ({ isAudible, handleToggleAudibility }) => (
+export const BUTTON_SIZE = 135;
+
+type Props = {
+  isVisible: boolean,
+  isAudible: boolean,
+  handleToggleAudibility: (val: boolean) => void,
+};
+
+const SoundButtonToggle = ({
+  isVisible,
+  isAudible,
+  handleToggleAudibility,
+}: Props) => (
   <SoundButtonToggleWrapper>
-    <ButtonToggle
-      isToggled={isAudible}
-      onIcon="volumeOn"
-      offIcon="volumeOff"
-      handleClick={handleToggleAudibility}
-    >
-      Sound
-    </ButtonToggle>
+    <FadeTransition isVisible={isVisible}>
+      <ButtonToggle
+        width={BUTTON_SIZE}
+        isToggled={isAudible}
+        onIcon="volumeOn"
+        offIcon="volumeOff"
+        handleClick={handleToggleAudibility}
+      >
+        Sound
+      </ButtonToggle>
+    </FadeTransition>
   </SoundButtonToggleWrapper>
 );
 
