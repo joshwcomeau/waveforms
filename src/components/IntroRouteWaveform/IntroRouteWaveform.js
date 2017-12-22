@@ -86,7 +86,7 @@ class IntroRouteWaveform extends PureComponent<Props> {
         >
           <WaveformIntercept
             size={20}
-            color={COLORS.blue[500]}
+            color={COLORS.primary[500]}
             waveformSize={width}
             waveformShape={stepData.waveformShape}
             frequency={frequency}

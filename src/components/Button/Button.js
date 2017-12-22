@@ -62,6 +62,7 @@ const ButtonElem = styled.button`
   background-color: ${props => BUTTON_BACKGROUND_COLOR[props.type]};
   border: none;
   border-bottom: 2px solid ${props => BUTTON_BORDER_COLOR[props.type]};
+  cursor: pointer;
 `;
 
 const IconWrapper = styled.div`

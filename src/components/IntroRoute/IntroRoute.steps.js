@@ -40,7 +40,6 @@ export type StepData = {
   showCycleIndicator: boolean,
   highlightAirGridColumn: boolean,
   makeSoundToggleable: boolean,
-  showSoundTogglePlaceholder: boolean,
 
   // Section parameters
   getMargin: (windowWidth: number) => number,
@@ -77,7 +76,6 @@ const defaults: StepData = {
   showCycleIndicator: false,
   highlightAirGridColumn: false,
   makeSoundToggleable: false,
-  showSoundTogglePlaceholder: false,
   getMargin: marginFunctions.large,
 };
 
@@ -113,7 +111,7 @@ export const steps = {
     ...defaults,
     isPlaying: true,
     showYAxis: false,
-    showSoundTogglePlaceholder: true,
+    makeSoundToggleable: true,
     getMargin: marginFunctions.small,
     children: (
       <Aux>

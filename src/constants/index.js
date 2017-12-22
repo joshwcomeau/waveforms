@@ -10,6 +10,7 @@ export const DEFAULT_WAVEFORM_AMPLITUDE = 1;
 export type IntroStep =
   | 'title'
   | 'about-this-thing'
+  | 'about-sound-toggling'
   | 'intro-with-labels'
   | 'x-axis-time'
   | 'y-axis-amplitude'
@@ -25,6 +26,7 @@ export type IntroStep =
 export const INTRO_STEPS: Array<IntroStep> = [
   'title',
   'about-this-thing',
+  'about-sound-toggling',
   'intro-with-labels',
   'x-axis-time',
   'y-axis-amplitude',
@@ -38,7 +40,12 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'harmonics-intro',
 ];
 
-export const COLORS = {
+type Colors = {
+  [color: string]: {
+    [label: string | number]: string,
+  },
+};
+export const COLORS: Colors = {
   red: {
     '100': '#FFCDD2',
     '300': '#E57373',

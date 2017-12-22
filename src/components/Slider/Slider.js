@@ -69,7 +69,7 @@ injectGlobal`
   .rc-slider .rc-slider-handle {
     position: absolute;
     top: ${SLIDER_HEIGHT / 2 + SLIDER_BAR_HEIGHT / 2 + 'px'};
-    background: ${COLORS.blue[500]};
+    background: ${COLORS.primary[500]};
     width: ${SLIDER_HEIGHT + 'px'};
     height: ${SLIDER_HEIGHT + 'px'};
     transform: translate(-50%, -50%);
