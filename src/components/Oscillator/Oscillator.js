@@ -45,6 +45,12 @@ class Oscillator extends PureComponent<Props> {
   componentDidUpdate(prevProps: Props) {
     const { frequency, amplitude } = this.props;
 
+    // If we aren't currently playing the audio, and that hasn't changed,
+    // no update is necessary.
+    if (!prevProps.isAudible && !this.props.isAudible) {
+      return;
+    }
+
     if (allPropsSameExcept('amplitude', this.props, prevProps)) {
       this.updateAmplitude(amplitude);
       return;
