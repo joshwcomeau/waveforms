@@ -217,6 +217,19 @@ export const getHarmonicsForWave = ({
     case 'sine':
       return harmonics;
 
+    case 'sawtooth': {
+      return range(1, maxNumberToGenerate).map(i => {
+        // the first index would be our main wave; we're only interested in the
+        // harmonics.
+        const harmonicIndex = i + 1;
+
+        const frequency = baseFrequency * harmonicIndex;
+        const amplitude = baseAmplitude / frequency;
+
+        return { frequency, amplitude };
+      });
+    }
+
     case 'square': {
       return range(1, maxNumberToGenerate).map(i => {
         // Our index will be simple increments (1,2,3,4...)

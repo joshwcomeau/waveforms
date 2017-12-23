@@ -101,7 +101,7 @@ storiesOf('WaveformAddition', module)
     </ValueGenerator>
   ));
 
-['square', 'triangle'].forEach(shape => {
+['square', 'triangle', 'sawtooth'].forEach(shape => {
   storiesOf('WaveformAddition', module)
     .add(`${shape} wave (3 waves, animated)`, () => (
       <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
