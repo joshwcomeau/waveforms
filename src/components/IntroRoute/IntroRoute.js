@@ -186,7 +186,9 @@ class IntroRoute extends PureComponent<Props, State> {
                 isSelected={currentStep === section.id}
                 innerRef={elem => (this.sectionRefs[index] = elem)}
               >
-                {section.children}
+                {typeof section.children === 'function'
+                  ? section.children(this.state)
+                  : section.children}
               </IntroRouteSection>
             ))}
             <BottomTextSpacer height={window.innerHeight} />

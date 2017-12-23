@@ -7,6 +7,7 @@ import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 import Sidebar from '../Sidebar';
 import Aux from '../Aux';
+import FrequencyGraph from '../FrequencyGraph';
 
 import type { WaveformShape } from '../../types';
 
@@ -313,7 +314,6 @@ export const steps = {
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     frequencySliderMax: 2,
-
     children: (
       <Aux>
         <Paragraph>
@@ -373,7 +373,6 @@ export const steps = {
     showFrequencySlider: true,
     highlightAirGridColumn: true,
     frequencySliderMax: 2,
-
     children: (
       <Aux>
         <Paragraph>
@@ -387,20 +386,34 @@ export const steps = {
   'harmonics-intro': {
     ...defaults,
     isPlaying: true,
-    frequencyOverride: 1,
-    amplitudeOverride: 1,
-    children: (
+    showAmplitudeSlider: true,
+    showFrequencySlider: true,
+    children: ({ frequency, amplitude }) => (
       <Aux>
         <SectionTitle>3. Harmonics</SectionTitle>
         <Paragraph>
           So far, we've been looking at the sine waveform exclusively, but there
           are plenty of other waveforms!
         </Paragraph>
+
         <Paragraph>
-          We started with the sine because it is the purest-sounding: when a
-          sine wave plays at 440Hz, the only frequency you hear is 440Hz.
+          We started with the sine because it is the "fundamental" waveform.
+          What that means is that when a sine wave vibrates the air at 440Hz,
+          the only thing you hear is a 440Hz tone. Sine waves are the "vanilla"
+          wave; it doesn't have any bells or whistles.
         </Paragraph>
-        <Paragraph>Below the waveform, a</Paragraph>
+
+        <Paragraph>
+          To understand what this means, let's take a look at a graph of the
+          frequencies audible for a given waveform. Let's start with the sine
+          wave's graph:
+        </Paragraph>
+
+        <FrequencyGraph
+          shape="sine"
+          baseFrequency={frequency}
+          baseAmplitude={amplitude}
+        />
       </Aux>
     ),
   },
