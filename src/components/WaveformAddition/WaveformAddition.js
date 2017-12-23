@@ -35,7 +35,7 @@ const WaveformAddition = ({ size, waveforms, progress }: Props) => {
   // To avoid repeating work, get an array of waveform point arrays upfront,
   // to use while doing the addition.
   const waveformPointsArray = waveforms.map(waveform =>
-    getPointsForWaveform({ ...waveform, width: size }),
+    getPointsForWaveform({ ...waveform, width: size })
   );
 
   // We want to move every wave closer to our "ideal" wave, which is the sum
@@ -45,7 +45,7 @@ const WaveformAddition = ({ size, waveforms, progress }: Props) => {
   const idealWaveformPoints = applyWaveformAddition(
     waveformPointsArray[0],
     waveformPointsArray,
-    1,
+    1
   );
 
   // Now, for each wave, iterate through and compare it to the ideal wave.
@@ -54,9 +54,9 @@ const WaveformAddition = ({ size, waveforms, progress }: Props) => {
       return applyWaveformAddition(
         waveformPoints,
         [idealWaveformPoints],
-        progress,
+        progress
       );
-    },
+    }
   );
 
   const waveformsWithNewPoints = waveforms.map((waveform, index) => ({

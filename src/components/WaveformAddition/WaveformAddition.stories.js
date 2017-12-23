@@ -99,92 +99,96 @@ storiesOf('WaveformAddition', module)
         />
       )}
     </ValueGenerator>
-  ))
-  .add('Square wave (3 waves, animated)', () => (
-    <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
-      {value => (
-        <WaveformAddition
-          waveforms={[
-            { ...defaultWaveformProps, color: RED },
-            ...getHarmonicsForWave({
-              shape: 'square',
-              baseFrequency: 1,
-              baseAmplitude: 0.5,
-              maxNumberToGenerate: 3,
-            }).map(harmonic => ({
-              ...defaultWaveformProps,
-              ...harmonic,
-              color: BLUE,
-            })),
-          ]}
-          progress={value / 100}
-        />
-      )}
-    </ValueGenerator>
-  ))
-  .add('Square wave (8 waves, animated)', () => (
-    <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
-      {value => (
-        <WaveformAddition
-          waveforms={[
-            { ...defaultWaveformProps, color: RED },
-            ...getHarmonicsForWave({
-              shape: 'square',
-              baseFrequency: 1,
-              baseAmplitude: 0.5,
-              maxNumberToGenerate: 8,
-            }).map(harmonic => ({
-              ...defaultWaveformProps,
-              ...harmonic,
-              color: BLUE,
-            })),
-          ]}
-          progress={value / 100}
-        />
-      )}
-    </ValueGenerator>
-  ))
-  .add('Square wave (15 waves, animated)', () => (
-    <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
-      {value => (
-        <WaveformAddition
-          waveforms={[
-            { ...defaultWaveformProps, color: RED },
-            ...getHarmonicsForWave({
-              shape: 'square',
-              baseFrequency: 1,
-              baseAmplitude: 0.5,
-              maxNumberToGenerate: 15,
-            }).map(harmonic => ({
-              ...defaultWaveformProps,
-              ...harmonic,
-              color: BLUE,
-            })),
-          ]}
-          progress={value / 100}
-        />
-      )}
-    </ValueGenerator>
-  ))
-  .add('Square wave (100 waves, animated)', () => (
-    <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
-      {value => (
-        <WaveformAddition
-          waveforms={[
-            { ...defaultWaveformProps, color: RED },
-            ...getHarmonicsForWave({
-              shape: 'square',
-              baseFrequency: 1,
-              baseAmplitude: 0.5,
-              maxNumberToGenerate: 100,
-            }).map(harmonic => ({
-              ...defaultWaveformProps,
-              ...harmonic,
-              color: BLUE,
-            })),
-          ]}
-          progress={value / 100}
-        />
-      )}
-    </ValueGenerator>
   ));
+
+['square', 'triangle'].forEach(shape => {
+  storiesOf('WaveformAddition', module)
+    .add(`${shape} wave (3 waves, animated)`, () => (
+      <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
+        {value => (
+          <WaveformAddition
+            waveforms={[
+              { ...defaultWaveformProps, color: RED },
+              ...getHarmonicsForWave({
+                shape,
+                baseFrequency: 1,
+                baseAmplitude: 0.5,
+                maxNumberToGenerate: 3,
+              }).map(harmonic => ({
+                ...defaultWaveformProps,
+                ...harmonic,
+                color: BLUE,
+              })),
+            ]}
+            progress={value / 100}
+          />
+        )}
+      </ValueGenerator>
+    ))
+    .add(`${shape} wave (8 waves, animated)`, () => (
+      <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
+        {value => (
+          <WaveformAddition
+            waveforms={[
+              { ...defaultWaveformProps, color: RED },
+              ...getHarmonicsForWave({
+                shape,
+                baseFrequency: 1,
+                baseAmplitude: 0.5,
+                maxNumberToGenerate: 8,
+              }).map(harmonic => ({
+                ...defaultWaveformProps,
+                ...harmonic,
+                color: BLUE,
+              })),
+            ]}
+            progress={value / 100}
+          />
+        )}
+      </ValueGenerator>
+    ))
+    .add(`${shape} wave (15 waves, animated)`, () => (
+      <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
+        {value => (
+          <WaveformAddition
+            waveforms={[
+              { ...defaultWaveformProps, color: RED },
+              ...getHarmonicsForWave({
+                shape,
+                baseFrequency: 1,
+                baseAmplitude: 0.5,
+                maxNumberToGenerate: 15,
+              }).map(harmonic => ({
+                ...defaultWaveformProps,
+                ...harmonic,
+                color: BLUE,
+              })),
+            ]}
+            progress={value / 100}
+          />
+        )}
+      </ValueGenerator>
+    ))
+    .add(`${shape} wave (100 waves, animated)`, () => (
+      <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
+        {value => (
+          <WaveformAddition
+            waveforms={[
+              { ...defaultWaveformProps, color: RED },
+              ...getHarmonicsForWave({
+                shape,
+                baseFrequency: 1,
+                baseAmplitude: 0.5,
+                maxNumberToGenerate: 100,
+              }).map(harmonic => ({
+                ...defaultWaveformProps,
+                ...harmonic,
+                color: BLUE,
+              })),
+            ]}
+            progress={value / 100}
+          />
+        )}
+      </ValueGenerator>
+    ));
+});

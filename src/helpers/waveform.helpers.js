@@ -217,21 +217,79 @@ export const getHarmonicsForWave = ({
     case 'sine':
       return harmonics;
 
-    case 'triangle': {
-      return range(1, maxNumberToGenerate * 2, 2).map(i => {
-        // `i` maps from an array of odd harmonics (1, 3, 5, 7, 9...)
-        const frequency = baseFrequency * i;
-        const amplitude = 1 / i;
+    case 'square': {
+      return range(1, maxNumberToGenerate).map(i => {
+        // Our index will be simple increments (1,2,3,4...)
+        // We're only interested in ODD harmonics for square waves, though
+        // (3, 5, 7, 9...)
+        //
+        // We want to do the following conversion:
+        //
+        // Index | Harmonic
+        //   1   |    3
+        //   2   |    5
+        //   3   |    7
+        //   4   |    9
+        //
+        // Looking at the numbers, a simple formula presents itself:
+        const harmonicIndex = i * 2 + 1;
+
+        const frequency = baseFrequency * harmonicIndex;
+        const amplitude = baseAmplitude / frequency;
 
         return { frequency, amplitude };
       });
     }
 
-    case 'square': {
-      return range(3, maxNumberToGenerate * 2 + 2, 2).map(i => {
-        // `i` maps from an array of odd harmonics (1, 3, 5, 7, 9...)
-        const frequency = baseFrequency * i;
-        const amplitude = 1 / (i * 2);
+    case 'triangle': {
+      // Triangles are similar to squares - they feature odd harmonics at
+      // ever-increasing amplitudes - but with one wrinkle: the phase is
+      // inverted for every second harmonic.
+      return range(1, maxNumberToGenerate).map(i => {
+        const harmonicIndex = i * 2 + 1;
+
+        // Triangles alternate phases.
+        // To understand this, first we need to understand that these two things
+        // are equivalent:
+        //
+        // - cut the offset of the waveform by π (AKA 50%)
+        // - Multiplying the amplitude by -1
+        //
+        // The reason for this makes sense if you imagine both scenarios.
+        // A periodic waveform like the triangle can be thought of in 2 "halves"
+        // the first half is a positive triangle, the second half is negative.
+        //
+        //   First
+        //    /\ |
+        //  /   \|
+        //  -----|------/-
+        //       |\   /
+        //       | \/
+        //       |Second
+        //
+        // When we rotate the offset by 50%, we invert it:
+        //
+        //           Second
+        //             /\
+        //           /   \
+        //  \------/------\
+        //   \   /
+        //    \/
+        //  First
+        //
+        // Similarly, if we multiply every point's amplitude by -1, we achieve
+        // the exact same effect, through a different mechanism; instead of
+        // pulling the waveform forward by 50%, we rotate it across a 3D axis
+        // (imagine flipping a sign away from you to be upside down).
+        //
+        // So yeah, for triangles to work, we need to invert every second
+        // wave that we add.
+        const isOddHarmonic = i % 2 !== 0;
+        const amplitudePhaseMultiplier = isOddHarmonic ? -1 : 1;
+
+        const frequency = baseFrequency * harmonicIndex;
+        const amplitude =
+          baseAmplitude / frequency ** 2 * amplitudePhaseMultiplier;
 
         return { frequency, amplitude };
       });
