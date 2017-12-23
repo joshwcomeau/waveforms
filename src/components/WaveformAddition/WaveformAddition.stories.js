@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { storiesOf } from '@storybook/react';
 
 import { DEFAULT_WAVEFORM_SHAPE } from '../../constants';
+import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
 
 import ValueGenerator from '../ValueGenerator';
 import WaveformAddition from './WaveformAddition';
@@ -99,48 +100,88 @@ storiesOf('WaveformAddition', module)
       )}
     </ValueGenerator>
   ))
-  .add('Square wave (5 waves, animated)', () => (
+  .add('Square wave (3 waves, animated)', () => (
     <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
       {value => (
         <WaveformAddition
           waveforms={[
             { ...defaultWaveformProps, color: RED },
-            {
+            ...getHarmonicsForWave({
+              shape: 'square',
+              baseFrequency: 1,
+              baseAmplitude: 0.5,
+              maxNumberToGenerate: 3,
+            }).map(harmonic => ({
               ...defaultWaveformProps,
+              ...harmonic,
               color: BLUE,
-              frequency: 3,
-              amplitude: 1 / 6,
-            },
-            {
+            })),
+          ]}
+          progress={value / 100}
+        />
+      )}
+    </ValueGenerator>
+  ))
+  .add('Square wave (8 waves, animated)', () => (
+    <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
+      {value => (
+        <WaveformAddition
+          waveforms={[
+            { ...defaultWaveformProps, color: RED },
+            ...getHarmonicsForWave({
+              shape: 'square',
+              baseFrequency: 1,
+              baseAmplitude: 0.5,
+              maxNumberToGenerate: 8,
+            }).map(harmonic => ({
               ...defaultWaveformProps,
+              ...harmonic,
               color: BLUE,
-              frequency: 5,
-              amplitude: 1 / 10,
-            },
-            {
+            })),
+          ]}
+          progress={value / 100}
+        />
+      )}
+    </ValueGenerator>
+  ))
+  .add('Square wave (15 waves, animated)', () => (
+    <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
+      {value => (
+        <WaveformAddition
+          waveforms={[
+            { ...defaultWaveformProps, color: RED },
+            ...getHarmonicsForWave({
+              shape: 'square',
+              baseFrequency: 1,
+              baseAmplitude: 0.5,
+              maxNumberToGenerate: 15,
+            }).map(harmonic => ({
               ...defaultWaveformProps,
+              ...harmonic,
               color: BLUE,
-              frequency: 7,
-              amplitude: 1 / 14,
-            },
-            {
+            })),
+          ]}
+          progress={value / 100}
+        />
+      )}
+    </ValueGenerator>
+  ))
+  .add('Square wave (100 waves, animated)', () => (
+    <ValueGenerator from={0} to={100} mode="oscillate" updateEvery={1000}>
+      {value => (
+        <WaveformAddition
+          waveforms={[
+            { ...defaultWaveformProps, color: RED },
+            ...getHarmonicsForWave({
+              shape: 'square',
+              baseFrequency: 1,
+              baseAmplitude: 0.5,
+              maxNumberToGenerate: 100,
+            }).map(harmonic => ({
               ...defaultWaveformProps,
+              ...harmonic,
               color: BLUE,
-              frequency: 9,
-              amplitude: 1 / 18,
-            },
-            {
-              ...defaultWaveformProps,
-              color: BLUE,
-              frequency: 11,
-              amplitude: 1 / 22,
-            },
-            {
-              ...defaultWaveformProps,
-              color: BLUE,
-              frequency: 13,
-              amplitude: 1 / 26,
-            },
+            })),
           ]}
           progress={value / 100}
         />

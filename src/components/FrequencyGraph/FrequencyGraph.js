@@ -39,6 +39,8 @@ const FrequencyGraph = ({
     }),
   ];
 
+  console.log(harmonics);
+
   const xAxisValues = [
     { label: baseFrequency * 1 + 'Hz', position: VIEWBOX_WIDTH * 0.1 },
     { label: baseFrequency * 2 + 'Hz', position: VIEWBOX_WIDTH * 0.2 },

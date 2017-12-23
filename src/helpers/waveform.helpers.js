@@ -218,21 +218,23 @@ export const getHarmonicsForWave = ({
       return harmonics;
 
     case 'triangle': {
-      const firstHarmonicFrequency = baseFrequency ** 2;
+      return range(1, maxNumberToGenerate * 2, 2).map(i => {
+        // `i` maps from an array of odd harmonics (1, 3, 5, 7, 9...)
+        const frequency = baseFrequency * i;
+        const amplitude = 1 / i;
 
-      const maxHarmonicFrequency =
-        firstHarmonicFrequency * 2 ** maxNumberToGenerate;
+        return { frequency, amplitude };
+      });
+    }
 
-      let harmonicFrequency = firstHarmonicFrequency;
+    case 'square': {
+      return range(3, maxNumberToGenerate * 2 + 2, 2).map(i => {
+        // `i` maps from an array of odd harmonics (1, 3, 5, 7, 9...)
+        const frequency = baseFrequency * i;
+        const amplitude = 1 / (i * 2);
 
-      while (harmonicFrequency <= maxHarmonicFrequency) {
-        harmonics.push({
-          frequency: harmonicFrequency,
-          amplitude: i / harmonicFrequency * 2,
-        });
-      }
-
-      return harmonics;
+        return { frequency, amplitude };
+      });
     }
 
     default:
