@@ -2,7 +2,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { DEFAULT_WAVEFORM_SHAPE } from '../../constants/index';
+import { DEFAULT_WAVEFORM_SHAPE, COLORS } from '../../constants';
+import { range } from '../../utils';
 import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
 
 import Aux from '../Aux';
@@ -35,21 +36,31 @@ const FrequencyGraph = ({
       shape,
       baseFrequency,
       baseAmplitude,
-      maxNumberToGenerate: 8,
+      maxNumberToGenerate: 9,
     }),
   ];
 
-  const xAxisValues = [
-    { label: baseFrequency * 1 + 'Hz', position: VIEWBOX_WIDTH * 0.1 },
-    { label: baseFrequency * 2 + 'Hz', position: VIEWBOX_WIDTH * 0.2 },
-    { label: baseFrequency * 3 + 'Hz', position: VIEWBOX_WIDTH * 0.3 },
-    { label: baseFrequency * 4 + 'Hz', position: VIEWBOX_WIDTH * 0.4 },
-    { label: baseFrequency * 5 + 'Hz', position: VIEWBOX_WIDTH * 0.5 },
-    { label: baseFrequency * 6 + 'Hz', position: VIEWBOX_WIDTH * 0.6 },
-    { label: baseFrequency * 7 + 'Hz', position: VIEWBOX_WIDTH * 0.7 },
-    { label: baseFrequency * 8 + 'Hz', position: VIEWBOX_WIDTH * 0.8 },
-    { label: baseFrequency * 9 + 'Hz', position: VIEWBOX_WIDTH * 0.9 },
-  ];
+  const NUMBER_OF_X_AXIS_POINTS = 20;
+  const STEP = 1;
+
+  const MAX_FREQUENCY = baseFrequency * NUMBER_OF_X_AXIS_POINTS * STEP;
+
+  const xAxisValues = range(1, NUMBER_OF_X_AXIS_POINTS * STEP - 1, STEP).map(
+    index => ({
+      label: index % 2 !== 0 ? baseFrequency * index + 'Hz' : '',
+      position: VIEWBOX_WIDTH * (index / NUMBER_OF_X_AXIS_POINTS / STEP),
+    })
+  );
+
+  const amplitudeLines = range(1, 10).map(i => (
+    <AmplitudeLine
+      key={i}
+      x1={0}
+      y1={VIEWBOX_HEIGHT * (i / 10)}
+      x2={VIEWBOX_WIDTH}
+      y2={VIEWBOX_HEIGHT * (i / 10)}
+    />
+  ));
 
   return (
     <svg
@@ -58,12 +69,35 @@ const FrequencyGraph = ({
       height={height}
       viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
     >
-      <XAxis
-        x1={0}
-        y1={VIEWBOX_HEIGHT}
-        x2={VIEWBOX_WIDTH}
-        y2={VIEWBOX_HEIGHT}
-      />
+      {amplitudeLines}
+
+      {harmonics.map(({ frequency, amplitude }, index) => {
+        // We need to figure out where in our scale this frequency falls.
+        // If we have a frequency of 5hz when the range is 0-10hz, it should
+        // be drawn halfway through the viewBOx width
+        const progress = frequency / MAX_FREQUENCY;
+        const xCoordinate = VIEWBOX_WIDTH * progress;
+
+        const yCoordinate =
+          VIEWBOX_HEIGHT - VIEWBOX_HEIGHT * Math.abs(amplitude);
+
+        return (
+          <Aux key={index}>
+            <Bar
+              x1={xCoordinate}
+              y1={VIEWBOX_HEIGHT}
+              x2={xCoordinate}
+              y2={yCoordinate}
+            />
+          </Aux>
+        );
+      })}
+
+      {/* X Axis */}
+      <Axis x1={0} y1={VIEWBOX_HEIGHT} x2={VIEWBOX_WIDTH} y2={VIEWBOX_HEIGHT} />
+      {/* Y Axis */}
+      <Axis x1={0} y1={0} x2={0} y2={VIEWBOX_HEIGHT} />
+
       {xAxisValues.map(({ label, position }, index) => (
         <Aux key={index}>
           <line
@@ -79,37 +113,23 @@ const FrequencyGraph = ({
           </AxisLabel>
         </Aux>
       ))}
-      {harmonics.map(({ frequency, amplitude }, index) => {
-        // We need to figure out where in our scale this frequency falls.
-        // If we have a frequency of 5hz when the range is 0-10hz, it should
-        // be drawn halfway through the viewBOx width
-        const progress = frequency / (baseFrequency * 10);
-        const xCoordinate = VIEWBOX_WIDTH * progress;
-
-        const yCoordinate = VIEWBOX_HEIGHT - VIEWBOX_HEIGHT * amplitude;
-
-        return (
-          <Aux key={index}>
-            <Bar
-              x1={xCoordinate}
-              y1={VIEWBOX_HEIGHT}
-              x2={xCoordinate}
-              y2={yCoordinate}
-            />
-          </Aux>
-        );
-      })}
     </svg>
   );
 };
 
-const XAxis = styled.line`
-  stroke: black;
+const Axis = styled.line`
+  stroke: ${COLORS.gray[700]};
   stroke-width: 0.5;
+  stroke-linecap: round;
+`;
+
+const AmplitudeLine = styled.line`
+  stroke: ${COLORS.gray[300]};
+  stroke-width: 0.1;
 `;
 
 const Bar = styled.line`
-  stroke: red;
+  stroke: ${COLORS.primary[500]};
   stroke-width: 2;
 `;
 
@@ -121,7 +141,6 @@ const AxisLabel = styled.text`
     width and viewBox width so that it can be calculated dynamically?
   */
   font-size: 2.5px;
-  font-family: ;
 `;
 
 export default FrequencyGraph;
