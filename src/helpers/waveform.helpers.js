@@ -212,20 +212,24 @@ export const getHarmonicsForWave = ({
 }: GetHarmonicsForWaveArgs) => {
   const harmonics = [];
 
-  console.log(maxNumberToGenerate);
-
   switch (shape) {
     // Sine waves have no harmonics
     case 'sine':
       return harmonics;
 
     case 'triangle': {
-      for (let i = 0; i < maxNumberToGenerate; i++) {
-        const n = 2 * i + 1;
+      const firstHarmonicFrequency = baseFrequency ** 2;
 
-        const thing = Math.pow(-1, i) * Math.pow(n, -2) * Math.sin(n);
+      const maxHarmonicFrequency =
+        firstHarmonicFrequency * 2 ** maxNumberToGenerate;
 
-        console.log({ thing });
+      let harmonicFrequency = firstHarmonicFrequency;
+
+      while (harmonicFrequency <= maxHarmonicFrequency) {
+        harmonics.push({
+          frequency: harmonicFrequency,
+          amplitude: i / harmonicFrequency * 2,
+        });
       }
 
       return harmonics;
