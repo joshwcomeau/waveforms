@@ -15,6 +15,8 @@ type Props = {
   shape?: WaveformShape,
   baseFrequency?: number,
   baseAmplitude?: number,
+  xMin?: number,
+  xMax?: number,
 };
 
 const ASPECT_RATIO = 0.6;
@@ -26,6 +28,9 @@ const FrequencyGraph = ({
   shape = DEFAULT_WAVEFORM_SHAPE,
   baseFrequency = 1,
   baseAmplitude = 1,
+  xMin = 0,
+  xMax = 20,
+  step = 1,
 }: Props) => {
   const harmonics = [
     { frequency: baseFrequency, amplitude: baseAmplitude },
@@ -33,29 +38,24 @@ const FrequencyGraph = ({
       shape,
       baseFrequency,
       baseAmplitude,
-      maxNumberToGenerate: 20,
+      maxNumberToGenerate: xMax,
     }),
   ];
 
-  const NUMBER_OF_X_AXIS_POINTS = 20;
-  const STEP = 1;
-
-  const MAX_FREQUENCY = baseFrequency * NUMBER_OF_X_AXIS_POINTS * STEP;
-
   // Filter out any harmonics that are too high-frequency to draw.
   const drawableHarmonics = harmonics.filter(
-    harmonic => harmonic.frequency < MAX_FREQUENCY
+    harmonic => harmonic.frequency < xMax
   );
 
-  const xAxisValues = range(1, NUMBER_OF_X_AXIS_POINTS * STEP - 1, STEP).map(
-    index => ({
-      label: index % 2 !== 0 ? roundTo(baseFrequency * index, 1) + 'Hz' : '',
-      position: VIEWBOX_WIDTH * (index / NUMBER_OF_X_AXIS_POINTS / STEP),
-    })
-  );
+  // For our X axis values, we'll add as many points as are specified by our
+  // props.
+  const xAxisValues = range(xMin, xMax * step, step).map(index => ({
+    label: index % 2 !== 0 ? index + 'Hz' : '',
+    position: VIEWBOX_WIDTH * (index / xMax / step),
+  }));
 
   const yAxisValues = range(0, 0.9, 0.1).map(index => ({
-    label: index % 0.5 === 0 ? index : '',
+    label: index % 0.5 === 0 ? 1 - index : '',
     position: VIEWBOX_HEIGHT * (index / 1),
   }));
 
@@ -70,17 +70,14 @@ const FrequencyGraph = ({
   ));
 
   return (
-    <svg
-      style={{ overflow: 'visible' }}
-      viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
-    >
+    <FrequencyGraphSvg viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}>
       {amplitudeLines}
 
       {drawableHarmonics.map(({ frequency, amplitude }, index) => {
         // We need to figure out where in our scale this frequency falls.
         // If we have a frequency of 5hz when the range is 0-10hz, it should
         // be drawn halfway through the viewBOx width
-        const progress = frequency / MAX_FREQUENCY;
+        const progress = frequency / xMax;
         const xCoordinate = VIEWBOX_WIDTH * progress;
 
         const yCoordinate =
@@ -105,8 +102,15 @@ const FrequencyGraph = ({
         x2={VIEWBOX_WIDTH + 3}
         y2={VIEWBOX_HEIGHT}
       />
+      <AxisLabel x={VIEWBOX_WIDTH} y={VIEWBOX_HEIGHT} dx={-13} dy={10}>
+        Frequency
+      </AxisLabel>
+
       {/* Y Axis */}
       <Axis x1={0} y1={-3} x2={0} y2={VIEWBOX_HEIGHT} />
+      <AxisLabel x={0} y={0} dx={-10} dy={0} transform="rotate(270,23,27)">
+        Amplitude
+      </AxisLabel>
 
       {xAxisValues.map(({ label, position }, index) => (
         <Aux key={index}>
@@ -116,28 +120,40 @@ const FrequencyGraph = ({
             x2={position}
             y2={VIEWBOX_HEIGHT + (label ? 2 : 1)}
           />
-          <AxisLabel x={position} y={VIEWBOX_HEIGHT + 5} dx={-2}>
+          <AxisNubLabel x={position} y={VIEWBOX_HEIGHT + 5} dx={-2}>
             {label}
-          </AxisLabel>
+          </AxisNubLabel>
         </Aux>
       ))}
 
       {yAxisValues.map(({ label, position }, index) => (
         <Aux key={index}>
           <AxisNub x1={label ? -2 : -1} y1={position} x2={0} y2={position} />
-          <AxisLabel x={-5} y={position} dx={-0.5} dy={0.85}>
+          <AxisNubLabel x={-5} y={position} dx={-0.5} dy={0.85}>
             {label}
-          </AxisLabel>
+          </AxisNubLabel>
         </Aux>
       ))}
-    </svg>
+    </FrequencyGraphSvg>
   );
 };
+
+const FrequencyGraphSvg = styled.svg`
+  overflow: visible;
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
+`;
 
 const Axis = styled.line`
   stroke: ${COLORS.gray[700]};
   stroke-width: 0.5;
   stroke-linecap: round;
+`;
+
+const AxisLabel = styled.text`
+  font-size: 3px;
+  font-weight: bold;
 `;
 
 const AxisNub = styled.line`
@@ -155,7 +171,7 @@ const Bar = styled.line`
   stroke-width: 2;
 `;
 
-const AxisLabel = styled.text`
+const AxisNubLabel = styled.text`
   /*
     Because we're using viewBox, font sizes are scaled. This very-tiny number
     ought to become larger when used in my imagined usecase.

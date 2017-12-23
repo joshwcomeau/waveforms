@@ -385,7 +385,6 @@ export const steps = {
   },
   'harmonics-intro': {
     ...defaults,
-    isPlaying: true,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     children: ({ frequency, amplitude }) => (
@@ -414,6 +413,18 @@ export const steps = {
           baseFrequency={frequency}
           baseAmplitude={amplitude}
         />
+
+        <Paragraph>
+          The graph is pretty empty, because sine waves don't have any
+          harmonics.
+        </Paragraph>
+        <Sidebar>
+          <Paragraph>
+            Try changing the amplitude/frequency settings under the waveform to
+            see how it affects this graph. This may help build an intuitive
+            understanding of what this graph represents!
+          </Paragraph>
+        </Sidebar>
       </Aux>
     ),
   },
