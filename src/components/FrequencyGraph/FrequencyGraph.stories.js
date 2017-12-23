@@ -23,4 +23,4 @@ storiesOf('FrequencyGraph', module)
   ))
   .add('triangle', () => <FrequencyGraphWithPadding shape="triangle" />)
   .add('square', () => <FrequencyGraphWithPadding shape="square" />)
-  .add('sawtooth', () => <FrequencyGraphWithPadding shape="sine" />);
+  .add('sawtooth', () => <FrequencyGraphWithPadding shape="sawtooth" />);

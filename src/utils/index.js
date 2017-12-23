@@ -64,6 +64,9 @@ export const mean = values => sum(values) / values.length;
 export const clamp = (val, min = 0, max = 1) =>
   Math.max(min, Math.min(max, val));
 
+export const roundTo = (number, places = 0) =>
+  Math.round(number * 10 ** places) / 10 ** places;
+
 export const debounce = (callback, wait, timeoutId = null) => (...args) => {
   window.clearTimeout(timeoutId);
 

@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { DEFAULT_WAVEFORM_SHAPE, COLORS } from '../../constants';
-import { range } from '../../utils';
+import { range, roundTo } from '../../utils';
 import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
 
 import Aux from '../Aux';
@@ -23,20 +23,17 @@ const VIEWBOX_WIDTH = 100;
 const VIEWBOX_HEIGHT = VIEWBOX_WIDTH * ASPECT_RATIO;
 
 const FrequencyGraph = ({
-  width = 500,
   shape = DEFAULT_WAVEFORM_SHAPE,
   baseFrequency = 1,
   baseAmplitude = 1,
 }: Props) => {
-  const height = width * ASPECT_RATIO;
-
   const harmonics = [
     { frequency: baseFrequency, amplitude: baseAmplitude },
     ...getHarmonicsForWave({
       shape,
       baseFrequency,
       baseAmplitude,
-      maxNumberToGenerate: 9,
+      maxNumberToGenerate: 20,
     }),
   ];
 
@@ -45,14 +42,24 @@ const FrequencyGraph = ({
 
   const MAX_FREQUENCY = baseFrequency * NUMBER_OF_X_AXIS_POINTS * STEP;
 
+  // Filter out any harmonics that are too high-frequency to draw.
+  const drawableHarmonics = harmonics.filter(
+    harmonic => harmonic.frequency < MAX_FREQUENCY
+  );
+
   const xAxisValues = range(1, NUMBER_OF_X_AXIS_POINTS * STEP - 1, STEP).map(
     index => ({
-      label: index % 2 !== 0 ? baseFrequency * index + 'Hz' : '',
+      label: index % 2 !== 0 ? roundTo(baseFrequency * index, 1) + 'Hz' : '',
       position: VIEWBOX_WIDTH * (index / NUMBER_OF_X_AXIS_POINTS / STEP),
     })
   );
 
-  const amplitudeLines = range(1, 10).map(i => (
+  const yAxisValues = range(0, 0.9, 0.1).map(index => ({
+    label: index % 0.5 === 0 ? index : '',
+    position: VIEWBOX_HEIGHT * (index / 1),
+  }));
+
+  const amplitudeLines = range(0, 10).map(i => (
     <AmplitudeLine
       key={i}
       x1={0}
@@ -65,13 +72,11 @@ const FrequencyGraph = ({
   return (
     <svg
       style={{ overflow: 'visible' }}
-      width={width}
-      height={height}
       viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
     >
       {amplitudeLines}
 
-      {harmonics.map(({ frequency, amplitude }, index) => {
+      {drawableHarmonics.map(({ frequency, amplitude }, index) => {
         // We need to figure out where in our scale this frequency falls.
         // If we have a frequency of 5hz when the range is 0-10hz, it should
         // be drawn halfway through the viewBOx width
@@ -94,21 +99,33 @@ const FrequencyGraph = ({
       })}
 
       {/* X Axis */}
-      <Axis x1={0} y1={VIEWBOX_HEIGHT} x2={VIEWBOX_WIDTH} y2={VIEWBOX_HEIGHT} />
+      <Axis
+        x1={0}
+        y1={VIEWBOX_HEIGHT}
+        x2={VIEWBOX_WIDTH + 3}
+        y2={VIEWBOX_HEIGHT}
+      />
       {/* Y Axis */}
-      <Axis x1={0} y1={0} x2={0} y2={VIEWBOX_HEIGHT} />
+      <Axis x1={0} y1={-3} x2={0} y2={VIEWBOX_HEIGHT} />
 
       {xAxisValues.map(({ label, position }, index) => (
         <Aux key={index}>
-          <line
+          <AxisNub
             x1={position}
             y1={VIEWBOX_HEIGHT}
             x2={position}
-            y2={VIEWBOX_HEIGHT + 2}
-            stroke="black"
-            strokeWidth={0.25}
+            y2={VIEWBOX_HEIGHT + (label ? 2 : 1)}
           />
           <AxisLabel x={position} y={VIEWBOX_HEIGHT + 5} dx={-2}>
+            {label}
+          </AxisLabel>
+        </Aux>
+      ))}
+
+      {yAxisValues.map(({ label, position }, index) => (
+        <Aux key={index}>
+          <AxisNub x1={label ? -2 : -1} y1={position} x2={0} y2={position} />
+          <AxisLabel x={-5} y={position} dx={-0.5} dy={0.85}>
             {label}
           </AxisLabel>
         </Aux>
@@ -121,6 +138,11 @@ const Axis = styled.line`
   stroke: ${COLORS.gray[700]};
   stroke-width: 0.5;
   stroke-linecap: round;
+`;
+
+const AxisNub = styled.line`
+  stroke: ${COLORS.gray[700]};
+  stroke-width: 0.25;
 `;
 
 const AmplitudeLine = styled.line`
