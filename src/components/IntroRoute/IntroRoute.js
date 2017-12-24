@@ -25,7 +25,6 @@ type State = {
   windowHeight: number,
   amplitude: number,
   frequency: number,
-  shape: WaveformShape,
   userEnabledSound: boolean,
 };
 
@@ -35,7 +34,6 @@ class IntroRoute extends PureComponent<Props, State> {
     windowHeight: window.innerHeight,
     amplitude: 1,
     frequency: 1,
-    shape: DEFAULT_WAVEFORM_SHAPE,
     userEnabledSound: false,
   };
 
@@ -140,7 +138,6 @@ class IntroRoute extends PureComponent<Props, State> {
     const {
       currentStep,
       windowHeight,
-      shape,
       amplitude,
       frequency,
       userEnabledSound,
@@ -165,7 +162,7 @@ class IntroRoute extends PureComponent<Props, State> {
         />
 
         <Oscillator
-          shape={shape}
+          shape={stepData.waveformShape}
           amplitude={amplitude}
           frequency={adjustedAudibleFrequency}
           isAudible={isAudible}
