@@ -119,7 +119,7 @@ class AirGrid extends PureComponent<Props> {
     });
   }
 
-  getCellDisplacement = columnNum => {
+  getCellDisplacement = (columnNum: number) => {
     // Each cell will translate from side to side. The columns are staggered,
     // to represent how a wave moves through space.
     const {

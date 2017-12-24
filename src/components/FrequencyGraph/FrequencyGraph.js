@@ -17,6 +17,7 @@ type Props = {
   baseAmplitude?: number,
   xMin?: number,
   xMax?: number,
+  step?: number,
 };
 
 const ASPECT_RATIO = 0.6;
