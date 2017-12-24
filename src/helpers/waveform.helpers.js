@@ -47,7 +47,7 @@ export const getPointsForWaveform = ({
     // Example: A sine wave with 50 offset will look like an inverted sine wave.
     // The `* 100` is necessary since offset is 0-99 instead of 0-1.
     // TODO: Probably makes sense to keep it from 0-1, makes more semantic sense
-    const progress = Math.round(progressRelativeToCycles * 100 + offset);
+    const progress = progressRelativeToCycles * 100 + offset;
 
     return {
       x,
