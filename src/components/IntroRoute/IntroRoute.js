@@ -46,6 +46,39 @@ class IntroRoute extends PureComponent<Props, State> {
     window.addEventListener('scroll', this.handleScroll);
   }
 
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    // When going forwards a step, we may wish to specify an override frequency
+    // or amplitude.
+    if (this.state.currentStep !== prevState.currentStep) {
+      const currentStepIndex = INTRO_STEPS.indexOf(this.state.currentStep);
+      const previousStepIndex = INTRO_STEPS.indexOf(prevState.currentStep);
+
+      // Note that we don't do this while going backwards, for the simple reason
+      // that if the user has already seen a section, it's more important to
+      // preserve their changes than to revert to the optimal value. They've
+      // seen the section already, they understand how it works.
+      // TODO: Maybe a better solution is to keep track of a `maxSeenStep`,
+      // so that when they rewind and then go forward, it doesn't re-adjust?
+      if (currentStepIndex < previousStepIndex) {
+        return;
+      }
+
+      const stepData = steps[this.state.currentStep];
+
+      const nextState = {};
+
+      if (typeof stepData.frequencyOverride === 'number') {
+        nextState.frequency = stepData.frequencyOverride;
+      }
+
+      if (typeof stepData.amplitudeOverride === 'number') {
+        nextState.amplitude = stepData.amplitudeOverride;
+      }
+
+      this.setState(nextState);
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
     window.removeEventListener('scroll', this.handleScroll);
@@ -142,16 +175,8 @@ class IntroRoute extends PureComponent<Props, State> {
           <LeftColumnWrapper>
             <WaveformPlayer
               isPlaying={stepData.isPlaying}
-              amplitude={
-                typeof stepData.amplitudeOverride === 'number'
-                  ? stepData.amplitudeOverride
-                  : amplitude
-              }
-              frequency={
-                typeof stepData.frequencyOverride === 'number'
-                  ? stepData.frequencyOverride
-                  : frequency
-              }
+              amplitude={amplitude}
+              frequency={frequency}
             >
               {({ amplitude, frequency, progress }) => (
                 <Aux>
