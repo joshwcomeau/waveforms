@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import IntersectionObserver from '../IntersectionObserver';
 
-import type { IntroStep } from '../../constants';
+import type { IntroStep } from '../IntroRoute/IntroRoute.steps';
 
 type Props = {
   id: IntroStep,

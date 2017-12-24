@@ -11,6 +11,39 @@ import FrequencyGraph from '../FrequencyGraph';
 
 import type { WaveformShape } from '../../types';
 
+export type IntroStep =
+  | 'title'
+  | 'about-this-thing'
+  | 'about-sound-toggling'
+  | 'intro-with-labels'
+  | 'x-axis-time'
+  | 'y-axis-amplitude'
+  | 'y-axis-amplitude-with-control'
+  | 'frequency-introduction'
+  | 'frequency-introduction-pt2'
+  | 'frequency-with-control'
+  | 'how-sound-works-intro'
+  | 'how-sound-works-air-grid'
+  | 'how-sound-works-air-grid-pt2'
+  | 'harmonics-intro';
+
+export const INTRO_STEPS: Array<IntroStep> = [
+  'title',
+  'about-this-thing',
+  'about-sound-toggling',
+  'intro-with-labels',
+  'x-axis-time',
+  'y-axis-amplitude',
+  'y-axis-amplitude-with-control',
+  'frequency-introduction',
+  'frequency-introduction-pt2',
+  'frequency-with-control',
+  'how-sound-works-intro',
+  'how-sound-works-air-grid',
+  'how-sound-works-air-grid-pt2',
+  'harmonics-intro',
+];
+
 export type StepData = {
   id: string,
 

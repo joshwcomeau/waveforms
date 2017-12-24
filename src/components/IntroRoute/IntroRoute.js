@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
-import { INTRO_STEPS, DEFAULT_WAVEFORM_SHAPE } from '../../constants';
+import { DEFAULT_WAVEFORM_SHAPE } from '../../constants';
 import { debounce } from '../../utils';
 
 import MaxWidthWrapper from '../MaxWidthWrapper';
@@ -14,10 +14,10 @@ import Oscillator from '../Oscillator';
 import IntroRouteSection from '../IntroRouteSection';
 import SoundButtonToggle from '../SoundButtonToggle';
 
-import { steps, stepsArray } from './IntroRoute.steps';
+import { steps, stepsArray, INTRO_STEPS } from './IntroRoute.steps';
 
-import type { IntroStep } from '../../constants';
 import type { WaveformShape } from '../../types';
+import type { IntroStep } from './IntroRoute.steps';
 
 type Props = {};
 type State = {
