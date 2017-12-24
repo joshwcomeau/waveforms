@@ -379,7 +379,7 @@ export const getHarmonicsForWave = ({
         const harmonicIndex = i + 1;
 
         const frequency = baseFrequency * harmonicIndex;
-        const amplitude = baseAmplitude / frequency;
+        const amplitude = baseAmplitude / harmonicIndex;
 
         return { frequency, amplitude };
       });
@@ -403,7 +403,7 @@ export const getHarmonicsForWave = ({
         const harmonicIndex = i * 2 + 1;
 
         const frequency = baseFrequency * harmonicIndex;
-        const amplitude = baseAmplitude / frequency;
+        const amplitude = baseAmplitude / harmonicIndex;
 
         return { frequency, amplitude };
       });
@@ -457,7 +457,7 @@ export const getHarmonicsForWave = ({
 
         const frequency = baseFrequency * harmonicIndex;
         const amplitude =
-          baseAmplitude / frequency ** 2 * amplitudePhaseMultiplier;
+          baseAmplitude / harmonicIndex ** 2 * amplitudePhaseMultiplier;
 
         return { frequency, amplitude };
       });

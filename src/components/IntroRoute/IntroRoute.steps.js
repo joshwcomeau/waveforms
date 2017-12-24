@@ -109,7 +109,7 @@ const defaults: StepData = {
   yAxisOpacity: 1,
   showAmplitudeSlider: false,
   showFrequencySlider: false,
-  frequencySliderMin: 0.2,
+  frequencySliderMin: 0.5,
   frequencySliderMax: 3,
   frequencySliderStep: 0.1,
   showCycleIndicator: false,
