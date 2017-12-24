@@ -10,12 +10,14 @@ import WaveformAxes from '../WaveformAxes';
 import WaveformIntercept from '../WaveformIntercept';
 import WaveformPlayer from './WaveformPlayer';
 
-type Props = {};
-type State = { speed: number };
+import type { WaveformShape } from '../../types';
+
+type Props = { shape: WaveformShape };
+type State = { frequency: number };
 
 class VariableFrequency extends Component<Props, State> {
   state = {
-    speed: 1,
+    frequency: 1,
   };
 
   timeoutId: number;
@@ -30,110 +32,115 @@ class VariableFrequency extends Component<Props, State> {
 
   tick = () => {
     this.timeoutId = window.setTimeout(() => {
-      this.setState({ speed: this.state.speed + 0.01 }, this.tick);
+      this.setState({ frequency: this.state.frequency + 0.01 }, this.tick);
     }, 20);
   };
 
   render() {
     return (
-      <WaveformPlayer isPlaying speed={this.state.speed}>
+      <WaveformPlayer isPlaying frequency={this.state.frequency}>
         {({ progress }) => (
-          <Waveform shape="sine" offset={convertProgressToCycle(progress)} />
+          <Waveform
+            shape={this.props.shape}
+            offset={convertProgressToCycle(progress)}
+          />
         )}
       </WaveformPlayer>
     );
   }
 }
 
-storiesOf('WaveformPlayer', module)
-  .add('default (paused)', () => (
-    <WaveformPlayer>
-      {({ progress }) => (
-        <Waveform shape="sine" offset={convertProgressToCycle(progress)} />
-      )}
-    </WaveformPlayer>
-  ))
-  .add('playing', () => (
-    <WaveformPlayer isPlaying>
-      {({ progress, frequency }) => (
-        <Waveform
-          shape="sine"
-          offset={convertProgressToCycle(progress)}
-          frequency={frequency}
-        />
-      )}
-    </WaveformPlayer>
-  ))
-  .add('playing (2Hz at 1 cycle)', () => (
-    <WaveformPlayer isPlaying speed={2}>
-      {({ progress, frequency }) => (
-        <Waveform
-          shape="sine"
-          offset={convertProgressToCycle(progress)}
-          frequency={frequency}
-        />
-      )}
-    </WaveformPlayer>
-  ))
-  .add('playing (2Hz at 2 cycles)', () => (
-    <WaveformPlayer isPlaying speed={2} frequency={2}>
-      {({ progress, frequency }) => (
-        <Waveform
-          shape="sine"
-          offset={convertProgressToCycle(progress)}
-          frequency={frequency}
-        />
-      )}
-    </WaveformPlayer>
-  ))
-  .add('playing (5Hz at 2 cycles)', () => (
-    <WaveformPlayer isPlaying speed={5} frequency={2}>
-      {({ progress, frequency }) => (
-        <Waveform
-          shape="sine"
-          offset={convertProgressToCycle(progress)}
-          frequency={frequency}
-        />
-      )}
-    </WaveformPlayer>
-  ))
-  .add('playing (0.5Hz)', () => (
-    <WaveformPlayer isPlaying speed={0.5}>
-      {({ progress, frequency }) => (
-        <Waveform
-          shape="sine"
-          offset={convertProgressToCycle(progress)}
-          frequency={frequency}
-        />
-      )}
-    </WaveformPlayer>
-  ))
-  .add('variable speed', () => <VariableFrequency />)
-  .add('with axes', () => (
-    <div style={{ position: 'relative' }}>
-      <WaveformPlayer isPlaying speed={1}>
+const shapes = ['sine', 'triangle', 'square'];
+
+shapes.forEach(shape =>
+  storiesOf('WaveformPlayer', module)
+    .add(`${shape} - paused`, () => (
+      <WaveformPlayer>
         {({ progress }) => (
-          <span>
-            <WaveformAxes />
-            <Waveform shape="sine" offset={convertProgressToCycle(progress)} />
-          </span>
+          <Waveform shape={shape} offset={convertProgressToCycle(progress)} />
         )}
       </WaveformPlayer>
-    </div>
-  ))
-  .add('with axes and intercept', () => (
-    <div style={{ position: 'relative' }}>
-      <WaveformPlayer isPlaying speed={1}>
-        {({ progress }) => (
-          <span>
-            <WaveformAxes />
-            <Waveform shape="sine" offset={convertProgressToCycle(progress)} />
-            <WaveformIntercept
-              waveformShape="sine"
-              offset={convertProgressToCycle(progress)}
-            />
-          </span>
+    ))
+    .add(`${shape} - playing`, () => (
+      <WaveformPlayer isPlaying>
+        {({ progress, frequency }) => (
+          <Waveform
+            shape={shape}
+            offset={convertProgressToCycle(progress)}
+            frequency={frequency}
+          />
         )}
       </WaveformPlayer>
-    </div>
-  ));
+    ))
+
+    .add(`${shape} - playing (2Hz)`, () => (
+      <WaveformPlayer isPlaying frequency={2}>
+        {({ progress, frequency }) => (
+          <Waveform
+            shape={shape}
+            offset={convertProgressToCycle(progress)}
+            frequency={frequency}
+          />
+        )}
+      </WaveformPlayer>
+    ))
+    .add(`${shape} - playing (5Hz)`, () => (
+      <WaveformPlayer isPlaying frequency={5}>
+        {({ progress, frequency }) => (
+          <Waveform
+            shape={shape}
+            offset={convertProgressToCycle(progress)}
+            frequency={frequency}
+          />
+        )}
+      </WaveformPlayer>
+    ))
+    .add(`${shape} - playing (0.5Hz)`, () => (
+      <WaveformPlayer isPlaying frequency={0.5}>
+        {({ progress, frequency }) => (
+          <Waveform
+            shape={shape}
+            offset={convertProgressToCycle(progress)}
+            frequency={frequency}
+          />
+        )}
+      </WaveformPlayer>
+    ))
+    .add(`${shape} - ever-incrementing`, () => (
+      <VariableFrequency shape={shape} />
+    ))
+    .add(`${shape} - with axes`, () => (
+      <div style={{ position: 'relative' }}>
+        <WaveformPlayer isPlaying speed={1}>
+          {({ progress }) => (
+            <span>
+              <WaveformAxes />
+              <Waveform
+                shape={shape}
+                offset={convertProgressToCycle(progress)}
+              />
+            </span>
+          )}
+        </WaveformPlayer>
+      </div>
+    ))
+    .add(`${shape} - with axes and intercept`, () => (
+      <div style={{ position: 'relative' }}>
+        <WaveformPlayer isPlaying speed={1}>
+          {({ progress }) => (
+            <span>
+              <WaveformAxes />
+              <Waveform
+                shape={shape}
+                offset={convertProgressToCycle(progress)}
+              />
+              <WaveformIntercept
+                waveformShape={shape}
+                offset={convertProgressToCycle(progress)}
+              />
+            </span>
+          )}
+        </WaveformPlayer>
+      </div>
+    ))
+);
