@@ -2,11 +2,11 @@
 import React, { Component } from 'react';
 import { storiesOf } from '@storybook/react';
 
+import { SHAPES } from '../../constants';
+
 import Waveform from './Waveform';
 
-const shapes = ['sine', 'triangle', 'square'];
-
-shapes.forEach(shape =>
+SHAPES.forEach(shape =>
   storiesOf('Waveform', module)
     .add(`${shape}`, () => <Waveform shape={shape} />)
     .add(`${shape} (red)`, () => <Waveform shape={shape} color="red" />)

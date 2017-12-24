@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { storiesOf } from '@storybook/react';
 
-import { DEFAULT_WAVEFORM_SIZE } from '../../constants/index';
+import { DEFAULT_WAVEFORM_SIZE, SHAPES } from '../../constants/index';
 import { convertProgressToCycle } from '../../helpers/waveform.helpers';
 
 import Waveform from '../Waveform';
@@ -50,9 +50,7 @@ class VariableFrequency extends Component<Props, State> {
   }
 }
 
-const shapes = ['sine', 'triangle', 'square'];
-
-shapes.forEach(shape =>
+SHAPES.forEach(shape =>
   storiesOf('WaveformPlayer', module)
     .add(`${shape} - paused`, () => (
       <WaveformPlayer>

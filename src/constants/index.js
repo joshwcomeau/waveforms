@@ -1,4 +1,5 @@
 // @flow
+import type { WaveformShape } from '../types';
 
 // Logic
 export const WAVEFORM_ASPECT_RATIO = 0.5;
@@ -6,6 +7,13 @@ export const DEFAULT_WAVEFORM_SHAPE = 'sine';
 export const DEFAULT_WAVEFORM_SIZE = 200;
 export const DEFAULT_WAVEFORM_NUM_OF_CYCLES = 1;
 export const DEFAULT_WAVEFORM_AMPLITUDE = 1;
+
+export const SHAPES: Array<WaveformShape> = [
+  'sine',
+  'triangle',
+  'square',
+  'sawtooth',
+];
 
 export type IntroStep =
   | 'title'

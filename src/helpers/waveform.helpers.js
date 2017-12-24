@@ -47,7 +47,7 @@ export const getPointsForWaveform = ({
     // Example: A sine wave with 50 offset will look like an inverted sine wave.
     // The `* 100` is necessary since offset is 0-99 instead of 0-1.
     // TODO: Probably makes sense to keep it from 0-1, makes more semantic sense
-    const progress = progressRelativeToCycles * 100 + offset;
+    const progress = Math.round(progressRelativeToCycles * 100 + offset);
 
     return {
       x,
@@ -130,6 +130,20 @@ export const getPositionAtPointRelativeToAxis = (
       const progressThroughIteration = progress % 100;
 
       return progressThroughIteration < 50 ? amplitude : -amplitude;
+    }
+
+    case 'sawtooth': {
+      // Each sawtooth iteration simply ranges from `-amplitude` to `amplitude`
+      // in a linear way.
+
+      const progressThroughIteration = progress % 100;
+
+      // Normally, this would be a simple cross-multiplication to normalize
+      // between min and max, but our min is a negative number. Start by
+      // adding that amount so that it ranges from `0 - 2*amplitude`
+      const adjustedMax = amplitude * 2;
+
+      return progressThroughIteration * adjustedMax / 100 - amplitude;
     }
 
     case 'triangle': {
