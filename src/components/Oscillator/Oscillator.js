@@ -17,6 +17,12 @@ type Props = {
 
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+// All output should go through a global gain, so that we can set a "master
+// volume".
+const globalOut = audioCtx.createGain();
+globalOut.gain.value = 0.4;
+globalOut.connect(audioCtx.destination);
+
 const fade = fadeWithContext(audioCtx);
 
 // FADE_DURATION controls the duration over amplitude changes when
@@ -106,7 +112,7 @@ class Oscillator extends PureComponent<Props> {
     this.gainNode.gain.value = amplitude;
 
     this.oscillatorNode.connect(this.gainNode);
-    this.gainNode.connect(audioCtx.destination);
+    this.gainNode.connect(globalOut);
 
     fade({
       direction: 'in',
