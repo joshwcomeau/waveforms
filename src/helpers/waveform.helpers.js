@@ -123,6 +123,52 @@ export const getPositionAtPointRelativeToAxis = (
       return Math.sin(positionInRads) * amplitude;
     }
 
+    case 'triangle': {
+      // This waveform might include multiple iterations, if frequency > 1Hz.
+      // This is an easy thing to solve, though; make it cyclical so that we're
+      // only looking at values from 0 to 99.
+      const progressThroughIteration = progress % 100;
+
+      // Each triangle iteration has 4 quadrants of equal size:
+      // - the initial ramp up from 0 to 1
+      // - the ramp down from 1 to 0, and then another from 0 to -1
+      // - the final ramp back up from -1 to 0.
+      //
+      // Our `progress` is a value from 0 to 100, so we can figure out which
+      // quadrant it's in by dividing this number by 4.
+      const quadrant = Math.floor(progressThroughIteration / 25);
+
+      const progressThroughQuadrant = progress % 25;
+
+      switch (quadrant) {
+        case 0: {
+          // Quadrant 1 is easy, since it ranges from 0 to 1.
+          // To get the value from 0 to 1, just divide progress by the
+          // quadrant max (25). Then, to get the amplitude, multiply by the
+          // wave's actual amplitude.
+          return progressThroughQuadrant / 25 * amplitude;
+        }
+
+        case 1: {
+          // Quadrant 2 is similar to quadrant 1, but reversed. Going from 1-0.
+          return amplitude - progressThroughQuadrant / 25 * amplitude;
+        }
+
+        case 2: {
+          // Our third quadrant ranges from 0 to -1.
+          // This winds up being very similar to our second quadrant, but just
+          // 1 less.
+          return amplitude - progressThroughQuadrant / 25 * amplitude - 1;
+        }
+
+        case 3: {
+          // Finally, our final quadrant ranges from -1 to 0.
+          // This is the same as our first quadrant, but 1 less.
+          return progressThroughQuadrant / 25 * amplitude - 1;
+        }
+      }
+    }
+
     default:
       throw new Error('Unrecognized waveform shape supplied: ' + shape);
   }
