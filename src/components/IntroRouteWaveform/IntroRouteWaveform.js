@@ -52,7 +52,7 @@ class IntroRouteWaveform extends PureComponent<Props> {
             strokeWidth={5}
             opacity={stepData.waveformOpacity}
             size={width}
-            shape="sine"
+            shape={stepData.waveformShape}
             offset={offset}
             frequency={frequency}
           />

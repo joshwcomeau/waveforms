@@ -25,7 +25,8 @@ export type IntroStep =
   | 'how-sound-works-intro'
   | 'how-sound-works-air-grid'
   | 'how-sound-works-air-grid-pt2'
-  | 'harmonics-intro';
+  | 'harmonics-intro'
+  | 'triangle-wave';
 
 export const INTRO_STEPS: Array<IntroStep> = [
   'title',
@@ -42,6 +43,7 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'how-sound-works-air-grid',
   'how-sound-works-air-grid-pt2',
   'harmonics-intro',
+  'triangle-wave',
 ];
 
 export type StepData = {
@@ -420,6 +422,7 @@ export const steps = {
     ...defaults,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
+    makeSoundToggleable: true,
     children: ({ frequency, amplitude }) => (
       <Aux>
         <SectionTitle>3. Harmonics</SectionTitle>
@@ -458,6 +461,50 @@ export const steps = {
             understanding of what this graph represents!
           </Paragraph>
         </Sidebar>
+      </Aux>
+    ),
+  },
+  'triangle-wave': {
+    ...defaults,
+    waveformShape: 'triangle',
+    showAmplitudeSlider: true,
+    showFrequencySlider: true,
+    makeSoundToggleable: true,
+    getMargin: marginFunctions.small,
+    children: ({ frequency, amplitude }) => (
+      <Aux>
+        <Paragraph>
+          Here's another common waveform: the <strong>triangle wave</strong>.
+        </Paragraph>
+
+        <Paragraph>
+          It looks quite a bit like a sine wave, but with the curviness removed.
+          Instead, straight lines connect in triangle-like shapes.
+        </Paragraph>
+
+        <Paragraph>
+          What effect does this have on the way it sounds? If you haven't
+          already, go ahead and enable sound using the button in the top-right,
+          and scroll between this and the previous section to hear the
+          difference.
+        </Paragraph>
+
+        <Paragraph>
+          Notice that the sound is a little "brighter"? It doesn't quite sound
+          so muffled? This is because of <strong>harmonics</strong>
+        </Paragraph>
+
+        <Paragraph>
+          Harmonics are additional frequencies that happen automatically with
+          certain waveforms. We'll learn more about why that is soon, but first,
+          let's graph these additional harmonics:
+        </Paragraph>
+
+        <FrequencyGraph
+          shape="triangle"
+          baseFrequency={frequency}
+          baseAmplitude={amplitude}
+        />
       </Aux>
     ),
   },
