@@ -26,7 +26,9 @@ export type IntroStep =
   | 'how-sound-works-air-grid'
   | 'how-sound-works-air-grid-pt2'
   | 'harmonics-intro'
-  | 'triangle-wave';
+  | 'triangle-wave'
+  | 'square-wave'
+  | 'sawtooth-wave';
 
 export const INTRO_STEPS: Array<IntroStep> = [
   'title',
@@ -44,6 +46,8 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'how-sound-works-air-grid-pt2',
   'harmonics-intro',
   'triangle-wave',
+  'square-wave',
+  'sawtooth-wave',
 ];
 
 export type StepData = {
@@ -466,6 +470,7 @@ export const steps = {
   },
   'triangle-wave': {
     ...defaults,
+    isPlaying: false,
     waveformShape: 'triangle',
     showAmplitudeSlider: true,
     showFrequencySlider: true,
@@ -502,6 +507,46 @@ export const steps = {
 
         <FrequencyGraph
           shape="triangle"
+          baseFrequency={frequency}
+          baseAmplitude={amplitude}
+        />
+      </Aux>
+    ),
+  },
+  'square-wave': {
+    ...defaults,
+    isPlaying: false,
+    waveformShape: 'square',
+    showAmplitudeSlider: true,
+    showFrequencySlider: true,
+    makeSoundToggleable: true,
+    getMargin: marginFunctions.small,
+    children: ({ frequency, amplitude }) => (
+      <Aux>
+        <Paragraph>Square wave</Paragraph>
+
+        <FrequencyGraph
+          shape="square"
+          baseFrequency={frequency}
+          baseAmplitude={amplitude}
+        />
+      </Aux>
+    ),
+  },
+  'sawtooth-wave': {
+    ...defaults,
+    isPlaying: false,
+    waveformShape: 'sawtooth',
+    showAmplitudeSlider: true,
+    showFrequencySlider: true,
+    makeSoundToggleable: true,
+    getMargin: marginFunctions.small,
+    children: ({ frequency, amplitude }) => (
+      <Aux>
+        <Paragraph>sawtooth wave</Paragraph>
+
+        <FrequencyGraph
+          shape="sawtooth"
           baseFrequency={frequency}
           baseAmplitude={amplitude}
         />
