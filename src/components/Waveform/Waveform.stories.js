@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react';
 
 import Waveform from './Waveform';
 
-const shapes = ['sine', 'triangle'];
+const shapes = ['sine', 'triangle', 'square'];
 
 shapes.forEach(shape =>
   storiesOf('Waveform', module)

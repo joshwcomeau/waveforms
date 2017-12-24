@@ -123,6 +123,15 @@ export const getPositionAtPointRelativeToAxis = (
       return Math.sin(positionInRads) * amplitude;
     }
 
+    case 'square': {
+      // Square waves are easy; the value is either `amplitude` or `-amplitude`.
+      // Figure out how far we are through the current iteration, since the
+      // drawable wave might have multiple iterations if frequency > 1Hz.
+      const progressThroughIteration = progress % 100;
+
+      return progressThroughIteration < 50 ? amplitude : -amplitude;
+    }
+
     case 'triangle': {
       // This waveform might include multiple iterations, if frequency > 1Hz.
       // This is an easy thing to solve, though; make it cyclical so that we're
