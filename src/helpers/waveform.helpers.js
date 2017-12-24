@@ -27,7 +27,7 @@ export const getPointsForWaveform = ({
 
   // Convert each X value to a proper coordinate system, relative to the axis
   // (so, Y values will be from -1 to 1)
-  return xValues.map(x => {
+  const rawValues = xValues.map(x => {
     // We need a progress value, to help inform where this `x` value is, in
     // terms of the cycles drawn.
 
@@ -58,6 +58,46 @@ export const getPointsForWaveform = ({
         progress
       ),
     };
+  });
+
+  if (shape === 'triangle') {
+    // Find the peak points in the wave, and set it to max amplitude.
+    fixPeaks(amplitude, rawValues);
+  }
+
+  return rawValues;
+};
+
+// HACK HACK HACK: So, the current method I have for generating waveforms is
+// flawed, in that it produces glitchy peaks because of rounding errors.
+// The proper solution eludes me, but I did find this mathy way of fixing it.
+// I'll go through and find those 'peak' values, and adjust their coordinates to
+// actually sit at the peak.
+const fixPeaks = (amplitude, values) => {
+  return values.forEach((value, index) => {
+    if (index <= 2 || index === values.length - 1) {
+      return;
+    }
+
+    const previousVal = values[index - 1];
+    const nextVal = values[index + 1];
+
+    if (
+      Math.abs(value.y) > Math.abs(previousVal.y) &&
+      Math.abs(value.y) > Math.abs(nextVal.y)
+    ) {
+      // Is a peak!
+      // Figure out the slope of the line.
+      const previousPreviousVal = values[index - 2];
+
+      const slope =
+        (previousVal.y - previousPreviousVal.y) /
+        (previousVal.x - previousPreviousVal.x);
+
+      value.y = value.y < 0 ? -amplitude : amplitude;
+
+      value.x = (value.y - previousVal.y) / slope + previousVal.x;
+    }
   });
 };
 
