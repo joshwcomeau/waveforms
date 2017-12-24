@@ -11,10 +11,11 @@ storiesOf('Waveform', module)
   .add('Sine (0.5Hz)', () => <Waveform shape="sine" frequency={0.5} />)
   .add('Sine (20Hz)', () => <Waveform shape="sine" frequency={20} />)
   .add('Sine (500px)', () => <Waveform shape="sine" size={500} />)
-  .add('Sine (quiet)', () => <Waveform shape="sine" amplitude={0.5} />)
+  .add('Sine (0.5dB)', () => <Waveform shape="sine" amplitude={0.5} />)
   .add('Triangle', () => <Waveform shape="triangle" />)
   .add('Triangle (2Hz)', () => <Waveform shape="triangle" frequency={2} />)
   .add('Triangle (0.5Hz)', () => <Waveform shape="triangle" frequency={0.5} />)
+  .add('Triangle (0.5dB)', () => <Waveform shape="triangle" amplitude={0.5} />)
   .add('Arbitrary points', () => (
     <Waveform
       points={[

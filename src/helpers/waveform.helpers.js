@@ -131,40 +131,86 @@ export const getPositionAtPointRelativeToAxis = (
 
       // Each triangle iteration has 4 quadrants of equal size:
       // - the initial ramp up from 0 to 1
-      // - the ramp down from 1 to 0, and then another from 0 to -1
+      // - the ramp down from 1 to 0,
+      // - another from 0 to -1
       // - the final ramp back up from -1 to 0.
       //
-      // Our `progress` is a value from 0 to 100, so we can figure out which
-      // quadrant it's in by dividing this number by 4.
-      const quadrant = Math.floor(progressThroughIteration / 25);
+      //  Q1 | Q2 |    |
+      //    /|\   |    |
+      //  /  |  \ |    |
+      //  ---|---\|--- |-----/--------------------------------
+      //     |    | \  |   /
+      //     |    |  \ | /
+      //     |    | Q3 | Q4
+      //
+      // Our `progressThroughIteration` is a value from 0 to 99, so we can
+      // figure out which quadrant it's in by dividing this number by 4.
+      //
+      // (Adding 1 so that it ranges from 1-4 instead of 0.3. So that, for
+      // example, 'second quadrant' is unambiguous.)
+      const quadrant = Math.floor(progressThroughIteration / 25) + 1;
 
       const progressThroughQuadrant = progress % 25;
 
       switch (quadrant) {
-        case 0: {
+        case 1: {
           // Quadrant 1 is easy, since it ranges from 0 to 1.
           // To get the value from 0 to 1, just divide progress by the
           // quadrant max (25). Then, to get the amplitude, multiply by the
           // wave's actual amplitude.
+          //
+          // To understand the `* amplitude` bit, remember that the wave's
+          // amplitude ranges from 0 to 1.
+          // If the wave is at max loudness, this value wouldn't be necessary
+          // (since `* 1` can always be omitted).
+          // If the wave is at half amplitude, though, our triangle's peak
+          // should be halfway up from the X-axis. So we multiply by 0.5.
           return progressThroughQuadrant / 25 * amplitude;
         }
 
-        case 1: {
+        case 2: {
           // Quadrant 2 is similar to quadrant 1, but reversed. Going from 1-0.
+          // To solve this, we can simply subtract the value from our max
+          // amplitude.
+          // Again, if we're at max amplitude, this would just be `1 - stuff`.
+          // Since we want to "invert" it vertically:
+          //
+          // Value  |  Inverted value
+          // 1      |  0
+          // 0.25   |  0.75
+          // 0.5    |  0.5
+          //
+          // See how you can "invert" each value by subtracting it from 1?
+          //
+          // But yeah, because our max amplitude can be less than 1, we have
+          // to use `amplitude` instead of `1`.
           return amplitude - progressThroughQuadrant / 25 * amplitude;
         }
 
-        case 2: {
+        case 3: {
           // Our third quadrant ranges from 0 to -1.
-          // This winds up being very similar to our second quadrant, but just
-          // 1 less.
-          return amplitude - progressThroughQuadrant / 25 * amplitude - 1;
+          // This is getting more complicated, but it's really just building on
+          // the previous 2 quadrants.
+          //
+          // Quadrant 3 is identical to quadrant 2 except that it's lower.
+          // If amplitude is 1, you could think of quadrant 2 as being 1 lower
+          // than quadrant 3.
+          //
+          // By subtracting our max amplitude from the end of the Q2 formula,
+          // we lower it accordingly.
+          return (
+            amplitude - progressThroughQuadrant / 25 * amplitude - amplitude
+          );
         }
 
-        case 3: {
+        case 4: {
           // Finally, our final quadrant ranges from -1 to 0.
-          // This is the same as our first quadrant, but 1 less.
-          return progressThroughQuadrant / 25 * amplitude - 1;
+          // Similar to how Q3 was just Q2 minus amplitude, Q4 is really just
+          // Q1 minus amplitude.
+          //
+          // This make sense when you think about it. Q3 is just Q2 but lower.
+          // Similarly, Q4 is just Q1 but lower.
+          return progressThroughQuadrant / 25 * amplitude - amplitude;
         }
       }
     }
