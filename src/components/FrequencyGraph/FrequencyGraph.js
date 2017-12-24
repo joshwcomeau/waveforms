@@ -49,10 +49,15 @@ const FrequencyGraph = ({
 
   // For our X axis values, we'll add as many points as are specified by our
   // props.
-  const xAxisValues = range(xMin, xMax * step, step).map(index => ({
-    label: index % 2 !== 0 ? index + 'Hz' : '',
-    position: VIEWBOX_WIDTH * (index / xMax / step),
-  }));
+  const xAxisValuesStart = xMin + step;
+  const xAxisValuesEnd = xMax * step;
+
+  const xAxisValues = range(xAxisValuesStart, xAxisValuesEnd, step).map(
+    index => ({
+      label: index % 2 !== 0 ? index + 'Hz' : '',
+      position: VIEWBOX_WIDTH * (index / xMax / step),
+    })
+  );
 
   const yAxisValues = range(0, 0.9, 0.1).map(index => ({
     label: index % 0.5 === 0 ? 1 - index : '',
