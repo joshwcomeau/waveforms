@@ -166,7 +166,7 @@ class IntroRoute extends PureComponent<Props, State> {
                   <IntroRouteAirGrid
                     numOfRows={26}
                     numOfCols={26}
-                    adjustedAudibleFrequencyamplitude={amplitude}
+                    amplitude={amplitude}
                     frequency={frequency}
                     progress={progress}
                     stepData={stepData}
