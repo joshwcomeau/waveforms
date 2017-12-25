@@ -7,6 +7,7 @@ import { range, roundTo } from '../../utils';
 import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
 
 import Aux from '../Aux';
+import FadeTransition from '../FadeTransition';
 
 import type { WaveformShape } from '../../types';
 
@@ -76,7 +77,7 @@ class FrequencyGraph extends PureComponent<Props, State> {
         shape,
         baseFrequency,
         baseAmplitude,
-        maxNumberToGenerate: xMax,
+        maxNumberToGenerate: shape === 'sawtooth' ? xMax * 2 : xMax,
       }),
     ];
 
@@ -107,11 +108,11 @@ class FrequencyGraph extends PureComponent<Props, State> {
             onMouseLeave={() => this.toggleHover(null)}
           />
 
-          {isHovered && (
+          <FadeTransition typeName="g" duration={200} isVisible={isHovered}>
             <HoverText textAnchor="end" x={VIEWBOX_WIDTH} y={0} dy={5}>
-              {roundTo(frequency, 2)}Hz at {roundTo(amplitude, 3)}dB
+              {roundTo(frequency, 2)}Hz at {roundTo(amplitude, 2)}dB
             </HoverText>
-          )}
+          </FadeTransition>
         </Aux>
       );
     });
