@@ -21,7 +21,7 @@ type Props = {
 };
 
 type State = {
-  hovering: ?string,
+  hovering: ?number,
 };
 
 const ASPECT_RATIO = 0.6;
@@ -37,6 +37,14 @@ class FrequencyGraph extends PureComponent<Props, State> {
     xMin: 0,
     xMax: 20,
     step: 1,
+  };
+
+  state = {
+    hovering: null,
+  };
+
+  toggleHover = (index: ?number) => {
+    this.setState({ hovering: index });
   };
 
   getXAxisValues = () => {
@@ -86,6 +94,8 @@ class FrequencyGraph extends PureComponent<Props, State> {
 
       const yCoordinate = VIEWBOX_HEIGHT - VIEWBOX_HEIGHT * Math.abs(amplitude);
 
+      const isHovered = this.state.hovering === index;
+
       return (
         <Aux key={index}>
           <Bar
@@ -93,26 +103,22 @@ class FrequencyGraph extends PureComponent<Props, State> {
             y1={VIEWBOX_HEIGHT}
             x2={xCoordinate}
             y2={yCoordinate}
+            onMouseEnter={() => this.toggleHover(index)}
+            onMouseLeave={() => this.toggleHover(null)}
           />
+
+          {isHovered && (
+            <HoverText textAnchor="end" x={VIEWBOX_WIDTH} y={0} dy={5}>
+              {roundTo(frequency, 2)}Hz at {roundTo(amplitude, 3)}dB
+            </HoverText>
+          )}
         </Aux>
       );
     });
   }
 
   render() {
-    // const {
-    //   shape,
-    //   baseFrequency,
-    //   baseAmplitude,
-    //   xMin,
-    //   xMax,
-    //   step,
-    // } = this.props;
-
-    // For our X axis values, we'll add as many points as are specified by our
-    // props.
-    const { xAxisValues, yAxisValues } = this.getXAxisValues();
-
+    // Build the soft grey horizontal lines that run across the background
     const backgroundLines = range(0, 10).map(i => (
       <BackgroundLine
         key={i}
@@ -122,6 +128,8 @@ class FrequencyGraph extends PureComponent<Props, State> {
         y2={VIEWBOX_HEIGHT * (i / 10)}
       />
     ));
+
+    const { xAxisValues, yAxisValues } = this.getXAxisValues();
 
     return (
       <FrequencyGraphSvg viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}>
@@ -163,7 +171,13 @@ class FrequencyGraph extends PureComponent<Props, State> {
         {yAxisValues.map(({ label, position }, index) => (
           <Aux key={index}>
             <AxisNub x1={label ? -2 : -1} y1={position} x2={0} y2={position} />
-            <AxisNubLabel x={-5} y={position} dx={-0.5} dy={0.85}>
+            <AxisNubLabel
+              textAnchor="end"
+              x={-3.5}
+              y={position}
+              dx={-0.5}
+              dy={0.85}
+            >
               {label}
             </AxisNubLabel>
           </Aux>
@@ -202,8 +216,18 @@ const BackgroundLine = styled.line`
 `;
 
 const Bar = styled.line`
-  stroke: ${COLORS.primary[500]};
+  stroke: ${COLORS.primary[700]};
   stroke-width: 2;
+
+  &:hover {
+    stroke: ${COLORS.primary[500]};
+  }
+`;
+
+const HoverText = styled.text`
+  font-size: 4px;
+  font-weight: bold;
+  fill: ${COLORS.primary[700]};
 `;
 
 const AxisNubLabel = styled.text`
