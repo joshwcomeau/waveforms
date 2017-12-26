@@ -312,12 +312,10 @@ export const steps = {
   },
   'how-sound-works-intro': {
     ...defaults,
-    isPlaying: true,
     waveformColor: COLORS.gray[700],
     waveformOpacity: 0.5,
     xAxisOpacity: 0.5,
     yAxisOpacity: 0.5,
-    showYAxisIntercept: true,
     children: (
       <Aux>
         <SectionTitle>2. How Sound Works</SectionTitle>
@@ -347,18 +345,23 @@ export const steps = {
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     frequencySliderMax: 2,
-    children: ({ amplitude, frequency, progress }) => (
+    children: ({ amplitude, frequency, progress, currentStep }) => (
       <Aux>
         <Paragraph>
           Sound is vibration. That blue dot's motion? That's what molecules in
           the air do, when a sine wave is played.
         </Paragraph>
 
-        <IntroRouteAirGrid
-          amplitude={amplitude}
-          frequency={frequency}
-          progress={progress}
-        />
+        <MountWhenVisible
+          currentStep={currentStep}
+          belongsToStep="how-sound-works-air-grid"
+        >
+          <IntroRouteAirGrid
+            amplitude={amplitude}
+            frequency={frequency}
+            progress={progress}
+          />
+        </MountWhenVisible>
 
         <Paragraph>
           The grid on the left below the waveform represents a bunch of air
@@ -409,19 +412,25 @@ export const steps = {
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     frequencySliderMax: 2,
-    children: ({ amplitude, frequency, progress }) => (
+    children: ({ amplitude, frequency, progress, currentStep }) => (
       <Aux>
         <Paragraph>
           How does this relate to our previous waveforms? Notice how a single
           particle moves back and forth. Does the pattern seem familiar? Each
           particle is moving in a sine wave, same as our waveform.
         </Paragraph>
-        <IntroRouteAirGrid
-          highlightAirGridColumn
-          amplitude={amplitude}
-          frequency={frequency}
-          progress={progress}
-        />
+
+        <MountWhenVisible
+          currentStep={currentStep}
+          belongsToStep="how-sound-works-air-grid-pt2"
+        >
+          <IntroRouteAirGrid
+            highlightAirGridColumn
+            amplitude={amplitude}
+            frequency={frequency}
+            progress={progress}
+          />
+        </MountWhenVisible>
       </Aux>
     ),
   },
