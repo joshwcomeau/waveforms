@@ -8,6 +8,7 @@ import SectionTitle from '../SectionTitle';
 import Sidebar from '../Sidebar';
 import Aux from '../Aux';
 import FrequencyGraph from '../FrequencyGraph';
+import MountWhenVisible from '../MountWhenVisible';
 
 import type { WaveformShape } from '../../types';
 
@@ -429,7 +430,7 @@ export const steps = {
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     makeSoundToggleable: true,
-    children: ({ frequency, amplitude }) => (
+    children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
         <SectionTitle>3. Harmonics</SectionTitle>
         <Paragraph>
@@ -450,11 +451,16 @@ export const steps = {
           wave's graph:
         </Paragraph>
 
-        <FrequencyGraph
-          shape="sine"
-          baseFrequency={frequency}
-          baseAmplitude={amplitude}
-        />
+        <MountWhenVisible
+          currentStep={currentStep}
+          belongsToStep="harmonics-intro"
+        >
+          <FrequencyGraph
+            shape="sine"
+            baseFrequency={frequency}
+            baseAmplitude={amplitude}
+          />
+        </MountWhenVisible>
 
         <Paragraph>
           The graph is pretty empty, because sine waves don't have any
