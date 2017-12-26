@@ -185,54 +185,49 @@ class IntroRoute extends PureComponent<Props, State> {
           isAudible={isAudible}
         />
 
-        <MainContent>
-          <LeftColumnWrapper>
-            <WaveformPlayer
-              isPlaying={stepData.isPlaying}
-              amplitude={amplitude}
-              frequency={frequency}
-            >
-              {({ amplitude, frequency, progress }) => (
-                <Aux>
-                  <IntroRouteWaveform
-                    amplitude={amplitude}
-                    frequency={frequency}
-                    progress={progress}
-                    handleUpdateAmplitude={this.handleUpdateAmplitude}
-                    handleUpdateFrequency={this.handleUpdateFrequency}
-                    stepData={stepData}
-                  />
-                  <IntroRouteAirGrid
-                    numOfRows={26}
-                    numOfCols={26}
-                    amplitude={amplitude}
-                    frequency={frequency}
-                    progress={progress}
-                    stepData={stepData}
-                  />
-                </Aux>
-              )}
-            </WaveformPlayer>
-          </LeftColumnWrapper>
+        <WaveformPlayer
+          isPlaying={stepData.isPlaying}
+          amplitude={amplitude}
+          frequency={frequency}
+        >
+          {({ amplitude, frequency, progress }) => (
+            <MainContent>
+              <LeftColumnWrapper>
+                <IntroRouteWaveform
+                  amplitude={amplitude}
+                  frequency={frequency}
+                  progress={progress}
+                  handleUpdateAmplitude={this.handleUpdateAmplitude}
+                  handleUpdateFrequency={this.handleUpdateFrequency}
+                  stepData={stepData}
+                />
+              </LeftColumnWrapper>
 
-          <RightColumnWrapper>
-            {stepsArray.map((section, index) => (
-              <IntroRouteSection
-                key={section.id}
-                id={section.id}
-                margin={section.getMargin(windowHeight)}
-                onIntersect={this.handleIntersect}
-                isSelected={currentStep === section.id}
-                innerRef={elem => (this.sectionRefs[index] = elem)}
-              >
-                {typeof section.children === 'function'
-                  ? section.children(this.state)
-                  : section.children}
-              </IntroRouteSection>
-            ))}
-            <BottomTextSpacer height={window.innerHeight} />
-          </RightColumnWrapper>
-        </MainContent>
+              <RightColumnWrapper>
+                {stepsArray.map((section, index) => (
+                  <IntroRouteSection
+                    key={section.id}
+                    id={section.id}
+                    margin={section.getMargin(windowHeight)}
+                    onIntersect={this.handleIntersect}
+                    isSelected={currentStep === section.id}
+                    innerRef={elem => (this.sectionRefs[index] = elem)}
+                  >
+                    {typeof section.children === 'function'
+                      ? section.children({
+                          amplitude,
+                          frequency,
+                          progress,
+                          currentStep: this.state.currentStep,
+                        })
+                      : section.children}
+                  </IntroRouteSection>
+                ))}
+                <BottomTextSpacer height={window.innerHeight} />
+              </RightColumnWrapper>
+            </MainContent>
+          )}
+        </WaveformPlayer>
       </MaxWidthWrapper>
     );
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { COLORS, DEFAULT_WAVEFORM_SHAPE } from '../../constants';
+import { roundTo } from '../../utils';
 
 import Header from '../Header';
 import Paragraph from '../Paragraph';
@@ -8,6 +9,7 @@ import SectionTitle from '../SectionTitle';
 import Sidebar from '../Sidebar';
 import Aux from '../Aux';
 import FrequencyGraph from '../FrequencyGraph';
+import IntroRouteAirGrid from '../IntroRouteAirGrid';
 import MountWhenVisible from '../MountWhenVisible';
 
 import type { WaveformShape } from '../../types';
@@ -54,9 +56,7 @@ export const INTRO_STEPS: Array<IntroStep> = [
 export type StepData = {
   id: string,
 
-  // Waveform/AirGrid parameters
-  showWaveform: boolean,
-  showAirGrid: boolean,
+  // Waveform parameters
   frequencyOverride: ?number,
   amplitudeOverride: ?number,
   isPlaying: boolean,
@@ -78,7 +78,6 @@ export type StepData = {
   frequencySliderMax: number,
   frequencySliderStep: number,
   showCycleIndicator: boolean,
-  highlightAirGridColumn: boolean,
   makeSoundToggleable: boolean,
 
   // Section parameters
@@ -93,8 +92,6 @@ const marginFunctions = {
 };
 
 const defaults: StepData = {
-  showWaveform: true,
-  showAirGrid: false,
   frequencyOverride: null,
   amplitudeOverride: null,
   isPlaying: false,
@@ -114,7 +111,6 @@ const defaults: StepData = {
   frequencySliderMax: 3,
   frequencySliderStep: 0.1,
   showCycleIndicator: false,
-  highlightAirGridColumn: false,
   makeSoundToggleable: false,
   getMargin: marginFunctions.large,
 };
@@ -343,23 +339,26 @@ export const steps = {
   },
   'how-sound-works-air-grid': {
     ...defaults,
-    showWaveform: false,
-    showAirGrid: true,
     isPlaying: true,
     waveformColor: COLORS.gray[700],
     waveformOpacity: 0.5,
     xAxisOpacity: 0.5,
     yAxisOpacity: 0.5,
-    showYAxisIntercept: true,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     frequencySliderMax: 2,
-    children: (
+    children: ({ amplitude, frequency, progress }) => (
       <Aux>
         <Paragraph>
           Sound is vibration. That blue dot's motion? That's what molecules in
           the air do, when a sine wave is played.
         </Paragraph>
+
+        <IntroRouteAirGrid
+          amplitude={amplitude}
+          frequency={frequency}
+          progress={progress}
+        />
 
         <Paragraph>
           The grid on the left below the waveform represents a bunch of air
@@ -401,25 +400,28 @@ export const steps = {
   },
   'how-sound-works-air-grid-pt2': {
     ...defaults,
-    showWaveform: false,
-    showAirGrid: true,
     isPlaying: true,
     waveformColor: COLORS.gray[700],
-    waveformOpacity: 0.5,
+    waveformOpacity: 0.25,
     xAxisOpacity: 0.5,
     yAxisOpacity: 0.5,
     showYAxisIntercept: true,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
-    highlightAirGridColumn: true,
     frequencySliderMax: 2,
-    children: (
+    children: ({ amplitude, frequency, progress }) => (
       <Aux>
         <Paragraph>
           How does this relate to our previous waveforms? Notice how a single
           particle moves back and forth. Does the pattern seem familiar? Each
           particle is moving in a sine wave, same as our waveform.
         </Paragraph>
+        <IntroRouteAirGrid
+          highlightAirGridColumn
+          amplitude={amplitude}
+          frequency={frequency}
+          progress={progress}
+        />
       </Aux>
     ),
   },
@@ -463,8 +465,9 @@ export const steps = {
         </MountWhenVisible>
 
         <Paragraph>
-          The graph is pretty empty, because sine waves don't have any
-          harmonics.
+          This graph is pretty uninteresting: we're playing a{' '}
+          {roundTo(frequency, 1)}Hz tone, and so we see a spike at{' '}
+          {roundTo(frequency, 1)}Hz.
         </Paragraph>
         <Sidebar>
           <Paragraph>

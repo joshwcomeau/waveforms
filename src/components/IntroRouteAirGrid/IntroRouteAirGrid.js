@@ -12,58 +12,46 @@ import type { StepData } from '../IntroRoute/IntroRoute.steps';
 import type { WaveformShape } from '../../types';
 
 type Props = {
-  numOfRows: number,
-  numOfCols: number,
   shape: WaveformShape,
   amplitude: number,
   frequency: number,
   progress: number,
-  stepData: StepData,
+  highlightAirGridColumn?: boolean,
 };
 
+const NUM_OF_ROWS = 26;
+const NUM_OF_COLS = 26;
+
 const IntroRouteAirGrid = ({
-  numOfRows,
-  numOfCols,
   shape,
   amplitude,
   frequency,
   progress,
-  stepData,
+  highlightAirGridColumn,
 }: Props) => {
   return (
     <IntroRouteAirGridWrapper>
-      <FadeTransition
-        mountOnEnter
-        unmountOnExit
-        isVisible={stepData.showAirGrid}
-      >
-        <AvailableWidth>
-          {width => (
-            <AirGrid
-              width={Math.round(width)}
-              height={Math.round(width * WAVEFORM_ASPECT_RATIO + 10)}
-              numOfRows={numOfRows}
-              numOfCols={numOfCols}
-              waveformShape={shape}
-              waveformAmplitude={amplitude}
-              waveformFrequency={frequency}
-              waveformProgress={progress}
-              highlightColumnIndex={
-                stepData.highlightAirGridColumn
-                  ? Math.round(numOfCols / 2)
-                  : null
-              }
-            />
-          )}
-        </AvailableWidth>
-      </FadeTransition>
+      <AvailableWidth>
+        {width => (
+          <AirGrid
+            width={Math.round(width)}
+            height={Math.round(width * WAVEFORM_ASPECT_RATIO + 10)}
+            numOfRows={NUM_OF_ROWS}
+            numOfCols={NUM_OF_COLS}
+            waveformShape={shape}
+            waveformAmplitude={amplitude}
+            waveformFrequency={frequency}
+            waveformProgress={progress}
+            highlightColumnIndex={highlightAirGridColumn ? 0 : null}
+          />
+        )}
+      </AvailableWidth>
     </IntroRouteAirGridWrapper>
   );
 };
 
 const IntroRouteAirGridWrapper = styled.div`
-  position: sticky;
-  top: 50px;
+  padding: 30px;
 `;
 
 export default IntroRouteAirGrid;

@@ -45,19 +45,18 @@ class IntroRouteWaveform extends PureComponent<Props> {
 
     return (
       <Aux>
-        <FadeTransition isVisible={stepData.showWaveform}>
-          <Waveform
-            amplitude={amplitude}
-            color={stepData.waveformColor}
-            strokeWidth={5}
-            opacity={stepData.waveformOpacity}
-            size={width}
-            shape={stepData.waveformShape}
-            offset={offset}
-            frequency={frequency}
-          />
-        </FadeTransition>
-        <FadeTransition isVisible={stepData.showWaveform && stepData.showXAxis}>
+        <Waveform
+          amplitude={amplitude}
+          color={stepData.waveformColor}
+          strokeWidth={5}
+          opacity={stepData.waveformOpacity}
+          size={width}
+          shape={stepData.waveformShape}
+          offset={offset}
+          frequency={frequency}
+        />
+
+        <FadeTransition isVisible={stepData.showXAxis}>
           <WaveformAxis
             x
             strokeWidth={4}
@@ -68,7 +67,7 @@ class IntroRouteWaveform extends PureComponent<Props> {
             opacity={stepData.xAxisOpacity}
           />
         </FadeTransition>
-        <FadeTransition isVisible={stepData.showWaveform && stepData.showYAxis}>
+        <FadeTransition isVisible={stepData.showYAxis}>
           <WaveformAxis
             y
             strokeWidth={4}
@@ -80,9 +79,7 @@ class IntroRouteWaveform extends PureComponent<Props> {
           />
         </FadeTransition>
 
-        <FadeTransition
-          isVisible={stepData.showWaveform && stepData.showYAxisIntercept}
-        >
+        <FadeTransition isVisible={stepData.showYAxisIntercept}>
           <WaveformIntercept
             size={20}
             color={COLORS.primary[500]}
@@ -94,10 +91,7 @@ class IntroRouteWaveform extends PureComponent<Props> {
           />
         </FadeTransition>
 
-        <FadeTransition
-          typeName="div"
-          isVisible={stepData.showWaveform && stepData.showCycleIndicator}
-        >
+        <FadeTransition typeName="div" isVisible={stepData.showCycleIndicator}>
           <WaveformCycleIndicator frequency={frequency} />
         </FadeTransition>
 
