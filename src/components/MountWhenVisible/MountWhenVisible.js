@@ -81,11 +81,10 @@ class MountWhenVisible extends PureComponent<Props, State> {
     const { children } = this.props;
     const { shouldMount, placeholderSize } = this.state;
 
-    return this.state.shouldMount ? (
-      <div ref={elem => (this.wrapper = elem)}>{children}</div>
-    ) : (
-      <Placeholder size={placeholderSize} />
-    );
+    // prettier-ignore
+    return shouldMount
+      ? <div ref={elem => (this.wrapper = elem)}>{children}</div>
+      : <Placeholder size={placeholderSize} />;
   }
 }
 

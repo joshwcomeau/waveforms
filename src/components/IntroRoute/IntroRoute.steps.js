@@ -486,7 +486,7 @@ export const steps = {
     showFrequencySlider: true,
     makeSoundToggleable: true,
     getMargin: marginFunctions.small,
-    children: ({ frequency, amplitude }) => (
+    children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
         <Paragraph>
           Here's another common waveform: the <strong>triangle wave</strong>.
@@ -515,11 +515,16 @@ export const steps = {
           let's graph these additional harmonics:
         </Paragraph>
 
-        <FrequencyGraph
-          shape="triangle"
-          baseFrequency={frequency}
-          baseAmplitude={amplitude}
-        />
+        <MountWhenVisible
+          currentStep={currentStep}
+          belongsToStep="triangle-wave"
+        >
+          <FrequencyGraph
+            shape="triangle"
+            baseFrequency={frequency}
+            baseAmplitude={amplitude}
+          />
+        </MountWhenVisible>
       </Aux>
     ),
   },
@@ -533,15 +538,17 @@ export const steps = {
     showFrequencySlider: true,
     makeSoundToggleable: true,
     getMargin: marginFunctions.small,
-    children: ({ frequency, amplitude }) => (
+    children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
         <Paragraph>Square wave</Paragraph>
 
-        <FrequencyGraph
-          shape="square"
-          baseFrequency={frequency}
-          baseAmplitude={amplitude}
-        />
+        <MountWhenVisible currentStep={currentStep} belongsToStep="square-wave">
+          <FrequencyGraph
+            shape="square"
+            baseFrequency={frequency}
+            baseAmplitude={amplitude}
+          />
+        </MountWhenVisible>
       </Aux>
     ),
   },
@@ -555,15 +562,20 @@ export const steps = {
     showFrequencySlider: true,
     makeSoundToggleable: true,
     getMargin: marginFunctions.small,
-    children: ({ frequency, amplitude }) => (
+    children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
         <Paragraph>sawtooth wave</Paragraph>
 
-        <FrequencyGraph
-          shape="sawtooth"
-          baseFrequency={frequency}
-          baseAmplitude={amplitude}
-        />
+        <MountWhenVisible
+          currentStep={currentStep}
+          belongsToStep="sawtooth-wave"
+        >
+          <FrequencyGraph
+            shape="sawtooth"
+            baseFrequency={frequency}
+            baseAmplitude={amplitude}
+          />
+        </MountWhenVisible>
       </Aux>
     ),
   },

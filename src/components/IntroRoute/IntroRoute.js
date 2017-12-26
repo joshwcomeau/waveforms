@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 import { DEFAULT_WAVEFORM_SHAPE } from '../../constants';
-import { debounce } from '../../utils';
+import { debounce, clamp } from '../../utils';
 
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import Aux from '../Aux';
@@ -112,7 +112,15 @@ class IntroRoute extends PureComponent<Props, State> {
     );
 
     if (activeSectionIndex !== this.state.currentStep) {
-      this.setState({ currentStep: INTRO_STEPS[activeSectionIndex] });
+      const nextStep = INTRO_STEPS[activeSectionIndex];
+
+      // If they've scrolled to the end, past all the steps, there may not be
+      // a nextStep. We can abort in this case.
+      if (!nextStep) {
+        return;
+      }
+
+      this.setState({ currentStep: nextStep });
     }
   }, 500);
 
@@ -130,6 +138,15 @@ class IntroRoute extends PureComponent<Props, State> {
       direction === 'forwards'
         ? INTRO_STEPS[intersectStepIndex + 1]
         : INTRO_STEPS[intersectStepIndex];
+
+    // If they've scrolled past the final step (to the footer or w/e), there
+    // may not be a next step. We can abort in this case.
+    // NOTE: This is also required to avoid a quirk where refreshing the page
+    // while scrolled near the bottom means that it tries to go backwards from
+    // the first step? Haven't investigated, but this fixes it.
+    if (!nextStep) {
+      return;
+    }
 
     this.setState({ currentStep: nextStep });
   };
