@@ -355,6 +355,7 @@ export const steps = {
         <MountWhenVisible
           currentStep={currentStep}
           belongsToStep="how-sound-works-air-grid"
+          estimatedSize={226}
         >
           <IntroRouteAirGrid
             amplitude={amplitude}
@@ -423,6 +424,7 @@ export const steps = {
         <MountWhenVisible
           currentStep={currentStep}
           belongsToStep="how-sound-works-air-grid-pt2"
+          estimatedSize={226}
         >
           <IntroRouteAirGrid
             highlightAirGridColumn
@@ -465,6 +467,7 @@ export const steps = {
         <MountWhenVisible
           currentStep={currentStep}
           belongsToStep="harmonics-intro"
+          estimatedSize={390}
         >
           <FrequencyGraph
             shape="sine"
@@ -530,6 +533,7 @@ export const steps = {
         <MountWhenVisible
           currentStep={currentStep}
           belongsToStep="triangle-wave"
+          estimatedSize={390}
         >
           <FrequencyGraph
             shape="triangle"
@@ -554,7 +558,11 @@ export const steps = {
       <Aux>
         <Paragraph>Square wave</Paragraph>
 
-        <MountWhenVisible currentStep={currentStep} belongsToStep="square-wave">
+        <MountWhenVisible
+          currentStep={currentStep}
+          belongsToStep="square-wave"
+          estimatedSize={390}
+        >
           <FrequencyGraph
             shape="square"
             baseFrequency={frequency}
@@ -581,6 +589,7 @@ export const steps = {
         <MountWhenVisible
           currentStep={currentStep}
           belongsToStep="sawtooth-wave"
+          estimatedSize={390}
         >
           <FrequencyGraph
             shape="sawtooth"

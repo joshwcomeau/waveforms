@@ -10,16 +10,12 @@
   steps at a time, and so if this component is far enough from it, we can rest
   assured that it isn't visible.
 
-  NOTE: This implementation has a subtle bug: when you refresh the page BELOW
-  this item, it never sets the correct `placeholderSize`. Because of that, when
-  you scroll back up, content jumps, as the children expand and layout recalcs.
+  If known, an estimated size can be provided. This is only used in the rare
+  case where a component is first mounted while scrolling UP to it (eg. the
+  user refreshes the page near the bottom and then scrolls back up). Without
+  `estimatedSize`, the container will start at 0px tall, and then the layout
+  will jump when the user scrolls.
 
-  The "fix" for this bug would be to start by mounting the component, calculate
-  the height, and then unmount if necessary. This is a bad idea, though, since
-  we don't want to cause a reflow right after the initial render!
-
-  Because this bug only affects low-on-the-page refreshes, I think I can live
-  with it.
 */
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
@@ -30,8 +26,15 @@ import { INTRO_STEPS } from '../IntroRoute/IntroRoute.steps';
 import type { IntroStep } from '../IntroRoute/IntroRoute.steps';
 
 type Props = {
+  // The currently-visible step
   currentStep: IntroStep,
+  // The step which "owns" this component and its children. Will mount based
+  // on this value in comparison to `currentStep`.
   belongsToStep: IntroStep,
+  // `estimatedSize` is only used in rare cases, to prevent layout reflow.
+  // see docstring at top of file.
+  estimatedSize?: number,
+
   children: React$Node,
 };
 
@@ -78,19 +81,19 @@ class MountWhenVisible extends PureComponent<Props, State> {
   };
 
   render() {
-    const { children } = this.props;
+    const { estimatedSize, children } = this.props;
     const { shouldMount, placeholderSize } = this.state;
 
     // prettier-ignore
     return shouldMount
       ? <div ref={elem => (this.wrapper = elem)}>{children}</div>
-      : <Placeholder size={placeholderSize} />;
+      : <Placeholder size={placeholderSize || estimatedSize} />;
   }
 }
 
 const Placeholder = styled.div`
   background: ${COLORS.gray[100]};
-  height: ${props => props.size + 'px'};
+  height: ${({ size }) => (typeof size === 'number' ? size + 'px' : 'auto')};
 `;
 
 export default MountWhenVisible;
