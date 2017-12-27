@@ -44,7 +44,7 @@ class IntroRouteWaveform extends PureComponent<Props> {
     const offset = convertProgressToCycle(progress);
 
     return (
-      <Wrapper>
+      <FlexParent>
         <WaveformWrapper>
           <Waveform
             amplitude={amplitude}
@@ -62,8 +62,6 @@ class IntroRouteWaveform extends PureComponent<Props> {
               x
               strokeWidth={4}
               waveformSize={width}
-              frequency={frequency}
-              progress={progress}
               showLabels={stepData.showXAxisLabels}
               opacity={stepData.xAxisOpacity}
             />
@@ -73,8 +71,6 @@ class IntroRouteWaveform extends PureComponent<Props> {
               y
               strokeWidth={4}
               waveformSize={width}
-              frequency={frequency}
-              progress={progress}
               showLabels={stepData.showYAxisLabels}
               opacity={stepData.yAxisOpacity}
             />
@@ -103,6 +99,8 @@ class IntroRouteWaveform extends PureComponent<Props> {
         <ControlsWrapper>
           <Row gutter={15}>
             <FadeTransition
+              mountOnEnter
+              unmountOnExit
               typeName="div"
               isVisible={stepData.showAmplitudeSlider}
             >
@@ -119,6 +117,8 @@ class IntroRouteWaveform extends PureComponent<Props> {
             </FadeTransition>
 
             <FadeTransition
+              mountOnEnter
+              unmountOnExit
               typeName="div"
               isVisible={stepData.showFrequencySlider}
             >
@@ -135,14 +135,20 @@ class IntroRouteWaveform extends PureComponent<Props> {
             </FadeTransition>
           </Row>
         </ControlsWrapper>
-      </Wrapper>
+      </FlexParent>
     );
   };
 
   render() {
     return (
       <Aux>
+        {/*
+          InitialSpacer is used on desktop to align the waveform with the
+          title. position: sticky takes over but we need this to offset it
+          initially
+        */}
         <InitialSpacer />
+
         <IntroRouteWaveformWrapper>
           <AvailableWidth>{this.renderContents}</AvailableWidth>
         </IntroRouteWaveformWrapper>
@@ -151,7 +157,7 @@ class IntroRouteWaveform extends PureComponent<Props> {
   }
 }
 
-const Wrapper = styled.div`
+const FlexParent = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -161,24 +167,23 @@ const Wrapper = styled.div`
 `;
 
 const WaveformWrapper = styled.div`
-  background: ${COLORS.gray[50]};
-
   @media (orientation: landscape) {
     padding-bottom: 40px;
   }
 `;
 
 const ControlsWrapper = styled.div`
-  background: ${COLORS.gray[50]};
-
   @media (orientation: portrait) {
     padding-bottom: 40px;
   }
 `;
 
 const InitialSpacer = styled.div`
-  height: 175px;
+  @media (orientation: landscape) {
+    height: 175px;
+  }
 `;
+
 const IntroRouteWaveformWrapper = styled.div`
   @media (orientation: landscape) {
     position: sticky;
@@ -191,6 +196,8 @@ const IntroRouteWaveformWrapper = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
+    padding: 1.25rem 3rem 2rem;
+    background: ${COLORS.gray[50]};
   }
 `;
 
