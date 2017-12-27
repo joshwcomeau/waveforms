@@ -23,13 +23,21 @@ class AvailableWidth extends Component<Props, State> {
   observer: ResizeObserver;
 
   componentDidMount() {
+    // Set the width based on the DOM size on-mount
+    const { width } = this.elem.getBoundingClientRect();
+    this.setState({ width });
+
     // We want to be notified of any changes to the size of this element.
     // Enter 'ResizeObserver'!
     // Using a polyfill atm since it's only in Chrome 65+. Polyfill's only
     // 2.4kb though, so I don't feel the need to import() it.
     // Also, this will also report on mount, which'll set the initial value.
     this.observer = new ResizeObserver(([entry]) => {
-      this.setState({ width: entry.contentRect.width });
+      const observedWidth = entry.contentRect.width;
+
+      if (observedWidth !== this.state.width) {
+        this.setState({ width: entry.contentRect.width });
+      }
     });
 
     this.observer.observe(this.elem);
@@ -42,6 +50,8 @@ class AvailableWidth extends Component<Props, State> {
   render() {
     const { width } = this.state;
     const { children } = this.props;
+
+    console.log('availablewidth', width);
 
     return (
       // $FlowFixMe - I trust that ref() captures an HTMLElement. Flow doesn't.
