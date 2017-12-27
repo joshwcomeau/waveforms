@@ -192,7 +192,7 @@ class IntroRoute extends PureComponent<Props, State> {
         >
           {({ amplitude, frequency, progress }) => (
             <MainContent>
-              <LeftColumnWrapper>
+              <WaveformColumn>
                 <IntroRouteWaveform
                   amplitude={amplitude}
                   frequency={frequency}
@@ -201,9 +201,9 @@ class IntroRoute extends PureComponent<Props, State> {
                   handleUpdateFrequency={this.handleUpdateFrequency}
                   stepData={stepData}
                 />
-              </LeftColumnWrapper>
+              </WaveformColumn>
 
-              <RightColumnWrapper>
+              <TutorialColumn>
                 {stepsArray.map((section, index) => (
                   <IntroRouteSection
                     key={section.id}
@@ -224,7 +224,7 @@ class IntroRoute extends PureComponent<Props, State> {
                   </IntroRouteSection>
                 ))}
                 <BottomTextSpacer height={window.innerHeight} />
-              </RightColumnWrapper>
+              </TutorialColumn>
             </MainContent>
           )}
         </WaveformPlayer>
@@ -236,14 +236,18 @@ class IntroRoute extends PureComponent<Props, State> {
 const MainContent = styled.div`
   display: flex;
   flex-direction: row;
+
+  @media (orientation: portrait) {
+    flex-direction: column;
+  }
 `;
 
-const LeftColumnWrapper = styled.div`
+const WaveformColumn = styled.div`
   flex: 1;
   margin-right: 65px;
 `;
 
-const RightColumnWrapper = styled.div`
+const TutorialColumn = styled.div`
   margin-left: 50px;
   flex: 1;
 `;

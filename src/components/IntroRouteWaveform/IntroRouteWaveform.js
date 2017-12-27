@@ -44,93 +44,98 @@ class IntroRouteWaveform extends PureComponent<Props> {
     const offset = convertProgressToCycle(progress);
 
     return (
-      <Aux>
-        <Waveform
-          amplitude={amplitude}
-          color={stepData.waveformColor}
-          strokeWidth={5}
-          opacity={stepData.waveformOpacity}
-          size={width}
-          shape={stepData.waveformShape}
-          offset={offset}
-          frequency={frequency}
-        />
-
-        <FadeTransition isVisible={stepData.showXAxis}>
-          <WaveformAxis
-            x
-            strokeWidth={4}
-            waveformSize={width}
-            frequency={frequency}
-            progress={progress}
-            showLabels={stepData.showXAxisLabels}
-            opacity={stepData.xAxisOpacity}
-          />
-        </FadeTransition>
-        <FadeTransition isVisible={stepData.showYAxis}>
-          <WaveformAxis
-            y
-            strokeWidth={4}
-            waveformSize={width}
-            frequency={frequency}
-            progress={progress}
-            showLabels={stepData.showYAxisLabels}
-            opacity={stepData.yAxisOpacity}
-          />
-        </FadeTransition>
-
-        <FadeTransition isVisible={stepData.showYAxisIntercept}>
-          <WaveformIntercept
-            size={20}
-            color={COLORS.primary[500]}
-            waveformSize={width}
-            waveformShape={stepData.waveformShape}
-            frequency={frequency}
+      <Wrapper>
+        <WaveformWrapper>
+          <Waveform
             amplitude={amplitude}
+            color={stepData.waveformColor}
+            strokeWidth={5}
+            opacity={stepData.waveformOpacity}
+            size={width}
+            shape={stepData.waveformShape}
             offset={offset}
+            frequency={frequency}
           />
-        </FadeTransition>
 
-        <FadeTransition typeName="div" isVisible={stepData.showCycleIndicator}>
-          <WaveformCycleIndicator frequency={frequency} />
-        </FadeTransition>
+          <FadeTransition isVisible={stepData.showXAxis}>
+            <WaveformAxis
+              x
+              strokeWidth={4}
+              waveformSize={width}
+              frequency={frequency}
+              progress={progress}
+              showLabels={stepData.showXAxisLabels}
+              opacity={stepData.xAxisOpacity}
+            />
+          </FadeTransition>
+          <FadeTransition isVisible={stepData.showYAxis}>
+            <WaveformAxis
+              y
+              strokeWidth={4}
+              waveformSize={width}
+              frequency={frequency}
+              progress={progress}
+              showLabels={stepData.showYAxisLabels}
+              opacity={stepData.yAxisOpacity}
+            />
+          </FadeTransition>
 
-        <Spacer size={40} />
-
-        <Row gutter={15}>
-          <FadeTransition
-            typeName="div"
-            isVisible={stepData.showAmplitudeSlider}
-          >
-            <Slider
-              label="Amplitude"
-              width={width / 2 - 15}
-              min={0}
-              max={1}
-              step={0.01}
-              defaultValue={1}
-              value={amplitude}
-              onChange={handleUpdateAmplitude}
+          <FadeTransition isVisible={stepData.showYAxisIntercept}>
+            <WaveformIntercept
+              size={20}
+              color={COLORS.primary[500]}
+              waveformSize={width}
+              waveformShape={stepData.waveformShape}
+              frequency={frequency}
+              amplitude={amplitude}
+              offset={offset}
             />
           </FadeTransition>
 
           <FadeTransition
             typeName="div"
-            isVisible={stepData.showFrequencySlider}
+            isVisible={stepData.showCycleIndicator}
           >
-            <Slider
-              label="Frequency"
-              width={width / 2 - 15}
-              min={stepData.frequencySliderMin}
-              max={stepData.frequencySliderMax}
-              step={stepData.frequencySliderStep}
-              defaultValue={1}
-              value={frequency}
-              onChange={handleUpdateFrequency}
-            />
+            <WaveformCycleIndicator frequency={frequency} />
           </FadeTransition>
-        </Row>
-      </Aux>
+        </WaveformWrapper>
+
+        <ControlsWrapper>
+          <Row gutter={15}>
+            <FadeTransition
+              typeName="div"
+              isVisible={stepData.showAmplitudeSlider}
+            >
+              <Slider
+                label="Amplitude"
+                width={width / 2 - 15}
+                min={0}
+                max={1}
+                step={0.01}
+                defaultValue={1}
+                value={amplitude}
+                onChange={handleUpdateAmplitude}
+              />
+            </FadeTransition>
+
+            <FadeTransition
+              typeName="div"
+              isVisible={stepData.showFrequencySlider}
+            >
+              <Slider
+                label="Frequency"
+                width={width / 2 - 15}
+                min={stepData.frequencySliderMin}
+                max={stepData.frequencySliderMax}
+                step={stepData.frequencySliderStep}
+                defaultValue={1}
+                value={frequency}
+                onChange={handleUpdateFrequency}
+              />
+            </FadeTransition>
+          </Row>
+        </ControlsWrapper>
+      </Wrapper>
     );
   };
 
@@ -146,12 +151,47 @@ class IntroRouteWaveform extends PureComponent<Props> {
   }
 }
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media (orientation: portrait) {
+    flex-direction: column-reverse;
+  }
+`;
+
+const WaveformWrapper = styled.div`
+  background: ${COLORS.gray[50]};
+
+  @media (orientation: landscape) {
+    padding-bottom: 40px;
+  }
+`;
+
+const ControlsWrapper = styled.div`
+  background: ${COLORS.gray[50]};
+
+  @media (orientation: portrait) {
+    padding-bottom: 40px;
+  }
+`;
+
 const InitialSpacer = styled.div`
   height: 175px;
 `;
 const IntroRouteWaveformWrapper = styled.div`
-  position: sticky;
-  top: 50px;
+  @media (orientation: landscape) {
+    position: sticky;
+    top: 50px;
+  }
+
+  @media (orientation: portrait) {
+    position: fixed;
+    z-index: 5;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 `;
 
 export default IntroRouteWaveform;
