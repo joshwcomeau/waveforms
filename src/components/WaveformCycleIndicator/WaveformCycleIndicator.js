@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 import { COLORS } from '../../constants';
@@ -10,12 +10,16 @@ type Props = {
   frequency: number,
 };
 
-const WaveformCycleIndicator = ({ frequency }: Props) => (
-  <WaveformCycleIndicatorWrapper frequency={frequency}>
-    <CycleLabel>1 Period</CycleLabel>
-    <CycleIndicator />
-  </WaveformCycleIndicatorWrapper>
-);
+class WaveformCycleIndicator extends PureComponent<Props> {
+  render() {
+    return (
+      <WaveformCycleIndicatorWrapper frequency={this.props.frequency}>
+        <CycleLabel>1 Period</CycleLabel>
+        <CycleIndicator />
+      </WaveformCycleIndicatorWrapper>
+    );
+  }
+}
 
 const WaveformCycleIndicatorWrapper = styled.div.attrs({
   style: ({ frequency }) => ({
