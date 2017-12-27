@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import IntersectionObserver from '../IntersectionObserver';
@@ -15,26 +15,34 @@ type Props = {
   children: React$Node,
 };
 
-const IntroRouteSection = ({
-  id,
-  onIntersect,
-  margin = 0,
-  isSelected,
-  innerRef,
-  children,
-}: Props) => {
-  return (
-    <IntersectionObserver id={id} onIntersect={onIntersect} onlyFireOn="exit">
-      <IntroRouteSectionElem
-        innerRef={innerRef}
-        margin={margin}
-        isSelected={isSelected}
-      >
-        {children}
-      </IntroRouteSectionElem>
-    </IntersectionObserver>
-  );
-};
+class IntroRouteSection extends Component<Props> {
+  shouldComponentUpdate(nextProps: Props) {
+    return this.props.isSelected || nextProps.isSelected;
+  }
+
+  render() {
+    const {
+      id,
+      onIntersect,
+      margin = 0,
+      isSelected,
+      innerRef,
+      children,
+    } = this.props;
+
+    return (
+      <IntersectionObserver id={id} onIntersect={onIntersect} onlyFireOn="exit">
+        <IntroRouteSectionElem
+          innerRef={innerRef}
+          margin={margin}
+          isSelected={isSelected}
+        >
+          {children}
+        </IntroRouteSectionElem>
+      </IntersectionObserver>
+    );
+  }
+}
 
 const IntroRouteSectionElem = styled.div`
   margin-top: ${props => props.margin + 'px'};

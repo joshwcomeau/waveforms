@@ -51,8 +51,6 @@ class AvailableWidth extends Component<Props, State> {
     const { width } = this.state;
     const { children } = this.props;
 
-    console.log('availablewidth', width);
-
     return (
       // $FlowFixMe - I trust that ref() captures an HTMLElement. Flow doesn't.
       <div ref={elem => (this.elem = elem)}>
