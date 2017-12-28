@@ -8,7 +8,6 @@ import { convertProgressToCycle } from '../../helpers/waveform.helpers';
 import Aux from '../Aux';
 import AvailableWidth from '../AvailableWidth';
 import Row from '../Row';
-import Spacer from '../Spacer';
 import Waveform from '../Waveform';
 import WaveformAxis from '../WaveformAxis';
 import WaveformIntercept from '../WaveformIntercept';

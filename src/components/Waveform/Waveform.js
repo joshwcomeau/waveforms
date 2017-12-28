@@ -18,6 +18,8 @@ import Canvas from '../Canvas';
 
 import type { Linecap, WaveformShape, WaveformPoint } from '../../types';
 
+const CANVAS_PADDING = 10;
+
 export type Props = {
   // In most cases, the Waveform simply requires an enum waveform shape, like
   // 'sine' or 'square'.
@@ -62,7 +64,7 @@ class Waveform extends Component<Props> {
     shape: DEFAULT_WAVEFORM_SHAPE,
     color: 'black',
     strokeWidth: 1,
-    strokeLinecap: 'square',
+    strokeLinecap: 'butt',
     opacity: 1,
     frequency: DEFAULT_WAVEFORM_NUM_OF_CYCLES,
     amplitude: DEFAULT_WAVEFORM_AMPLITUDE,
@@ -94,7 +96,7 @@ class Waveform extends Component<Props> {
   };
 
   getPoints() {
-    const { size, shape, frequency, amplitude, offset } = this.props;
+    const { size, shape, frequency, amplitude, offset, renderTo } = this.props;
     let { points } = this.props;
 
     const height = Math.round(size * WAVEFORM_ASPECT_RATIO);
@@ -112,15 +114,22 @@ class Waveform extends Component<Props> {
     // `points` will be mathy values: y-values ranging from -1 to 1.
     // We want to convert that to values understandable by our waveform
     // drawing surfaces: values from 0 to the height of the canvas/svg.
-    const drawablePoints = points.map(({ x, y }) => ({
-      x,
-      y: translateAxisRelativeYValue(y, height),
-    }));
+    // For Canvas only: We need to add a bit of padding to each value.
+    const drawablePoints = points.map(({ x, y }) => {
+      const relativeY = translateAxisRelativeYValue(y, height);
+
+      return {
+        x: renderTo === 'canvas' ? x + CANVAS_PADDING : x,
+        y: renderTo === 'canvas' ? relativeY + CANVAS_PADDING : relativeY,
+      };
+    });
 
     return drawablePoints;
   }
 
   drawCanvas() {
+    const { color, strokeWidth, strokeLinecap } = this.props;
+
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.beginPath();
@@ -131,12 +140,27 @@ class Waveform extends Component<Props> {
 
     otherPoints.forEach(({ x, y }) => this.ctx.lineTo(x, y));
 
+    this.ctx.lineWidth = strokeWidth;
+    this.ctx.lineCap = strokeLinecap;
+    this.ctx.strokeStyle = color;
+
     this.ctx.stroke();
   }
 
   renderCanvas(width: number, height: number) {
+    // Unlike SVGs, there's no way to support overflow with Canvas.
+    // So, we need to set it as slightly larger than ideal, and then offset it
+    // with margin.
+    const widthWithPadding = width + CANVAS_PADDING * 2;
+    const heightWithPadding = height + CANVAS_PADDING * 2;
+
     return (
-      <Canvas width={width} height={height} innerRef={this.captureCanvasRef} />
+      <Canvas
+        innerRef={this.captureCanvasRef}
+        width={widthWithPadding}
+        height={heightWithPadding}
+        style={{ margin: -CANVAS_PADDING }}
+      />
     );
   }
 
@@ -162,15 +186,7 @@ class Waveform extends Component<Props> {
   }
 
   render() {
-    const {
-      shape,
-      size,
-      frequency,
-      amplitude,
-      offset,
-      renderTo,
-      points,
-    } = this.props;
+    const { shape, size, renderTo, points } = this.props;
 
     const width = size;
     const height = Math.round(size * WAVEFORM_ASPECT_RATIO);
