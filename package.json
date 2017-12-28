@@ -1,7 +1,8 @@
 {
   "name": "waveforms",
+  "author": "Joshua Comeau",
+  "license": "MIT",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
@@ -10,7 +11,8 @@
       "prettier --single-quote --trailing-comma es5 --write \"src/**/*.js\"",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "flow": "flow"
+    "flow": "flow",
+    "deploy": "yarn run build && surge -p build -d waveforms.surge.sh"
   },
   "dependencies": {
     "autoprefixer": "7.1.6",
