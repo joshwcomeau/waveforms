@@ -101,20 +101,11 @@ const fixPeaks = (amplitude, values) => {
   });
 };
 
-export const createPathFromWaveformPoints = (
+export const createSVGPathFromWaveformPoints = (
   points: Array<WaveformPoint>,
   height: number
-) => {
-  // The points provided to this method will range in y-value from -1 to 1.
-  // This is mathematically pure, but it's not something our SVG can understand.
-  // Convert this -1:1 range to a 0:height range.
-  const drawablePoints = points.map(({ x, y }) => ({
-    x,
-    y: translateAxisRelativeYValue(y, height),
-  }));
-
-  // Finally, let's create the `path` string that the SVG can use.
-  return drawablePoints.reduce((acc, { x, y }, index) => {
+) =>
+  points.reduce((acc, { x, y }, index) => {
     // For the very first point, we have to Move to that area
     if (index === 0) {
       return `M ${x},${y} `;
@@ -123,8 +114,6 @@ export const createPathFromWaveformPoints = (
     // For all subsequent points, we can just draw a line to it.
     return `${acc} L ${x},${y}`;
   }, '');
-};
-
 /**
  * Given progress between 0 and 100, figure out the Y position, relative
  * to the X axis (from 1 to -1)
@@ -283,7 +272,7 @@ export const getPositionAtPointRelativeToAxis = (
   }
 };
 
-const translateAxisRelativeYValue = (
+export const translateAxisRelativeYValue = (
   // a value from -1 to 1 (relative to the axis)
   yValue: number,
   // The height in pixels of our waveform drawing

@@ -70,7 +70,18 @@ SHAPES.forEach(shape =>
         )}
       </WaveformPlayer>
     ))
-
+    .add(`${shape} - playing (Canvas)`, () => (
+      <WaveformPlayer isPlaying>
+        {({ progress, frequency }) => (
+          <Waveform
+            renderTo="canvas"
+            shape={shape}
+            offset={convertProgressToCycle(progress)}
+            frequency={frequency}
+          />
+        )}
+      </WaveformPlayer>
+    ))
     .add(`${shape} - playing (2Hz)`, () => (
       <WaveformPlayer isPlaying frequency={2}>
         {({ progress, frequency }) => (

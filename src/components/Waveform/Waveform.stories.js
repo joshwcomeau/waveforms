@@ -9,6 +9,9 @@ import Waveform from './Waveform';
 SHAPES.forEach(shape =>
   storiesOf('Waveform', module)
     .add(`${shape}`, () => <Waveform shape={shape} />)
+    .add(`${shape} (Canvas)`, () => (
+      <Waveform shape={shape} renderTo="canvas" />
+    ))
     .add(`${shape} (red)`, () => <Waveform shape={shape} color="red" />)
     .add(`${shape} (2Hz)`, () => <Waveform shape={shape} frequency={2} />)
     .add(`${shape} (3Hz)`, () => <Waveform shape={shape} frequency={3} />)

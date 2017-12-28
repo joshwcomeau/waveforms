@@ -10,13 +10,13 @@ import {
 } from '../../constants';
 import {
   getPointsForWaveform,
-  createPathFromWaveformPoints,
+  createSVGPathFromWaveformPoints,
+  translateAxisRelativeYValue,
 } from '../../helpers/waveform.helpers';
 
-import type { Linecap, WaveformShape } from '../../types';
+import Canvas from '../Canvas';
 
-type Point = { x: number, y: number };
-type Points = Array<Point>;
+import type { Linecap, WaveformShape, WaveformPoint } from '../../types';
 
 export type Props = {
   // In most cases, the Waveform simply requires an enum waveform shape, like
@@ -25,7 +25,7 @@ export type Props = {
   // In certain cases (eg. waveform addition), it's more helpful to provide an
   // array of points, instead of a `shape`. The Waveform will simply plot those
   // points, in that case.
-  points?: Points,
+  points?: Array<WaveformPoint>,
   // 'size' will be used for the width, and the height will be derived, using
   // the ASPECT_RATIO constant.
   size: number,
@@ -70,10 +70,82 @@ class Waveform extends Component<Props> {
     renderTo: 'svg',
   };
 
-  renderSVG(width: number, height: number, points: Points) {
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+
+  componentDidMount() {
+    if (this.props.renderTo === 'canvas') {
+      this.drawCanvas();
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.renderTo === 'canvas') {
+      this.drawCanvas();
+    }
+  }
+
+  captureCanvasRef = (
+    canvas: HTMLCanvasElement,
+    ctx: CanvasRenderingContext2D
+  ) => {
+    this.canvas = canvas;
+    this.ctx = ctx;
+  };
+
+  getPoints() {
+    const { size, shape, frequency, amplitude, offset } = this.props;
+    let { points } = this.props;
+
+    const height = Math.round(size * WAVEFORM_ASPECT_RATIO);
+
+    if (typeof points === 'undefined') {
+      points = getPointsForWaveform({
+        shape,
+        frequency,
+        amplitude,
+        width: size,
+        offset,
+      });
+    }
+
+    // `points` will be mathy values: y-values ranging from -1 to 1.
+    // We want to convert that to values understandable by our waveform
+    // drawing surfaces: values from 0 to the height of the canvas/svg.
+    const drawablePoints = points.map(({ x, y }) => ({
+      x,
+      y: translateAxisRelativeYValue(y, height),
+    }));
+
+    return drawablePoints;
+  }
+
+  drawCanvas() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    this.ctx.beginPath();
+
+    const [firstPoint, ...otherPoints] = this.getPoints();
+
+    this.ctx.moveTo(firstPoint.x, firstPoint.y);
+
+    otherPoints.forEach(({ x, y }) => this.ctx.lineTo(x, y));
+
+    this.ctx.stroke();
+  }
+
+  renderCanvas(width: number, height: number) {
+    return (
+      <Canvas width={width} height={height} innerRef={this.captureCanvasRef} />
+    );
+  }
+
+  renderSVG(width: number, height: number) {
     const { color, strokeWidth, strokeLinecap, opacity } = this.props;
 
-    const svgPath = createPathFromWaveformPoints(points, height);
+    const points = this.getPoints();
+
+    const svgPath = createSVGPathFromWaveformPoints(points, height);
 
     return (
       <svg width={width} height={height} style={{ overflow: 'visible' }}>
@@ -89,13 +161,16 @@ class Waveform extends Component<Props> {
     );
   }
 
-  renderCanvas(width: number, height: number, points: Points) {
-    // TODO
-  }
-
   render() {
-    const { shape, size, frequency, amplitude, offset, renderTo } = this.props;
-    let { points } = this.props;
+    const {
+      shape,
+      size,
+      frequency,
+      amplitude,
+      offset,
+      renderTo,
+      points,
+    } = this.props;
 
     const width = size;
     const height = Math.round(size * WAVEFORM_ASPECT_RATIO);
@@ -107,19 +182,9 @@ class Waveform extends Component<Props> {
       );
     }
 
-    if (typeof points === 'undefined') {
-      points = getPointsForWaveform({
-        shape,
-        frequency,
-        amplitude,
-        width,
-        offset,
-      });
-    }
-
     return renderTo === 'svg'
-      ? this.renderSVG(width, height, points)
-      : this.renderCanvas(width, height, points);
+      ? this.renderSVG(width, height)
+      : this.renderCanvas(width, height);
   }
 }
 
