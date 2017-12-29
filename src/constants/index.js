@@ -71,6 +71,7 @@ export const COLORS: Colors = {
 };
 
 COLORS.primary = COLORS.blue;
+COLORS.secondary = COLORS.green;
 
 // Media queries
 export const BREAKPOINT_SIZES = {

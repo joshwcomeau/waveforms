@@ -39,7 +39,7 @@ const VolumeAdjuster = ({
       </Header>
 
       <VolumeBlocks>
-        {range(1, steps).map(index => (
+        {range(1, steps - 1).map(index => (
           <VolumeBlock
             key={index}
             size={blockSize}

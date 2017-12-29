@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { COLORS } from '../../constants';
 
-export default styled.h3`
+export default styled.h2`
   margin-bottom: 45px;
   padding-bottom: 12px;
   font-size: 42px;

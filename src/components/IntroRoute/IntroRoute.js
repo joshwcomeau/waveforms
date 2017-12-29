@@ -11,6 +11,7 @@ import IntroRouteWaveform from '../IntroRouteWaveform';
 import Oscillator from '../Oscillator';
 import IntroRouteSection from '../IntroRouteSection';
 import VolumeAdjuster from '../VolumeAdjuster';
+import FadeTransition from '../FadeTransition';
 
 import { steps, stepsArray, INTRO_STEPS } from './IntroRoute.steps';
 
@@ -41,6 +42,7 @@ class IntroRoute extends PureComponent<Props, State> {
   componentDidMount() {
     window.addEventListener('resize', this.handleResize);
     window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('keydown', this.handleKeydown);
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -95,6 +97,19 @@ class IntroRoute extends PureComponent<Props, State> {
 
   handleToggleMuteAudio = () => {
     this.setState({ audioMuted: !this.state.audioMuted });
+  };
+
+  handleKeydown = (ev: SyntheticKeyboardEvent<*>) => {
+    const { key } = ev;
+
+    const isNumber = !isNaN(Number(key));
+
+    if (isNumber) {
+      // $FlowFixMe - Flow doesn't believe that it's a number.
+      this.handleUpdateAudioVolume(key / 10);
+    } else if (key === 'm') {
+      this.handleToggleMuteAudio();
+    }
   };
 
   handleResize = debounce(() => {
@@ -176,15 +191,6 @@ class IntroRoute extends PureComponent<Props, State> {
 
     return (
       <MaxWidthWrapper>
-        <VolumeAdjusterWrapper>
-          <VolumeAdjuster
-            currentVolume={audioVolume}
-            isMuted={audioMuted}
-            onAdjustVolume={this.handleUpdateAudioVolume}
-            onToggleMute={this.handleToggleMuteAudio}
-          />
-        </VolumeAdjusterWrapper>
-
         <Oscillator
           shape={stepData.waveformShape}
           amplitude={amplitude}
@@ -208,6 +214,17 @@ class IntroRoute extends PureComponent<Props, State> {
                   handleUpdateFrequency={this.handleUpdateFrequency}
                   stepData={stepData}
                 />
+
+                <FadeTransition isVisible={stepData.showVolumeControls}>
+                  <VolumeAdjusterWrapper>
+                    <VolumeAdjuster
+                      currentVolume={audioVolume}
+                      isMuted={audioMuted}
+                      onAdjustVolume={this.handleUpdateAudioVolume}
+                      onToggleMute={this.handleToggleMuteAudio}
+                    />
+                  </VolumeAdjusterWrapper>
+                </FadeTransition>
               </WaveformColumn>
 
               <TutorialColumn>
@@ -246,19 +263,20 @@ class IntroRoute extends PureComponent<Props, State> {
 const LANDSCAPE_GUTTER = 120;
 
 const VolumeAdjusterWrapper = styled.div`
-  position: fixed;
   z-index: 10;
   background: ${COLORS.gray[50]};
 
+  padding: 1rem;
+
   @media (orientation: portrait) {
+    position: fixed;
     top: 0;
     right: 0;
-    padding: 1rem;
   }
 
   @media (orientation: landscape) {
-    bottom: 2rem;
-    left: 2rem;
+    position: fixed;
+    bottom: 1rem;
   }
 `;
 

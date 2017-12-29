@@ -1,4 +1,5 @@
 import React from 'react';
+import VolumeOn from 'react-icons/lib/md/volume-up';
 
 import { COLORS, DEFAULT_WAVEFORM_SHAPE } from '../../constants';
 import { roundTo } from '../../utils';
@@ -6,6 +7,8 @@ import { roundTo } from '../../utils';
 import Header from '../Header';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
+import Heading from '../Heading';
+import Emphasized from '../Emphasized';
 import Sidebar from '../Sidebar';
 import Aux from '../Aux';
 import FrequencyGraph from '../FrequencyGraph';
@@ -78,7 +81,7 @@ export type StepData = {
   frequencySliderMax: number,
   frequencySliderStep: number,
   showCycleIndicator: boolean,
-  makeSoundToggleable: boolean,
+  showVolumeControls: boolean,
 
   // Section parameters
   getMargin: (windowWidth: number) => number,
@@ -111,7 +114,7 @@ const defaults: StepData = {
   frequencySliderMax: 3,
   frequencySliderStep: 0.1,
   showCycleIndicator: false,
-  makeSoundToggleable: false,
+  showVolumeControls: true,
   getMargin: marginFunctions.large,
 };
 
@@ -119,6 +122,7 @@ export const steps = {
   title: {
     ...defaults,
     showYAxis: false,
+    showVolumeControls: false,
     getMargin: marginFunctions.none,
     children: <Header />,
   },
@@ -126,6 +130,7 @@ export const steps = {
     ...defaults,
     isPlaying: true,
     showYAxis: false,
+    showVolumeControls: false,
     getMargin: marginFunctions.small,
     children: (
       <Aux>
@@ -147,19 +152,34 @@ export const steps = {
     ...defaults,
     isPlaying: true,
     showYAxis: false,
-    makeSoundToggleable: true,
     getMargin: marginFunctions.small,
-    children: (
+    children: ({ orientation }) => (
       <Aux>
+        <Heading>
+          Listen in{' '}
+          <span
+            style={{ display: 'inline-block', transform: 'translateY(-2px)' }}
+          >
+            <VolumeOn />
+          </span>
+        </Heading>
         <Paragraph>
           Because this guide deals with audio waveforms, it's beneficial to be
           able to hear stuff. This way, when you change parameters, you can hear
           the difference it makes.
         </Paragraph>
         <Paragraph>
-          That said, nobody likes webpages that autoplay sound. So, when there's
-          something to hear, a button will pop up in the top right corner to
-          toggle audio on/off.
+          Because nobody likes autoplaying sounds, the volume is currently
+          muted. You can control it using the "volume" widget in the{' '}
+          {orientation === 'portrait' ? 'top-right' : 'bottom left'} corner.
+        </Paragraph>
+        <Paragraph>
+          You can also use keyboard shortcuts! The numbers{' '}
+          <strong>0 through 9</strong> control the volume. You can also press{' '}
+          <strong>"m"</strong> to mute or unmute the audio.
+        </Paragraph>
+        <Paragraph>
+          <Emphasized>Try it now by pressing "m" on your keyboard!</Emphasized>
         </Paragraph>
       </Aux>
     ),
@@ -294,7 +314,6 @@ export const steps = {
     getMargin: marginFunctions.small,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
-    makeSoundToggleable: true,
     children: (
       <Aux>
         <Paragraph>
@@ -442,7 +461,6 @@ export const steps = {
     amplitudeOverride: 1,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
-    makeSoundToggleable: true,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
         <SectionTitle>3. Harmonics</SectionTitle>
@@ -499,7 +517,6 @@ export const steps = {
     amplitudeOverride: 1,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
-    makeSoundToggleable: true,
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
@@ -552,7 +569,6 @@ export const steps = {
     amplitudeOverride: 1,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
-    makeSoundToggleable: true,
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
@@ -580,7 +596,6 @@ export const steps = {
     amplitudeOverride: 1,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
-    makeSoundToggleable: true,
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
