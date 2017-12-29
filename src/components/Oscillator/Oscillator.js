@@ -12,21 +12,14 @@ type Props = {
   shape: WaveformShape,
   frequency: number,
   amplitude: number,
-  isAudible: boolean,
+  masterVolume: number,
 };
 
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-// All output should go through a global gain, so that we can set a "master
-// volume".
-const globalOut = audioCtx.createGain();
-globalOut.gain.value = 0.4;
-globalOut.connect(audioCtx.destination);
-
 const fade = fadeWithContext(audioCtx);
 
 // FADE_DURATION controls the duration over amplitude changes when
-// starting/stopping. really just used to avoid clipping. Extremely quick
+// starting/stopping. really just used to avoid clipping. Extremely quick.
 const FADE_DURATION = 0.015;
 // GLIDE_DURATION is used for the frequency, to smoothly shift to a new value.
 const GLIDE_DURATION = 0.5;
@@ -34,51 +27,69 @@ const GLIDE_DURATION = 0.5;
 class Oscillator extends PureComponent<Props> {
   audioCtx: AudioContext;
   oscillatorNode: OscillatorNode;
-  gainNode: GainNode;
+  amplitudeGainNode: GainNode;
+  masterVolumeGainNode: GainNode;
 
   static defaultProps = {
     shape: DEFAULT_WAVEFORM_SHAPE,
     amplitude: 1,
-    isAudible: false,
   };
 
   componentDidMount() {
-    if (this.props.isAudible) {
-      this.play();
-    }
+    this.initializeAudio();
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { frequency, amplitude } = this.props;
+    const { frequency, amplitude, masterVolume } = this.props;
 
-    // If we aren't currently playing the audio, and that hasn't changed,
-    // no update is necessary.
-    if (!prevProps.isAudible && !this.props.isAudible) {
-      return;
-    }
-
-    if (allPropsSameExcept('amplitude', this.props, prevProps)) {
-      this.updateAmplitude(amplitude);
-      return;
-    }
-
-    if (allPropsSameExcept('frequency', this.props, prevProps)) {
+    if (frequency !== prevProps.frequency) {
       this.updateFrequency(frequency);
-      return;
     }
 
-    // For other changes like changes to the shape or the audible status
-    if (this.props.isAudible) {
-      this.stop();
-      this.play();
-    } else {
-      this.stop();
+    if (amplitude !== prevProps.amplitude) {
+      this.updateAmplitude(amplitude);
+    }
+
+    if (masterVolume !== prevProps.masterVolume) {
+      this.updateMasterVolume(masterVolume);
     }
   }
 
   componentWillUnmount() {
     this.stop();
   }
+
+  initializeAudio = () => {
+    const { shape, frequency, amplitude, masterVolume } = this.props;
+
+    this.oscillatorNode = audioCtx.createOscillator();
+
+    this.amplitudeGainNode = audioCtx.createGain();
+    this.masterVolumeGainNode = audioCtx.createGain();
+
+    this.oscillatorNode.type = shape;
+    this.oscillatorNode.frequency.value = frequency;
+
+    this.amplitudeGainNode.gain.value = amplitude;
+    this.masterVolumeGainNode.gain.value = masterVolume;
+
+    this.oscillatorNode.connect(this.amplitudeGainNode);
+    this.amplitudeGainNode.connect(this.masterVolumeGainNode);
+    this.masterVolumeGainNode.connect(audioCtx.destination);
+
+    console.log(
+      'init',
+      this.amplitudeGainNode.gain.value,
+      this.masterVolumeGainNode.gain.value
+    );
+
+    fade({
+      direction: 'in',
+      oscillator: this.oscillatorNode,
+      output: this.amplitudeGainNode,
+      duration: FADE_DURATION,
+    });
+  };
 
   updateFrequency = (frequency: number) => {
     this.oscillatorNode.frequency.exponentialRampToValueAtTime(
@@ -91,35 +102,18 @@ class Oscillator extends PureComponent<Props> {
     // For some reason, `exponentialRampToValueAtTime` doesn't like 0s.
     // In that case, let's just cut it off instantly, whatever.
     if (amplitude === 0) {
-      this.gainNode.gain.value = 0;
+      this.amplitudeGainNode.gain.value = 0;
       return;
     }
-    this.gainNode.gain.exponentialRampToValueAtTime(
+
+    this.amplitudeGainNode.gain.exponentialRampToValueAtTime(
       amplitude,
       audioCtx.currentTime + GLIDE_DURATION / 2
     );
   };
 
-  play = () => {
-    const { shape, frequency, amplitude } = this.props;
-
-    this.oscillatorNode = audioCtx.createOscillator();
-    this.gainNode = audioCtx.createGain();
-
-    this.oscillatorNode.type = shape;
-    this.oscillatorNode.frequency.value = frequency;
-
-    this.gainNode.gain.value = amplitude;
-
-    this.oscillatorNode.connect(this.gainNode);
-    this.gainNode.connect(globalOut);
-
-    fade({
-      direction: 'in',
-      oscillator: this.oscillatorNode,
-      output: this.gainNode,
-      duration: FADE_DURATION,
-    });
+  updateMasterVolume = (volume: number) => {
+    this.masterVolumeGainNode.gain.value = volume;
   };
 
   stop = () => {
@@ -127,7 +121,7 @@ class Oscillator extends PureComponent<Props> {
       fade({
         direction: 'out',
         oscillator: this.oscillatorNode,
-        output: this.gainNode,
+        output: this.amplitudeGainNode,
         duration: FADE_DURATION,
       });
     }

@@ -9,7 +9,7 @@ import WaveformPlayer from '../WaveformPlayer';
 import IntroRouteWaveform from '../IntroRouteWaveform';
 import Oscillator from '../Oscillator';
 import IntroRouteSection from '../IntroRouteSection';
-import SoundButtonToggle from '../SoundButtonToggle';
+import VolumeAdjuster from '../VolumeAdjuster';
 
 import { steps, stepsArray, INTRO_STEPS } from './IntroRoute.steps';
 
@@ -21,7 +21,8 @@ type State = {
   windowHeight: number,
   amplitude: number,
   frequency: number,
-  userEnabledSound: boolean,
+  audioVolume: number,
+  audioMuted: boolean,
 };
 
 class IntroRoute extends PureComponent<Props, State> {
@@ -30,7 +31,8 @@ class IntroRoute extends PureComponent<Props, State> {
     windowHeight: window.innerHeight,
     amplitude: 1,
     frequency: 1,
-    userEnabledSound: false,
+    audioVolume: 0.5,
+    audioMuted: true,
   };
 
   sectionRefs: Array<HTMLElement> = [];
@@ -86,8 +88,12 @@ class IntroRoute extends PureComponent<Props, State> {
     this.setState({ frequency: val });
   };
 
-  handleToggleAudibility = (val: boolean) => {
-    this.setState({ userEnabledSound: val });
+  handleUpdateAudioVolume = (val: number) => {
+    this.setState({ audioVolume: val });
+  };
+
+  handleToggleMuteAudio = () => {
+    this.setState({ audioMuted: !this.state.audioMuted });
   };
 
   handleResize = debounce(() => {
@@ -153,12 +159,13 @@ class IntroRoute extends PureComponent<Props, State> {
       windowHeight,
       amplitude,
       frequency,
-      userEnabledSound,
+      audioVolume,
+      audioMuted,
     } = this.state;
 
     const stepData = steps[currentStep];
 
-    const isAudible = userEnabledSound && stepData.makeSoundToggleable;
+    const effectiveAudioVolume = audioMuted ? 0 : audioVolume;
 
     // While our waveforms will render between 0.2Hz and 3Hz, we also have an
     // oscillator that needs to vibrate at normal ranges.
@@ -168,17 +175,20 @@ class IntroRoute extends PureComponent<Props, State> {
 
     return (
       <MaxWidthWrapper>
-        <SoundButtonToggle
-          isVisible={stepData.makeSoundToggleable}
-          isAudible={userEnabledSound}
-          handleToggleAudibility={this.handleToggleAudibility}
-        />
+        <VolumeAdjusterWrapper>
+          <VolumeAdjuster
+            currentVolume={audioVolume}
+            isMuted={audioMuted}
+            onAdjustVolume={this.handleUpdateAudioVolume}
+            onToggleMute={this.handleToggleMuteAudio}
+          />
+        </VolumeAdjusterWrapper>
 
         <Oscillator
           shape={stepData.waveformShape}
           amplitude={amplitude}
           frequency={adjustedAudibleFrequency}
-          isAudible={isAudible}
+          masterVolume={effectiveAudioVolume}
         />
 
         <WaveformPlayer
@@ -233,6 +243,19 @@ class IntroRoute extends PureComponent<Props, State> {
 // the waveform, the other for the tutorial copy and contents).
 // The distance between them is fixed:
 const LANDSCAPE_GUTTER = 120;
+
+const VolumeAdjusterWrapper = styled.div`
+  z-index: 10;
+  @media (orientation: portrait) {
+    /* TODO */
+  }
+
+  @media (orientation: landscape) {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+  }
+`;
 
 const MainContent = styled.div`
   display: flex;

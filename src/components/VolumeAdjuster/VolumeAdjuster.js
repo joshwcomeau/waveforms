@@ -10,7 +10,7 @@ import { range } from '../../utils';
 type Props = {
   blockSize?: number,
   currentVolume: number,
-  maxVolume: number,
+  steps?: number,
   isMuted?: boolean,
   onAdjustVolume: (volume: number) => void,
   onToggleMute: () => void,
@@ -19,7 +19,7 @@ type Props = {
 const VolumeAdjuster = ({
   blockSize = 16,
   currentVolume,
-  maxVolume,
+  steps = 10,
   isMuted = false,
   onAdjustVolume,
   onToggleMute,
@@ -39,13 +39,16 @@ const VolumeAdjuster = ({
       </Header>
 
       <VolumeBlocks>
-        {range(1, maxVolume).map(index => (
+        {range(1, steps).map(index => (
           <VolumeBlock
             key={index}
             size={blockSize}
-            onClick={() => onAdjustVolume(index)}
+            onClick={() => onAdjustVolume(index / steps)}
           >
-            <VolumeBlockFill isFilled={index <= currentVolume} />
+            <VolumeBlockFill
+              isFilled={index / steps <= currentVolume}
+              isEnabled={!isMuted}
+            />
           </VolumeBlock>
         ))}
       </VolumeBlocks>
@@ -63,11 +66,13 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 5px;
 `;
 
 const Label = styled.span`
-  font-size: 16px;
+  font-size: 14px;
   text-transform: uppercase;
+  font-weight: 400;
   color: ${COLORS.gray[500]};
 `;
 
@@ -100,7 +105,8 @@ const VolumeBlockFill = styled.div`
   left: ${-BORDER_WIDTH + 'px'};
   right: ${-BORDER_WIDTH + 'px'};
   bottom: ${-BORDER_WIDTH + 'px'};
-  background: ${COLORS.primary[500]};
+  background: ${props =>
+    props.isEnabled ? COLORS.primary[500] : COLORS.gray[500]};
   opacity: ${props => (props.isFilled ? 1 : 0)};
   transition: opacity 250ms;
 `;
