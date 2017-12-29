@@ -46,7 +46,6 @@ class IntroRouteWaveform extends PureComponent<Props> {
       <FlexParent>
         <WaveformWrapper>
           <Waveform
-            renderTo="canvas"
             amplitude={amplitude}
             color={stepData.waveformColor}
             strokeWidth={5}

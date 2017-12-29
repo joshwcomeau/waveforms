@@ -14,14 +14,14 @@ import FadeTransition from '../FadeTransition';
 
 import type { Linecap } from '../../types';
 
-const TOP_AXIS_SPACING = 10;
 const SIDE_AXIS_SPACING = 10;
+const TOP_AXIS_SPACING = 10;
 const STROKE_DASHARRAY = 3;
 
 type Props = {
   y: boolean,
   x: boolean,
-  waveformSize?: number,
+  waveformSize: number,
   color: string,
   strokeWidth: number,
   strokeLinecap: Linecap,

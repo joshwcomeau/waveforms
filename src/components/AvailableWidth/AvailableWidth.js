@@ -19,12 +19,21 @@ type State = {
 class AvailableWidth extends Component<Props, State> {
   state = {};
 
-  elem: HTMLElement;
+  containerElem: ?HTMLElement;
   observer: ResizeObserver;
 
   componentDidMount() {
-    // Set the width based on the DOM size on-mount
-    const { width } = this.elem.getBoundingClientRect();
+    const { containerElem } = this;
+
+    // We ought to always have the element, but Flow doesn't believe me.
+    if (!containerElem) {
+      return;
+    }
+
+    // Set the width based on the DOM size on-mount.
+    // This is necessary because the 'autofiring' behaviour of ResizeObserver
+    // appears to be inconsistent on mobile.
+    const { width } = containerElem.getBoundingClientRect();
     this.setState({ width });
 
     // We want to be notified of any changes to the size of this element.
@@ -35,12 +44,16 @@ class AvailableWidth extends Component<Props, State> {
     this.observer = new ResizeObserver(([entry]) => {
       const observedWidth = entry.contentRect.width;
 
-      if (observedWidth !== this.state.width) {
-        this.setState({ width: entry.contentRect.width });
+      // This observer fires on mount, even though the size hasn't changed.
+      // Ignore this case.
+      if (observedWidth === this.state.width) {
+        return;
       }
+
+      this.setState({ width: observedWidth });
     });
 
-    this.observer.observe(this.elem);
+    this.observer.observe(containerElem);
   }
 
   componentWillUnmount() {
@@ -52,8 +65,7 @@ class AvailableWidth extends Component<Props, State> {
     const { children } = this.props;
 
     return (
-      // $FlowFixMe - I trust that ref() captures an HTMLElement. Flow doesn't.
-      <div ref={elem => (this.elem = elem)}>
+      <div ref={elem => (this.containerElem = elem)}>
         {/*
           For the very first render, `width` will be undefined; this data is
           only collected _after_ mount. So, a frame needs to pass with the

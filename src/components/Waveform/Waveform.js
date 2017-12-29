@@ -95,7 +95,17 @@ class Waveform extends Component<Props> {
     this.ctx = ctx;
   };
 
-  getPoints() {
+  /**
+   * This method gathers the data needed to perform the drawing.
+   * In the most common case, this transforms a WaveformShape like 'sine' into
+   * an array of {x,y} coordinates.
+   *
+   * Furthermore, these values are fully ready--to-draw; the coordinates are in
+   * "real" space. This means that for SVGs, the X values range from 0 to width.
+   * The y values range from 0 to height. It also takes into account Canvas
+   * padding, which needs to be accounted for.
+   */
+  getPoints(): Array<WaveformPoint> {
     const { size, shape, frequency, amplitude, offset, renderTo } = this.props;
     let { points } = this.props;
 

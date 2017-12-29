@@ -233,6 +233,11 @@ class IntroRoute extends PureComponent<Props, State> {
   }
 }
 
+// In landscape, our IntroRoute is comprised of 2 equal-width columns (one for
+// the waveform, the other for the tutorial copy and contents).
+// The distance between them is fixed:
+const LANDSCAPE_GUTTER = 120;
+
 const MainContent = styled.div`
   display: flex;
   flex-direction: row;
@@ -244,12 +249,26 @@ const MainContent = styled.div`
 
 const WaveformColumn = styled.div`
   flex: 1;
-  margin-right: 65px;
+
+  @media (orientation: landscape) {
+    /* Split the gutter equally between Waveform and Tutorial columns */
+    margin-right: ${LANDSCAPE_GUTTER / 2 + 'px'};
+
+    /*
+      When resizing the window from portrait to landscape, the waveform wasn't
+      shrinking. max-width is required to constrain the waveform to never take
+      up more space than it's allowed.
+    */
+    max-width: calc(50% - ${LANDSCAPE_GUTTER / 2 + 'px'});
+  }
 `;
 
 const TutorialColumn = styled.div`
-  margin-left: 50px;
   flex: 1;
+
+  @media (orientation: landscape) {
+    margin-left: ${LANDSCAPE_GUTTER / 2 + 'px'};
+  }
 `;
 
 const BottomTextSpacer = styled.div`
