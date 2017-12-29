@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
+import { COLORS } from '../../constants';
 import { debounce } from '../../utils';
 
 import MaxWidthWrapper from '../MaxWidthWrapper';
@@ -89,7 +90,7 @@ class IntroRoute extends PureComponent<Props, State> {
   };
 
   handleUpdateAudioVolume = (val: number) => {
-    this.setState({ audioVolume: val });
+    this.setState({ audioVolume: val, audioMuted: false });
   };
 
   handleToggleMuteAudio = () => {
@@ -245,13 +246,17 @@ class IntroRoute extends PureComponent<Props, State> {
 const LANDSCAPE_GUTTER = 120;
 
 const VolumeAdjusterWrapper = styled.div`
+  position: fixed;
   z-index: 10;
+  background: ${COLORS.gray[50]};
+
   @media (orientation: portrait) {
-    /* TODO */
+    top: 0;
+    right: 0;
+    padding: 1rem;
   }
 
   @media (orientation: landscape) {
-    position: fixed;
     bottom: 2rem;
     left: 2rem;
   }
