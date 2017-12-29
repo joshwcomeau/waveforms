@@ -4,8 +4,6 @@ import styled from 'styled-components';
 
 import { COLORS, BREAKPOINTS } from '../../constants';
 
-import FitText from '../FitText';
-
 const Header = () => {
   return (
     <HeaderElem>

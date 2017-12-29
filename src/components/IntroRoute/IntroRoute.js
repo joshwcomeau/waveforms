@@ -2,21 +2,17 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
-import { DEFAULT_WAVEFORM_SHAPE } from '../../constants';
-import { debounce, clamp } from '../../utils';
+import { debounce } from '../../utils';
 
 import MaxWidthWrapper from '../MaxWidthWrapper';
-import Aux from '../Aux';
 import WaveformPlayer from '../WaveformPlayer';
 import IntroRouteWaveform from '../IntroRouteWaveform';
-import IntroRouteAirGrid from '../IntroRouteAirGrid';
 import Oscillator from '../Oscillator';
 import IntroRouteSection from '../IntroRouteSection';
 import SoundButtonToggle from '../SoundButtonToggle';
 
 import { steps, stepsArray, INTRO_STEPS } from './IntroRoute.steps';
 
-import type { WaveformShape } from '../../types';
 import type { IntroStep } from './IntroRoute.steps';
 
 type Props = {};

@@ -6,9 +6,7 @@ import { WAVEFORM_ASPECT_RATIO } from '../../constants';
 
 import AvailableWidth from '../AvailableWidth';
 import AirGrid from '../AirGrid';
-import FadeTransition from '../FadeTransition';
 
-import type { StepData } from '../IntroRoute/IntroRoute.steps';
 import type { WaveformShape } from '../../types';
 
 type Props = {

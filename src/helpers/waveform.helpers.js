@@ -264,6 +264,11 @@ export const getPositionAtPointRelativeToAxis = (
           // Similarly, Q4 is just Q1 but lower.
           return progressThroughQuadrant / 25 * amplitude - amplitude;
         }
+
+        default: {
+          // Should be impossible
+          throw new Error('Unrecognized quadrant!');
+        }
       }
     }
 
