@@ -4,11 +4,17 @@ import styled from 'styled-components';
 
 import { COLORS } from '../../constants';
 
+import FitText from '../FitText';
+
 const Header = () => {
   return (
     <HeaderElem>
-      <TitleIntro>Let's Learn About</TitleIntro>
-      <Title>Waveforms</Title>
+      <TitleIntro>
+        <FitText compressor={1.2}>Let's Learn About</FitText>
+      </TitleIntro>
+      <Title>
+        <FitText compressor={0.55}>Waveforms</FitText>
+      </Title>
     </HeaderElem>
   );
 };
