@@ -46,14 +46,14 @@ class IntroRouteWaveform extends PureComponent<Props> {
       <FlexParent>
         <WaveformWrapper>
           <Waveform
+            shape={stepData.waveformShape}
+            frequency={frequency}
             amplitude={amplitude}
+            offset={offset}
             color={stepData.waveformColor}
             strokeWidth={5}
             opacity={stepData.waveformOpacity}
             size={width}
-            shape={stepData.waveformShape}
-            offset={offset}
-            frequency={frequency}
           />
 
           <FadeTransition isVisible={stepData.showXAxis}>

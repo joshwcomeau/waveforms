@@ -6,7 +6,6 @@ import {
   applyWaveformAddition,
 } from '../../helpers/waveform.helpers';
 import { DEFAULT_WAVEFORM_SIZE } from '../../constants';
-import { range, sum } from '../../utils';
 
 import WaveformCollection from '../WaveformCollection';
 

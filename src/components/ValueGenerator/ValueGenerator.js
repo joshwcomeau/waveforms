@@ -48,6 +48,8 @@ class ValueGenerator extends PureComponent<Props, State> {
         return random(from, to);
       case 'oscillate':
         return value === from ? to : from;
+      default:
+        throw new Error('Unrecognized mode');
     }
   };
 
