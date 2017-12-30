@@ -5,11 +5,12 @@ import styled from 'styled-components';
 import { COLORS } from '../../constants';
 import { debounce } from '../../utils';
 
+import Aux from '../Aux';
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import WaveformPlayer from '../WaveformPlayer';
 import IntroRouteWaveformWrapper from '../IntroRouteWaveformWrapper';
 import IntroRouteWaveform from '../IntroRouteWaveform';
-import WaveformAddition from '../WaveformAddition';
+import IntroRouteWaveformAddition from '../IntroRouteWaveformAddition';
 import Oscillator from '../Oscillator';
 import IntroRouteSection from '../IntroRouteSection';
 import VolumeAdjuster from '../VolumeAdjuster';
@@ -209,25 +210,36 @@ class IntroRoute extends PureComponent<Props, State> {
             <MainContent>
               <WaveformColumn>
                 <IntroRouteWaveformWrapper>
-                  {(width: number) =>
-                    stepData.waveformShape ? (
-                      <IntroRouteWaveform
-                        width={width}
-                        amplitude={amplitude}
-                        frequency={frequency}
-                        progress={progress}
-                        handleUpdateAmplitude={this.handleUpdateAmplitude}
-                        handleUpdateFrequency={this.handleUpdateFrequency}
-                        stepData={stepData}
-                      />
-                    ) : (
-                      <WaveformAddition
-                        size={width}
-                        waveforms={stepData.waveformsToAdd}
-                        progress={0}
-                      />
-                    )
-                  }
+                  {(width: number) => (
+                    <Aux>
+                      <FadeTransition
+                        mountOnEnter
+                        unmountOnExit
+                        isVisible={!stepData.waveformsToAdd}
+                      >
+                        <IntroRouteWaveform
+                          width={width}
+                          amplitude={amplitude}
+                          frequency={frequency}
+                          progress={progress}
+                          handleUpdateAmplitude={this.handleUpdateAmplitude}
+                          handleUpdateFrequency={this.handleUpdateFrequency}
+                          stepData={stepData}
+                        />
+                      </FadeTransition>
+
+                      <FadeTransition
+                        mountOnEnter
+                        unmountOnExit
+                        isVisible={!!stepData.waveformsToAdd}
+                      >
+                        <IntroRouteWaveformAddition
+                          width={width}
+                          waveforms={stepData.waveformsToAdd}
+                        />
+                      </FadeTransition>
+                    </Aux>
+                  )}
                 </IntroRouteWaveformWrapper>
 
                 <FadeTransition isVisible={stepData.showVolumeControls}>

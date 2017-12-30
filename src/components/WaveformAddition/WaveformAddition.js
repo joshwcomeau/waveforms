@@ -27,7 +27,6 @@ const defaultProps = {
 // with them moving towards intersecting, based on a `progress` number from
 // 0 to 1. At 1, the two lines will be totally overlapping.
 const WaveformAddition = ({ size, waveforms, progress }: Props) => {
-  console.log({ size, waveforms, progress });
   if (waveforms.length < 2) {
     throw new Error('Please supply at least 2 waveforms to WaveformAddition.');
   }

@@ -78,7 +78,7 @@ export type StepData = {
   frequencyOverride: ?number,
   amplitudeOverride: ?number,
   isPlaying: boolean,
-  waveformShape: ?WaveformShape,
+  waveformShape: WaveformShape,
   waveformColor: string,
   waveformOpacity: number,
   // TODO: should just use `xAxisOpacity`. When opacity is 0, we can choose
@@ -746,7 +746,6 @@ export const steps = {
   },
   'additive-synthesis-basic-add': {
     ...defaults,
-    waveformShape: null,
     waveformsToAdd: [
       {
         shape: 'sine',

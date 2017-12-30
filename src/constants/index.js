@@ -15,7 +15,7 @@ export const SHAPES: Array<WaveformShape> = [
   'sawtooth',
 ];
 
-export const SPRING_SETTINGS: SpringHelperConfig = {
+export const SPRING_SETTINGS = {
   stiffness: 170,
   damping: 26,
   precision: 0.1,
