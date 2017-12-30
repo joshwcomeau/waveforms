@@ -18,20 +18,15 @@ import {
 import type { WaveformShape, WaveformPoint } from '../../types';
 import type { Props as WaveformProps } from '../Waveform';
 
-const shapeMap = {
-  sine: 1,
-  triangle: 2,
-  square: 3,
-  sawtooth: 4,
-};
-
 type Props = {
   shape: WaveformShape,
   frequency: number,
   amplitude: number,
   offset: number,
   width: number,
-  children: (props: WaveformProps) => React$Node,
+  // Using React$Element instead of Reat$Node to be consistent with what
+  // ReactMotion's <Motion> requires.
+  children: (props: WaveformProps) => React$Element<*>,
 };
 
 type State = {
@@ -58,6 +53,8 @@ class WaveformTween extends PureComponent<Props, State> {
     const { shape, children, ...waveformProps } = this.props;
 
     return (
+      // Motion complains because it's not clear that `children`
+      // returns a React element (since the children
       <Motion
         defaultStyle={{ progress: 0 }}
         style={{

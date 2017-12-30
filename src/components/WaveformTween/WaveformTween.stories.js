@@ -3,18 +3,18 @@ import React, { Component } from 'react';
 import { storiesOf } from '@storybook/react';
 
 import { SHAPES } from '../../constants';
-import { sample } from '../../utils';
 
 import Waveform from '../Waveform';
 
 import WaveformTween from './WaveformTween';
 
-import type { WaveformShape } from '../../types';
-
-class Manager extends Component<{}, { shape: WaveformShape }> {
+class Manager extends Component<
+  { isPlaying: boolean },
+  { shapeIndex: number }
+> {
   intervalId: number;
   state = {
-    shape: 'sine',
+    shapeIndex: 0,
   };
 
   componentDidMount() {
@@ -22,17 +22,19 @@ class Manager extends Component<{}, { shape: WaveformShape }> {
   }
 
   randomizeShape = () => {
-    this.setState({ shape: sample(SHAPES) });
+    this.setState({ shapeIndex: (this.state.shapeIndex + 1) % 4 });
   };
 
   render() {
+    const { shapeIndex } = this.state;
+
     return (
       <WaveformTween
-        frequency={1}
+        frequency={2}
         amplitude={1}
         offset={0}
-        width={100}
-        shape={this.state.shape}
+        width={500}
+        shape={SHAPES[shapeIndex]}
       >
         {props => <Waveform {...props} />}
       </WaveformTween>
