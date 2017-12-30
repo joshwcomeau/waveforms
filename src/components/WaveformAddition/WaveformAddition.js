@@ -27,8 +27,8 @@ const defaultProps = {
 // with them moving towards intersecting, based on a `convergence` number from
 // 0 to 1. At 1, the two lines will be totally overlapping.
 const WaveformAddition = ({ size, waveforms, convergence }: Props) => {
-  if (waveforms.length < 2) {
-    throw new Error('Please supply at least 2 waveforms to WaveformAddition.');
+  if (waveforms.length < 1) {
+    throw new Error('Please supply at least 1 waveform to WaveformAddition.');
   }
 
   // To avoid repeating work, get an array of waveform point arrays upfront,

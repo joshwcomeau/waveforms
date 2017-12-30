@@ -3,7 +3,6 @@ import VolumeOn from 'react-icons/lib/md/volume-up';
 
 import { COLORS, DEFAULT_WAVEFORM_SHAPE } from '../../constants';
 import { roundTo } from '../../utils';
-import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
 
 import Header from '../Header';
 import Paragraph from '../Paragraph';
@@ -46,7 +45,8 @@ export type IntroStep =
   | 'sawtooth-wave-graph'
   | 'additive-synthesis-intro'
   | 'additive-synthesis-basic-add'
-  | 'additive-synthesis-intro-convergence';
+  | 'additive-synthesis-intro-convergence'
+  | 'additive-synthesis-intro-num-of-harmonics';
 
 export const INTRO_STEPS: Array<IntroStep> = [
   'title',
@@ -73,6 +73,7 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'additive-synthesis-intro',
   'additive-synthesis-basic-add',
   'additive-synthesis-intro-convergence',
+  'additive-synthesis-intro-num-of-harmonics',
 ];
 
 export type StepData = {
@@ -103,8 +104,12 @@ export type StepData = {
   showVolumeControls: boolean,
 
   // WaveformAddition params
-  waveformsToAdd: ?Array<WaveformProps>,
+  useWaveformAddition: boolean,
   showConvergenceSlider: boolean,
+  showNumOfHarmonicsSlider: boolean,
+  harmonicsForOverride: WaveformShape,
+  numOfHarmonicsOverride: number,
+  convergenceOverride: number,
 
   // Section parameters
   getMargin: (windowWidth: number) => number,
@@ -139,7 +144,7 @@ const defaults: StepData = {
   frequencySliderStep: 0.1,
   showCycleIndicator: false,
   showVolumeControls: true,
-  waveformsToAdd: null,
+  useWaveformAddition: false,
   showConvergenceSlider: false,
   getMargin: marginFunctions.large,
 };
@@ -764,24 +769,10 @@ export const steps = {
   },
   'additive-synthesis-basic-add': {
     ...defaults,
-    waveformsToAdd: [
-      {
-        shape: 'sine',
-        amplitude: 1,
-        frequency: 1,
-        offset: 0,
-        strokeWidth: 5,
-        color: COLORS.primary[500],
-      },
-      ...getHarmonicsForWave({
-        shape: 'square',
-        baseFrequency: 1,
-        baseAmplitude: 1,
-        maxNumberToGenerate: 2,
-        strokeWidth: 3,
-        color: COLORS.secondary[500],
-      }),
-    ],
+    useWaveformAddition: true,
+    harmonicsForOverride: 'square',
+    numOfHarmonicsOverride: 2,
+
     getMargin: marginFunctions.small,
     children: ({ currentStep }) => (
       <Aux>
@@ -790,22 +781,26 @@ export const steps = {
         </Paragraph>
 
         <UnorderedList>
-          {steps['additive-synthesis-basic-add'].waveformsToAdd.map(
-            ({ amplitude, frequency, color }) => (
-              <li key={frequency}>
-                <strong style={{ color }}>
-                  {frequency}Hz at {amplitude}dB
-                </strong>
-              </li>
-            )
-          )}
+          <li>
+            <strong style={{ color: COLORS.primary[500] }}>1Hz at 1dB</strong>
+          </li>
+          <li>
+            <strong style={{ color: COLORS.secondary[500] }}>
+              3Hz at 0.33dB
+            </strong>
+          </li>
+          <li>
+            <strong style={{ color: COLORS.secondary[500] }}>
+              5Hz at 0.2dB
+            </strong>
+          </li>
         </UnorderedList>
 
         <Paragraph>
           If you've ever used audio editing software, you've seen how a full
-          song - which is comprised of many different instruments - creates a
-          single wave. What we're looking at over there is not a wave yet: we
-          have to combine the 3 lines into 1.
+          song - which is comprised of many different instruments and sounds -
+          creates a single wave. What we're looking at over there is not a wave
+          yet: we have to combine the 3 lines into 1.
         </Paragraph>
         <Paragraph>
           This is known as <strong>waveform addition</strong>, and it makes
@@ -828,31 +823,65 @@ export const steps = {
   },
   'additive-synthesis-intro-convergence': {
     ...defaults,
+    useWaveformAddition: true,
     showConvergenceSlider: true,
-    waveformsToAdd: [
-      {
-        shape: 'sine',
-        amplitude: 1,
-        frequency: 1,
-        offset: 0,
-        strokeWidth: 5,
-        color: COLORS.primary[500],
-      },
-      ...getHarmonicsForWave({
-        shape: 'square',
-        baseFrequency: 1,
-        baseAmplitude: 1,
-        maxNumberToGenerate: 2,
-        strokeWidth: 3,
-        color: COLORS.secondary[500],
-      }),
-    ],
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
         <Paragraph>
           Use the new <strong>Convergence</strong> slider to watch the 3 lines
           converge into a single waveform.
+        </Paragraph>
+
+        <Paragraph>Notice how it kinda looks like a square wave?</Paragraph>
+
+        <Paragraph>
+          You were probably wondering where those numbers for the additional
+          sine waves came from. Why were we adding 3Hz and 5Hz lines? Why were
+          they at 0.33dB and 0.2dB?
+        </Paragraph>
+
+        <Paragraph>
+          The answer is that we <em>reverse engineered</em> the square wave.
+          Remember this chart, showing the harmonics for a square wave?
+        </Paragraph>
+
+        <MountWhenVisible
+          currentStep={currentStep}
+          belongsToStep="additive-synthesis-intro-convergence"
+          estimatedSize={390}
+        >
+          <FrequencyGraph
+            shape="square"
+            baseFrequency={frequency}
+            baseAmplitude={amplitude}
+          />
+        </MountWhenVisible>
+
+        <Paragraph>
+          We simply selected the first 3 numbers from this chart! Remember, a
+          sine wave is the <strong>fundamental waveform</strong>. It doesn't
+          have any harmonics of its own. So if we know the harmonics of any
+          other waveform, we can just add sine waves in the right places to
+          re-create them!
+        </Paragraph>
+      </Aux>
+    ),
+  },
+  'additive-synthesis-intro-num-of-harmonics': {
+    ...defaults,
+    useWaveformAddition: true,
+    showConvergenceSlider: true,
+    showNumOfHarmonicsSlider: true,
+    numOfHarmonicsOverride: 2,
+    getMargin: marginFunctions.small,
+    children: ({ frequency, amplitude, currentStep }) => (
+      <Aux>
+        <Paragraph>
+          The more harmonics we add, the more our waveform starts to look like a
+          square wave. Use the new <strong>Number of Harmonics</strong> slider
+          to change the number rendered, and see how it affects the converged
+          line.
         </Paragraph>
       </Aux>
     ),

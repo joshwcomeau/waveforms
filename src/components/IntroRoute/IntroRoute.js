@@ -51,6 +51,10 @@ class IntroRoute extends PureComponent<Props, State> {
   componentDidUpdate(prevProps: Props, prevState: State) {
     // When going forwards a step, we may wish to specify an override frequency
     // or amplitude.
+    // NOTE: I really don't like that this is dealt with at such a high level,
+    // since there won't always even be a Waveform (the WaveformAddition
+    // component manages this all internally).
+    // For future routes, let's use Redux instead. Would make this much nicer.
     if (this.state.currentStep !== prevState.currentStep) {
       const currentStepIndex = INTRO_STEPS.indexOf(this.state.currentStep);
       const previousStepIndex = INTRO_STEPS.indexOf(prevState.currentStep);
@@ -212,7 +216,7 @@ class IntroRoute extends PureComponent<Props, State> {
                 <IntroRouteWaveformWrapper>
                   {(width: number) => (
                     <Aux>
-                      {!stepData.waveformsToAdd && (
+                      {!stepData.useWaveformAddition && (
                         <IntroRouteWaveform
                           width={width}
                           amplitude={amplitude}
@@ -224,10 +228,10 @@ class IntroRoute extends PureComponent<Props, State> {
                         />
                       )}
 
-                      {stepData.waveformsToAdd && (
+                      {stepData.useWaveformAddition && (
                         <IntroRouteWaveformAddition
                           width={width}
-                          waveforms={stepData.waveformsToAdd}
+                          stepData={stepData}
                         />
                       )}
                     </Aux>
