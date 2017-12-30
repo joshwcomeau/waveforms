@@ -99,6 +99,7 @@ export type StepData = {
 
 const marginFunctions = {
   none: windowHeight => 0,
+  xsmall: windowHeight => windowHeight * 0.15,
   small: windowHeight => windowHeight * 0.35,
   large: windowHeight => windowHeight * 0.45,
 };
@@ -344,6 +345,7 @@ export const steps = {
     waveformOpacity: 0.5,
     xAxisOpacity: 0.5,
     yAxisOpacity: 0.5,
+    frequencyOverride: 1,
     children: (
       <Aux>
         <SectionTitle>2. How Sound Works</SectionTitle>
@@ -467,10 +469,6 @@ export const steps = {
   'harmonics-intro': {
     ...defaults,
     isPlaying: true,
-    frequencyOverride: 1,
-    amplitudeOverride: 1,
-    showAmplitudeSlider: true,
-    showFrequencySlider: true,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
         <SectionTitle>3. Harmonics</SectionTitle>
@@ -490,9 +488,13 @@ export const steps = {
   },
   'sine-wave-graph': {
     ...defaults,
+    isPlaying: true,
+    frequencyOverride: 1,
+    amplitudeOverride: 1,
+
     showAmplitudeSlider: true,
     showFrequencySlider: true,
-    getMargin: marginFunctions.small,
+    getMargin: marginFunctions.xsmall,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
         <Paragraph>
@@ -530,6 +532,7 @@ export const steps = {
   },
   'triangle-wave': {
     ...defaults,
+    isPlaying: true,
     waveformShape: 'triangle',
     showAmplitudeSlider: true,
     showFrequencySlider: true,
@@ -559,12 +562,12 @@ export const steps = {
   },
   'triangle-wave-graph': {
     ...defaults,
+    isPlaying: true,
     waveformShape: 'triangle',
     amplitudeOverride: 1,
-    isPlaying: true,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
-    getMargin: marginFunctions.small,
+    getMargin: marginFunctions.xsmall,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
         <Paragraph>
@@ -591,8 +594,6 @@ export const steps = {
     ...defaults,
     isPlaying: true,
     waveformShape: 'square',
-    frequencyOverride: 2,
-    amplitudeOverride: 1,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     getMargin: marginFunctions.small,
@@ -605,7 +606,18 @@ export const steps = {
           waveforms. It jumps between the highest and lowest possible values.
           It's a binary wave: it's either +1 or -1.
         </Paragraph>
-
+      </Aux>
+    ),
+  },
+  'square-wave-graph': {
+    ...defaults,
+    isPlaying: true,
+    waveformShape: 'square',
+    showAmplitudeSlider: true,
+    showFrequencySlider: true,
+    getMargin: marginFunctions.xsmall,
+    children: ({ frequency, amplitude, currentStep }) => (
+      <Aux>
         <Paragraph>
           In terms of harmonics, the square wave features exactly the same
           intervals as the triangle wave: Every "odd" harmonic (3rd, 5th, 7th,
@@ -617,7 +629,7 @@ export const steps = {
 
         <MountWhenVisible
           currentStep={currentStep}
-          belongsToStep="square-wave"
+          belongsToStep="square-wave-graph"
           estimatedSize={390}
         >
           <FrequencyGraph
@@ -648,10 +660,8 @@ export const steps = {
   },
   'sawtooth-wave': {
     ...defaults,
-    isPlaying: false,
+    isPlaying: true,
     waveformShape: 'sawtooth',
-    frequencyOverride: 2,
-    amplitudeOverride: 1,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     getMargin: marginFunctions.small,
@@ -666,22 +676,33 @@ export const steps = {
         </Paragraph>
 
         <Paragraph>
-          In terms of harmonics, sawtooth waveforms have additional frequencies
-          at every interval, unlike triangles and squares which only add
-          harmonics at every second interval.
-        </Paragraph>
-
-        <Paragraph>
           In terms of sound, it's vaguely similar to string instruments: when
           you run a bow across a violin's string, the friction between the two
           items causes the string to slip and catch, which causes the string to
           vibrate in a sawtooth-like pattern. Of course, real instruments
           produce far more complex waveforms than these basic ones!
         </Paragraph>
+      </Aux>
+    ),
+  },
+  'sawtooth-wave-graph': {
+    ...defaults,
+    isPlaying: true,
+    waveformShape: 'sawtooth',
+    showAmplitudeSlider: true,
+    showFrequencySlider: true,
+    getMargin: marginFunctions.xsmall,
+    children: ({ frequency, amplitude, currentStep }) => (
+      <Aux>
+        <Paragraph>
+          In terms of harmonics, sawtooth waveforms have additional frequencies
+          at every interval, unlike triangles and squares which only add
+          harmonics at every second interval.
+        </Paragraph>
 
         <MountWhenVisible
           currentStep={currentStep}
-          belongsToStep="sawtooth-wave"
+          belongsToStep="sawtooth-wave-graph"
           estimatedSize={390}
         >
           <FrequencyGraph
