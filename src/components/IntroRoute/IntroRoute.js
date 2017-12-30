@@ -7,6 +7,7 @@ import { debounce } from '../../utils';
 
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import WaveformPlayer from '../WaveformPlayer';
+import IntroRouteWaveformWrapper from '../IntroRouteWaveformWrapper';
 import IntroRouteWaveform from '../IntroRouteWaveform';
 import Oscillator from '../Oscillator';
 import IntroRouteSection from '../IntroRouteSection';
@@ -206,14 +207,21 @@ class IntroRoute extends PureComponent<Props, State> {
           {({ amplitude, frequency, progress }) => (
             <MainContent>
               <WaveformColumn>
-                <IntroRouteWaveform
-                  amplitude={amplitude}
-                  frequency={frequency}
-                  progress={progress}
-                  handleUpdateAmplitude={this.handleUpdateAmplitude}
-                  handleUpdateFrequency={this.handleUpdateFrequency}
-                  stepData={stepData}
-                />
+                <IntroRouteWaveformWrapper>
+                  {(width: number) =>
+                    stepData.waveformShape ? (
+                      <IntroRouteWaveform
+                        width={width}
+                        amplitude={amplitude}
+                        frequency={frequency}
+                        progress={progress}
+                        handleUpdateAmplitude={this.handleUpdateAmplitude}
+                        handleUpdateFrequency={this.handleUpdateFrequency}
+                        stepData={stepData}
+                      />
+                    ) : null
+                  }
+                </IntroRouteWaveformWrapper>
 
                 <FadeTransition isVisible={stepData.showVolumeControls}>
                   <VolumeAdjusterWrapper>

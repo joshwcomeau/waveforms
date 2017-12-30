@@ -3,6 +3,7 @@ import VolumeOn from 'react-icons/lib/md/volume-up';
 
 import { COLORS, DEFAULT_WAVEFORM_SHAPE } from '../../constants';
 import { roundTo } from '../../utils';
+import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
 
 import Header from '../Header';
 import Paragraph from '../Paragraph';
@@ -17,6 +18,7 @@ import MountWhenVisible from '../MountWhenVisible';
 import RevealableAnswer from '../RevealableAnswer';
 
 import type { WaveformShape } from '../../types';
+import type { Props as WaveformProps } from '../Waveform';
 
 export type IntroStep =
   | 'title'
@@ -39,7 +41,9 @@ export type IntroStep =
   | 'square-wave'
   | 'square-wave-graph'
   | 'sawtooth-wave'
-  | 'sawtooth-wave-graph';
+  | 'sawtooth-wave-graph'
+  | 'additive-synthesis-intro'
+  | 'additive-synthesis-basic-add';
 
 export const INTRO_STEPS: Array<IntroStep> = [
   'title',
@@ -63,6 +67,8 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'square-wave-graph',
   'sawtooth-wave',
   'sawtooth-wave-graph',
+  'additive-synthesis-intro',
+  'additive-synthesis-basic-add',
 ];
 
 export type StepData = {
@@ -72,7 +78,7 @@ export type StepData = {
   frequencyOverride: ?number,
   amplitudeOverride: ?number,
   isPlaying: boolean,
-  waveformShape: WaveformShape,
+  waveformShape: ?WaveformShape,
   waveformColor: string,
   waveformOpacity: number,
   // TODO: should just use `xAxisOpacity`. When opacity is 0, we can choose
@@ -91,6 +97,7 @@ export type StepData = {
   frequencySliderStep: number,
   showCycleIndicator: boolean,
   showVolumeControls: boolean,
+  waveformsToAdd: ?Array<WaveformProps>,
 
   // Section parameters
   getMargin: (windowWidth: number) => number,
@@ -125,6 +132,7 @@ const defaults: StepData = {
   frequencySliderStep: 0.1,
   showCycleIndicator: false,
   showVolumeControls: true,
+  waveformsToAdd: null,
   getMargin: marginFunctions.large,
 };
 
@@ -711,6 +719,73 @@ export const steps = {
             baseAmplitude={amplitude}
           />
         </MountWhenVisible>
+      </Aux>
+    ),
+  },
+  'additive-synthesis-intro': {
+    ...defaults,
+    children: (
+      <Aux>
+        <SectionTitle>4. Additive Synthesis</SectionTitle>
+        <Paragraph>
+          In the previous section, we learned about how different waveforms have
+          different harmonics, but it's totally unclear <em>why</em> that's the
+          case. For example, why does a square wave have all those extra tones
+          when we're still just oscillating at a single frequency?
+        </Paragraph>
+
+        <Paragraph>
+          To make sense of this, there's a surprising truth about waveforms:{' '}
+          <strong>
+            all of them can be built by just layering a bunch of sine waves on
+            top of each other.
+          </strong>
+        </Paragraph>
+      </Aux>
+    ),
+  },
+  'additive-synthesis-basic-add': {
+    ...defaults,
+    waveformShape: null,
+    waveformsToAdd: [
+      { shape: 'sine', frequency: 1, color: COLORS.primary[500] },
+      ...getHarmonicsForWave({
+        baseFrequency: 1,
+        baseAmplitude: 1,
+        maxNumberToGenerate: 2,
+        color: COLORS.secondary[500],
+      }),
+    ],
+    children: ({ frequency, amplitude, currentStep }) => (
+      <Aux>
+        <Paragraph>
+          What do you think happens when you layer two distinct waveforms on top
+          of each other? If this isn't something you're familiar with, I
+          encourage you to take a moment and think about this. Imagine playing
+          two sine waves at different frequencies at the same time. What do you
+          think it does to the sound?
+        </Paragraph>
+
+        <Paragraph>
+          Remember, sound is just the vibration of air molecules. By adding
+          another waveform, you <em>might</em> be making the vibration stronger,
+          but you might also be making it weaker.
+        </Paragraph>
+
+        <Paragraph>
+          It's a math problem. For every moment in time, you add the two
+          amplitudes together to produce a <em>new</em> waveform.
+        </Paragraph>
+
+        <Paragraph>On the right, I've taken two sine waves</Paragraph>
+
+        <Paragraph>
+          To make sense of this, there's a surprising truth about waveforms:{' '}
+          <strong>
+            all of them can be built by just layering a bunch of sine waves on
+            top of each other.
+          </strong>
+        </Paragraph>
       </Aux>
     ),
   },

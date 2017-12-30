@@ -5,8 +5,6 @@ import styled from 'styled-components';
 import { COLORS } from '../../constants';
 import { convertProgressToCycle } from '../../helpers/waveform.helpers';
 
-import Aux from '../Aux';
-import AvailableWidth from '../AvailableWidth';
 import Row from '../Row';
 import Waveform from '../Waveform';
 import WaveformTween from '../WaveformTween';
@@ -19,6 +17,7 @@ import Slider from '../Slider';
 import type { StepData } from '../IntroRoute/IntroRoute.steps';
 
 type Props = {
+  width: number,
   amplitude: number,
   frequency: number,
   progress: number,
@@ -28,8 +27,9 @@ type Props = {
 };
 
 class IntroRouteWaveform extends PureComponent<Props> {
-  renderContents = (width: number) => {
+  render() {
     const {
+      width,
       amplitude,
       frequency,
       progress,
@@ -147,23 +147,6 @@ class IntroRouteWaveform extends PureComponent<Props> {
         )}
       </WaveformTween>
     );
-  };
-
-  render() {
-    return (
-      <Aux>
-        {/*
-          InitialSpacer is used on desktop to align the waveform with the
-          title. position: sticky takes over but we need this to offset it
-          initially
-        */}
-        <InitialSpacer />
-
-        <IntroRouteWaveformWrapper>
-          <AvailableWidth>{this.renderContents}</AvailableWidth>
-        </IntroRouteWaveformWrapper>
-      </Aux>
-    );
   }
 }
 
@@ -185,29 +168,6 @@ const WaveformWrapper = styled.div`
 const ControlsWrapper = styled.div`
   @media (orientation: portrait) {
     padding-bottom: 40px;
-  }
-`;
-
-const InitialSpacer = styled.div`
-  @media (orientation: landscape) {
-    height: 175px;
-  }
-`;
-
-const IntroRouteWaveformWrapper = styled.div`
-  @media (orientation: landscape) {
-    position: sticky;
-    top: 50px;
-  }
-
-  @media (orientation: portrait) {
-    position: fixed;
-    z-index: 5;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 1.25rem 3rem 2rem;
-    background: ${COLORS.gray[50]};
   }
 `;
 
