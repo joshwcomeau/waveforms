@@ -56,7 +56,7 @@ class FrequencyGraph extends PureComponent<Props, State> {
 
     const xAxisValues = range(xAxisValuesStart, xAxisValuesEnd, step).map(
       index => ({
-        label: index % 2 === 0 ? index + 'Hz' : '',
+        label: index % 2 !== 0 ? index + 'Hz' : '',
         position: VIEWBOX_WIDTH * (index / xMax / step),
       })
     );
