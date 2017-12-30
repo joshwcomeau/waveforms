@@ -18,8 +18,8 @@ import { getDimensions } from './AirGrid.helpers';
 
 import type { WaveformShape } from '../../types';
 
-const DEFAULT_COLS = 8;
-const DEFAULT_ROWS = DEFAULT_COLS * WAVEFORM_ASPECT_RATIO;
+const DEFAULT_COLS = 26;
+const DEFAULT_ROWS = 26;
 
 type Props = {
   width: number,

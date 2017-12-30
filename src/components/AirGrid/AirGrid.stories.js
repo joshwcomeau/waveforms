@@ -31,4 +31,40 @@ storiesOf('AirGrid', module)
         />
       )}
     </WaveformPlayer>
+  ))
+  .add('Triangle', () => (
+    <WaveformPlayer isPlaying>
+      {({ amplitude, frequency, progress }) => (
+        <AirGrid
+          waveformShape="triangle"
+          waveformAmplitude={amplitude}
+          waveformFrequency={frequency}
+          waveformProgress={progress}
+        />
+      )}
+    </WaveformPlayer>
+  ))
+  .add('Square', () => (
+    <WaveformPlayer isPlaying>
+      {({ amplitude, frequency, progress }) => (
+        <AirGrid
+          waveformShape="square"
+          waveformAmplitude={amplitude}
+          waveformFrequency={frequency}
+          waveformProgress={progress}
+        />
+      )}
+    </WaveformPlayer>
+  ))
+  .add('Sawtooth', () => (
+    <WaveformPlayer isPlaying>
+      {({ amplitude, frequency, progress }) => (
+        <AirGrid
+          waveformShape="sawtooth"
+          waveformAmplitude={amplitude}
+          waveformFrequency={frequency}
+          waveformProgress={progress}
+        />
+      )}
+    </WaveformPlayer>
   ));
