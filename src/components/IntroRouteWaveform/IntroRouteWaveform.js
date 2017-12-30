@@ -9,6 +9,7 @@ import Aux from '../Aux';
 import AvailableWidth from '../AvailableWidth';
 import Row from '../Row';
 import Waveform from '../Waveform';
+import WaveformTween from '../WaveformTween';
 import WaveformAxis from '../WaveformAxis';
 import WaveformIntercept from '../WaveformIntercept';
 import WaveformCycleIndicator from '../WaveformCycleIndicator';
@@ -43,98 +44,108 @@ class IntroRouteWaveform extends PureComponent<Props> {
     const offset = convertProgressToCycle(progress);
 
     return (
-      <FlexParent>
-        <WaveformWrapper>
-          <Waveform
-            shape={stepData.waveformShape}
-            frequency={frequency}
-            amplitude={amplitude}
-            offset={offset}
-            color={stepData.waveformColor}
-            strokeWidth={5}
-            opacity={stepData.waveformOpacity}
-            size={width}
-          />
-
-          <FadeTransition isVisible={stepData.showXAxis}>
-            <WaveformAxis
-              x
-              strokeWidth={4}
-              waveformSize={width}
-              showLabels={stepData.showXAxisLabels}
-              opacity={stepData.xAxisOpacity}
-            />
-          </FadeTransition>
-          <FadeTransition isVisible={stepData.showYAxis}>
-            <WaveformAxis
-              y
-              strokeWidth={4}
-              waveformSize={width}
-              showLabels={stepData.showYAxisLabels}
-              opacity={stepData.yAxisOpacity}
-            />
-          </FadeTransition>
-
-          <FadeTransition isVisible={stepData.showYAxisIntercept}>
-            <WaveformIntercept
-              size={20}
-              color={COLORS.primary[500]}
-              waveformSize={width}
-              waveformShape={stepData.waveformShape}
-              frequency={frequency}
-              amplitude={amplitude}
-              offset={offset}
-            />
-          </FadeTransition>
-
-          <FadeTransition
-            typeName="div"
-            isVisible={stepData.showCycleIndicator}
-          >
-            <WaveformCycleIndicator frequency={frequency} />
-          </FadeTransition>
-        </WaveformWrapper>
-
-        <ControlsWrapper>
-          <Row gutter={15}>
-            <FadeTransition
-              mountOnEnter
-              unmountOnExit
-              typeName="div"
-              isVisible={stepData.showAmplitudeSlider}
-            >
-              <Slider
-                label="Amplitude"
-                width={width / 2 - 15}
-                min={0}
-                max={1}
-                step={0.01}
-                defaultValue={1}
-                value={amplitude}
-                onChange={handleUpdateAmplitude}
+      <WaveformTween
+        shape={stepData.waveformShape}
+        amplitude={amplitude}
+        frequency={frequency}
+        offset={offset}
+        width={width}
+      >
+        {({ points }) => (
+          <FlexParent>
+            <WaveformWrapper>
+              <Waveform
+                points={points}
+                frequency={frequency}
+                amplitude={amplitude}
+                offset={offset}
+                color={stepData.waveformColor}
+                strokeWidth={5}
+                opacity={stepData.waveformOpacity}
+                size={width}
               />
-            </FadeTransition>
 
-            <FadeTransition
-              mountOnEnter
-              unmountOnExit
-              typeName="div"
-              isVisible={stepData.showFrequencySlider}
-            >
-              <Slider
-                label="Frequency"
-                width={width / 2 - 15}
-                min={stepData.frequencySliderMin}
-                max={stepData.frequencySliderMax}
-                step={stepData.frequencySliderStep}
-                defaultValue={1}
-                value={frequency}
-                onChange={handleUpdateFrequency}
-              />
-            </FadeTransition>
-          </Row>
-        </ControlsWrapper>
-      </FlexParent>
+              <FadeTransition isVisible={stepData.showXAxis}>
+                <WaveformAxis
+                  x
+                  strokeWidth={4}
+                  waveformSize={width}
+                  showLabels={stepData.showXAxisLabels}
+                  opacity={stepData.xAxisOpacity}
+                />
+              </FadeTransition>
+              <FadeTransition isVisible={stepData.showYAxis}>
+                <WaveformAxis
+                  y
+                  strokeWidth={4}
+                  waveformSize={width}
+                  showLabels={stepData.showYAxisLabels}
+                  opacity={stepData.yAxisOpacity}
+                />
+              </FadeTransition>
+
+              <FadeTransition isVisible={stepData.showYAxisIntercept}>
+                <WaveformIntercept
+                  size={20}
+                  color={COLORS.primary[500]}
+                  waveformSize={width}
+                  waveformShape={stepData.waveformShape}
+                  frequency={frequency}
+                  amplitude={amplitude}
+                  offset={offset}
+                />
+              </FadeTransition>
+
+              <FadeTransition
+                typeName="div"
+                isVisible={stepData.showCycleIndicator}
+              >
+                <WaveformCycleIndicator frequency={frequency} />
+              </FadeTransition>
+            </WaveformWrapper>
+
+            <ControlsWrapper>
+              <Row gutter={15}>
+                <FadeTransition
+                  mountOnEnter
+                  unmountOnExit
+                  typeName="div"
+                  isVisible={stepData.showAmplitudeSlider}
+                >
+                  <Slider
+                    label="Amplitude"
+                    width={width / 2 - 15}
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    defaultValue={1}
+                    value={amplitude}
+                    onChange={handleUpdateAmplitude}
+                  />
+                </FadeTransition>
+
+                <FadeTransition
+                  mountOnEnter
+                  unmountOnExit
+                  typeName="div"
+                  isVisible={stepData.showFrequencySlider}
+                >
+                  <Slider
+                    label="Frequency"
+                    width={width / 2 - 15}
+                    min={stepData.frequencySliderMin}
+                    max={stepData.frequencySliderMax}
+                    step={stepData.frequencySliderStep}
+                    defaultValue={1}
+                    value={frequency}
+                    onChange={handleUpdateFrequency}
+                  />
+                </FadeTransition>
+              </Row>
+            </ControlsWrapper>
+          </FlexParent>
+        )}
+      </WaveformTween>
     );
   };
 
