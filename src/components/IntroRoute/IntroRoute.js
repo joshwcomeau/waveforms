@@ -212,11 +212,7 @@ class IntroRoute extends PureComponent<Props, State> {
                 <IntroRouteWaveformWrapper>
                   {(width: number) => (
                     <Aux>
-                      <FadeTransition
-                        mountOnEnter
-                        unmountOnExit
-                        isVisible={!stepData.waveformsToAdd}
-                      >
+                      {!stepData.waveformsToAdd && (
                         <IntroRouteWaveform
                           width={width}
                           amplitude={amplitude}
@@ -226,18 +222,14 @@ class IntroRoute extends PureComponent<Props, State> {
                           handleUpdateFrequency={this.handleUpdateFrequency}
                           stepData={stepData}
                         />
-                      </FadeTransition>
+                      )}
 
-                      <FadeTransition
-                        mountOnEnter
-                        unmountOnExit
-                        isVisible={!!stepData.waveformsToAdd}
-                      >
+                      {stepData.waveformsToAdd && (
                         <IntroRouteWaveformAddition
                           width={width}
                           waveforms={stepData.waveformsToAdd}
                         />
-                      </FadeTransition>
+                      )}
                     </Aux>
                   )}
                 </IntroRouteWaveformWrapper>

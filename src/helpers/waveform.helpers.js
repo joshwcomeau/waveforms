@@ -375,7 +375,7 @@ export const getHarmonicsForWave = ({
         const frequency = baseFrequency * harmonicIndex;
         const amplitude = baseAmplitude / harmonicIndex;
 
-        return { frequency, amplitude, ...delegated };
+        return { shape: 'sine', frequency, amplitude, ...delegated };
       });
     }
 
@@ -399,7 +399,7 @@ export const getHarmonicsForWave = ({
         const frequency = baseFrequency * harmonicIndex;
         const amplitude = baseAmplitude / harmonicIndex;
 
-        return { frequency, amplitude, ...delegated };
+        return { shape: 'sine', frequency, amplitude, ...delegated };
       });
     }
 
@@ -453,7 +453,7 @@ export const getHarmonicsForWave = ({
         const amplitude =
           baseAmplitude / harmonicIndex ** 2 * amplitudePhaseMultiplier;
 
-        return { frequency, amplitude, ...delegated };
+        return { shape: 'sine', frequency, amplitude, ...delegated };
       });
     }
 

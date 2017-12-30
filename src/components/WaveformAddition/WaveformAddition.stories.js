@@ -26,7 +26,7 @@ storiesOf('WaveformAddition', module)
         { ...defaultWaveformProps, color: RED },
         { ...defaultWaveformProps, color: BLUE, offset: 50 },
       ]}
-      progress={0}
+      convergence={0}
     />
   ))
   .add('Cancelling (50%)', () => (
@@ -35,7 +35,7 @@ storiesOf('WaveformAddition', module)
         { ...defaultWaveformProps, color: RED },
         { ...defaultWaveformProps, color: BLUE, offset: 50 },
       ]}
-      progress={0.5}
+      convergence={0.5}
     />
   ))
   .add('Cancelling (100%)', () => (
@@ -44,7 +44,7 @@ storiesOf('WaveformAddition', module)
         { ...defaultWaveformProps, color: RED },
         { ...defaultWaveformProps, color: BLUE, offset: 50 },
       ]}
-      progress={1}
+      convergence={1}
     />
   ))
   .add('Cancelling (oscillating animation)', () => (
@@ -55,7 +55,7 @@ storiesOf('WaveformAddition', module)
             { ...defaultWaveformProps, color: RED },
             { ...defaultWaveformProps, color: BLUE, offset: 50 },
           ]}
-          progress={value / 100}
+          convergence={value / 100}
         />
       )}
     </ValueGenerator>
@@ -66,7 +66,7 @@ storiesOf('WaveformAddition', module)
         { ...defaultWaveformProps, color: RED },
         { ...defaultWaveformProps, color: BLUE, frequency: 2 },
       ]}
-      progress={0}
+      convergence={0}
     />
   ))
   .add('Double-frequency (50%)', () => (
@@ -75,7 +75,7 @@ storiesOf('WaveformAddition', module)
         { ...defaultWaveformProps, color: RED },
         { ...defaultWaveformProps, color: BLUE, frequency: 2 },
       ]}
-      progress={0.5}
+      convergence={0.5}
     />
   ))
   .add('Double-frequency (100%)', () => (
@@ -84,7 +84,7 @@ storiesOf('WaveformAddition', module)
         { ...defaultWaveformProps, color: RED },
         { ...defaultWaveformProps, color: BLUE, frequency: 2 },
       ]}
-      progress={1}
+      convergence={1}
     />
   ))
   .add('Double-frequency (oscillating animation)', () => (
@@ -95,7 +95,7 @@ storiesOf('WaveformAddition', module)
             { ...defaultWaveformProps, color: RED },
             { ...defaultWaveformProps, color: BLUE, frequency: 2 },
           ]}
-          progress={value / 100}
+          convergence={value / 100}
         />
       )}
     </ValueGenerator>
@@ -120,7 +120,7 @@ storiesOf('WaveformAddition', module)
                 color: BLUE,
               })),
             ]}
-            progress={value / 100}
+            convergence={value / 100}
           />
         )}
       </ValueGenerator>
@@ -142,7 +142,7 @@ storiesOf('WaveformAddition', module)
                 color: BLUE,
               })),
             ]}
-            progress={value / 100}
+            convergence={value / 100}
           />
         )}
       </ValueGenerator>
@@ -164,7 +164,7 @@ storiesOf('WaveformAddition', module)
                 color: BLUE,
               })),
             ]}
-            progress={value / 100}
+            convergence={value / 100}
           />
         )}
       </ValueGenerator>
@@ -186,7 +186,7 @@ storiesOf('WaveformAddition', module)
                 color: BLUE,
               })),
             ]}
-            progress={value / 100}
+            convergence={value / 100}
           />
         )}
       </ValueGenerator>

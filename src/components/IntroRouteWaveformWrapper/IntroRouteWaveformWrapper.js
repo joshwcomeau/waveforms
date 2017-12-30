@@ -14,10 +14,10 @@ type Props = {
 const IntroRouteWaveformWrapper = ({ children }: Props) => (
   <Aux>
     {/*
-          InitialSpacer is used on desktop to align the waveform with the
-          title. position: sticky takes over but we need this to offset it
-          initially
-        */}
+      InitialSpacer is used on desktop to align the waveform with the
+      title. position: sticky takes over but we need this to offset it
+      initially
+    */}
     <InitialSpacer />
 
     <Wrapper>

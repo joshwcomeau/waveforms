@@ -16,6 +16,8 @@ import FrequencyGraph from '../FrequencyGraph';
 import IntroRouteAirGrid from '../IntroRouteAirGrid';
 import MountWhenVisible from '../MountWhenVisible';
 import RevealableAnswer from '../RevealableAnswer';
+import WaveformEquation from '../WaveformEquation';
+import UnorderedList from '../UnorderedList';
 
 import type { WaveformShape } from '../../types';
 import type { Props as WaveformProps } from '../Waveform';
@@ -43,7 +45,8 @@ export type IntroStep =
   | 'sawtooth-wave'
   | 'sawtooth-wave-graph'
   | 'additive-synthesis-intro'
-  | 'additive-synthesis-basic-add';
+  | 'additive-synthesis-basic-add'
+  | 'additive-synthesis-intro-convergence';
 
 export const INTRO_STEPS: Array<IntroStep> = [
   'title',
@@ -69,6 +72,7 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'sawtooth-wave-graph',
   'additive-synthesis-intro',
   'additive-synthesis-basic-add',
+  'additive-synthesis-intro-convergence',
 ];
 
 export type StepData = {
@@ -97,7 +101,10 @@ export type StepData = {
   frequencySliderStep: number,
   showCycleIndicator: boolean,
   showVolumeControls: boolean,
+
+  // WaveformAddition params
   waveformsToAdd: ?Array<WaveformProps>,
+  showConvergenceSlider: boolean,
 
   // Section parameters
   getMargin: (windowWidth: number) => number,
@@ -133,6 +140,7 @@ const defaults: StepData = {
   showCycleIndicator: false,
   showVolumeControls: true,
   waveformsToAdd: null,
+  showConvergenceSlider: false,
   getMargin: marginFunctions.large,
 };
 
@@ -741,6 +749,16 @@ export const steps = {
             top of each other.
           </strong>
         </Paragraph>
+
+        <WaveformEquation />
+
+        <Paragraph>
+          At first blush, this probably doesn't make any sense. How can sine
+          waves be combined to make drastically-different waveforms like square
+          or sawtooth?
+        </Paragraph>
+
+        <Paragraph>The answer lies in how waveform addition works.</Paragraph>
       </Aux>
     ),
   },
@@ -752,66 +770,89 @@ export const steps = {
         amplitude: 1,
         frequency: 1,
         offset: 0,
+        strokeWidth: 5,
         color: COLORS.primary[500],
       },
-      {
-        shape: 'sine',
-        amplitude: 1,
-        frequency: 2,
-        offset: 0,
+      ...getHarmonicsForWave({
+        shape: 'square',
+        baseFrequency: 1,
+        baseAmplitude: 1,
+        maxNumberToGenerate: 2,
+        strokeWidth: 3,
         color: COLORS.secondary[500],
-      },
-      {
-        shape: 'sine',
-        amplitude: 1,
-        frequency: 3,
-        offset: 0,
-        color: COLORS.secondary[500],
-      },
-      {
-        shape: 'sine',
-        amplitude: 1,
-        frequency: 4,
-        offset: 0,
-        color: COLORS.secondary[500],
-      },
-      {
-        shape: 'sine',
-        amplitude: 1,
-        frequency: 5,
-        offset: 0,
-        color: COLORS.secondary[500],
-      },
+      }),
     ],
+    getMargin: marginFunctions.small,
+    children: ({ currentStep }) => (
+      <Aux>
+        <Paragraph>
+          The waveform graph we've been looking at now shows multiple waves:
+        </Paragraph>
+
+        <UnorderedList>
+          {steps['additive-synthesis-basic-add'].waveformsToAdd.map(
+            ({ amplitude, frequency, color }) => (
+              <li key={frequency}>
+                <strong style={{ color }}>
+                  {frequency}Hz at {amplitude}dB
+                </strong>
+              </li>
+            )
+          )}
+        </UnorderedList>
+
+        <Paragraph>
+          If you've ever used audio editing software, you've seen how a full
+          song - which is comprised of many different instruments - creates a
+          single wave. What we're looking at over there is not a wave yet: we
+          have to combine the 3 lines into 1.
+        </Paragraph>
+        <Paragraph>
+          This is known as <strong>waveform addition</strong>, and it makes
+          sense when you think of it in real-world terms.
+        </Paragraph>
+
+        <Paragraph>
+          Remember, sound is just the vibration of air molecules. If you play 3
+          distinct tones, you don't get 3 separate air molecules vibrating at 3
+          separate frequencies; the 3 tones combine to form a single waveform.
+        </Paragraph>
+
+        <Paragraph>
+          How does the addition work? It's arithmetic: in our example, amplitude
+          ranges from -1dB to 0dB. So, we can just add up the values. The 3
+          waves will converge at a single point for every moment in time.
+        </Paragraph>
+      </Aux>
+    ),
+  },
+  'additive-synthesis-intro-convergence': {
+    ...defaults,
+    showConvergenceSlider: true,
+    waveformsToAdd: [
+      {
+        shape: 'sine',
+        amplitude: 1,
+        frequency: 1,
+        offset: 0,
+        strokeWidth: 5,
+        color: COLORS.primary[500],
+      },
+      ...getHarmonicsForWave({
+        shape: 'square',
+        baseFrequency: 1,
+        baseAmplitude: 1,
+        maxNumberToGenerate: 2,
+        strokeWidth: 3,
+        color: COLORS.secondary[500],
+      }),
+    ],
+    getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
         <Paragraph>
-          What do you think happens when you layer two distinct waveforms on top
-          of each other? If this isn't something you're familiar with, I
-          encourage you to take a moment and think about this. Imagine playing
-          two sine waves at different frequencies at the same time. What do you
-          think it does to the sound?
-        </Paragraph>
-
-        <Paragraph>
-          Remember, sound is just the vibration of air molecules. By adding
-          another waveform, you <em>might</em> be making the vibration stronger,
-          but you might also be making it weaker.
-        </Paragraph>
-
-        <Paragraph>
-          It's a math problem. For every moment in time, you add the two
-          amplitudes together to produce a <em>new</em> waveform.
-        </Paragraph>
-
-        <Paragraph>On the right, I've taken two sine waves</Paragraph>
-
-        <Paragraph>
-          To make sense of this, there's a surprising truth about waveforms:{' '}
-          <strong>
-            all of them can be built by just layering a bunch of sine waves on
-            top of each other.
-          </strong>
+          Use the new <strong>Convergence</strong> slider to watch the 3 lines
+          converge into a single waveform.
         </Paragraph>
       </Aux>
     ),

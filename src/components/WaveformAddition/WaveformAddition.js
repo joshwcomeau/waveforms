@@ -14,7 +14,7 @@ import type { Props as WaveformProps } from '../Waveform';
 type Props = {
   size?: number,
   waveforms: Array<WaveformProps>,
-  progress: number,
+  convergence: number,
 };
 
 const defaultProps = {
@@ -24,9 +24,9 @@ const defaultProps = {
 // Waveform addition is the process of combining 2 waveforms to produce a
 // single waveform that contains both.
 // This component shows that process in action. It will draw 2 waveforms, but
-// with them moving towards intersecting, based on a `progress` number from
+// with them moving towards intersecting, based on a `convergence` number from
 // 0 to 1. At 1, the two lines will be totally overlapping.
-const WaveformAddition = ({ size, waveforms, progress }: Props) => {
+const WaveformAddition = ({ size, waveforms, convergence }: Props) => {
   if (waveforms.length < 2) {
     throw new Error('Please supply at least 2 waveforms to WaveformAddition.');
   }
@@ -40,7 +40,7 @@ const WaveformAddition = ({ size, waveforms, progress }: Props) => {
   // We want to move every wave closer to our "ideal" wave, which is the sum
   // of all values at every point. Let's calculate that first.
   // It doesn't actually matter which wave we focus on as "primary", since all
-  // waves converge when at 100% progress
+  // waves converge when at 100% convergence
   const idealWaveformPoints = applyWaveformAddition(
     waveformPointsArray[0],
     waveformPointsArray,
@@ -53,7 +53,7 @@ const WaveformAddition = ({ size, waveforms, progress }: Props) => {
       return applyWaveformAddition(
         waveformPoints,
         [idealWaveformPoints],
-        progress
+        convergence
       );
     }
   );
