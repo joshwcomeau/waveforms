@@ -748,13 +748,41 @@ export const steps = {
     ...defaults,
     waveformShape: null,
     waveformsToAdd: [
-      { shape: 'sine', frequency: 1, color: COLORS.primary[500] },
-      ...getHarmonicsForWave({
-        baseFrequency: 1,
-        baseAmplitude: 1,
-        maxNumberToGenerate: 2,
+      {
+        shape: 'sine',
+        amplitude: 1,
+        frequency: 1,
+        offset: 0,
+        color: COLORS.primary[500],
+      },
+      {
+        shape: 'sine',
+        amplitude: 1,
+        frequency: 2,
+        offset: 0,
         color: COLORS.secondary[500],
-      }),
+      },
+      {
+        shape: 'sine',
+        amplitude: 1,
+        frequency: 3,
+        offset: 0,
+        color: COLORS.secondary[500],
+      },
+      {
+        shape: 'sine',
+        amplitude: 1,
+        frequency: 4,
+        offset: 0,
+        color: COLORS.secondary[500],
+      },
+      {
+        shape: 'sine',
+        amplitude: 1,
+        frequency: 5,
+        offset: 0,
+        color: COLORS.secondary[500],
+      },
     ],
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>

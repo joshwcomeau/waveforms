@@ -9,6 +9,7 @@ import MaxWidthWrapper from '../MaxWidthWrapper';
 import WaveformPlayer from '../WaveformPlayer';
 import IntroRouteWaveformWrapper from '../IntroRouteWaveformWrapper';
 import IntroRouteWaveform from '../IntroRouteWaveform';
+import WaveformAddition from '../WaveformAddition';
 import Oscillator from '../Oscillator';
 import IntroRouteSection from '../IntroRouteSection';
 import VolumeAdjuster from '../VolumeAdjuster';
@@ -219,7 +220,13 @@ class IntroRoute extends PureComponent<Props, State> {
                         handleUpdateFrequency={this.handleUpdateFrequency}
                         stepData={stepData}
                       />
-                    ) : null
+                    ) : (
+                      <WaveformAddition
+                        size={width}
+                        waveforms={stepData.waveformsToAdd}
+                        progress={0}
+                      />
+                    )
                   }
                 </IntroRouteWaveformWrapper>
 

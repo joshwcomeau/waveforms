@@ -17,7 +17,7 @@ export const getPointsForWaveform = ({
   frequency,
   amplitude,
   width,
-  offset,
+  offset = 0,
 }: WaveformProps): Array<WaveformPoint> => {
   // Get an array of `x` values.
   // For now, we're drawing lines at every second point, for performance.
@@ -347,17 +347,17 @@ export const convertProgressToCycle = (progress: number) =>
   (progress * 100) % 100;
 
 type GetHarmonicsForWaveArgs = {
-  shape: WaveformShape,
+  shape?: WaveformShape,
   baseFrequency: number,
   baseAmplitude: number,
   maxNumberToGenerate: number,
 };
-
 export const getHarmonicsForWave = ({
-  shape,
+  shape = 'sine',
   baseFrequency,
   baseAmplitude,
   maxNumberToGenerate,
+  ...delegated
 }: GetHarmonicsForWaveArgs) => {
   const harmonics = [];
 
@@ -375,7 +375,7 @@ export const getHarmonicsForWave = ({
         const frequency = baseFrequency * harmonicIndex;
         const amplitude = baseAmplitude / harmonicIndex;
 
-        return { frequency, amplitude };
+        return { frequency, amplitude, ...delegated };
       });
     }
 
@@ -399,7 +399,7 @@ export const getHarmonicsForWave = ({
         const frequency = baseFrequency * harmonicIndex;
         const amplitude = baseAmplitude / harmonicIndex;
 
-        return { frequency, amplitude };
+        return { frequency, amplitude, ...delegated };
       });
     }
 
@@ -453,7 +453,7 @@ export const getHarmonicsForWave = ({
         const amplitude =
           baseAmplitude / harmonicIndex ** 2 * amplitudePhaseMultiplier;
 
-        return { frequency, amplitude };
+        return { frequency, amplitude, ...delegated };
       });
     }
 
