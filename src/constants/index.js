@@ -15,6 +15,12 @@ export const SHAPES: Array<WaveformShape> = [
   'sawtooth',
 ];
 
+export const SPRING_SETTINGS: SpringHelperConfig = {
+  stiffness: 170,
+  damping: 26,
+  precision: 0.1,
+};
+
 type Colors = {
   [color: string]: {
     [label: string | number]: string,

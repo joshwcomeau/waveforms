@@ -10,12 +10,13 @@
 import React, { PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
 
+import { SPRING_SETTINGS } from '../../constants';
 import {
   applyWaveformAddition,
   getPointsForWaveform,
 } from '../../helpers/waveform.helpers';
 
-import type { WaveformShape, WaveformPoint } from '../../types';
+import type { WaveformShape } from '../../types';
 import type { Props as WaveformProps } from '../Waveform';
 
 type Props = {
@@ -31,7 +32,7 @@ type Props = {
 
 type State = {
   oldShape: WaveformShape,
-  progress: number,
+  progress: ?number,
 };
 
 class WaveformTween extends PureComponent<Props, State> {
@@ -52,20 +53,26 @@ class WaveformTween extends PureComponent<Props, State> {
   render() {
     const { shape, children, ...waveformProps } = this.props;
 
+    // When the waveform changes shape, progress will "spring" from 0 to 1.
+    // Once that transition is complete, the `onRest` callback sets `progress`
+    // to `null`. When `null` is specified, we 'reset' it to 0 (no spring).
+    // This is how we ensure that multiple transitions can happen
+    // (otherwise, once the first transition has happened, `progress` would sit
+    // at `1` and future updates would be instant.)
+    // prettier-ignore
+    const newProgressVal = typeof this.state.progress === 'number'
+      ? spring(this.state.progress, SPRING_SETTINGS)
+      : 0;
+
     return (
       // Motion complains because it's not clear that `children`
       // returns a React element (since the children
       <Motion
         defaultStyle={{ progress: 0 }}
-        style={{
-          progress: this.state.progress === 0 ? 0 : spring(this.state.progress),
-        }}
-        onRest={() => this.setState({ oldShape: shape, progress: 0 })}
+        style={{ progress: newProgressVal }}
+        onRest={() => this.setState({ oldShape: shape, progress: null })}
       >
         {({ progress }) => {
-          // `progress` is simply a number from 0 to 1 which controls how far
-          // we are, between oldShape and shape.
-          // 0 = render the oldShape, 1 = render the (new) shape
           const points = applyWaveformAddition(
             getPointsForWaveform({
               shape: this.state.oldShape,

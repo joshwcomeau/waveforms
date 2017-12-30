@@ -5,6 +5,7 @@ import { Motion, spring } from 'react-motion';
 import {
   DEFAULT_WAVEFORM_NUM_OF_CYCLES,
   DEFAULT_WAVEFORM_AMPLITUDE,
+  SPRING_SETTINGS,
 } from '../../constants';
 
 import Aux from '../Aux';
@@ -174,9 +175,9 @@ class WaveformPlayer extends PureComponent<Props, State> {
       <Motion
         defaultStyle={{ progress: 0, amplitude, frequency }}
         style={{
-          amplitude: spring(amplitude),
-          frequency: spring(frequency),
-          progress: spring(progress),
+          amplitude: spring(amplitude, SPRING_SETTINGS),
+          frequency: spring(frequency, SPRING_SETTINGS),
+          progress: spring(progress, SPRING_SETTINGS),
         }}
       >
         {this.renderValues}

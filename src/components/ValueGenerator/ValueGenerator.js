@@ -4,6 +4,7 @@
 import React, { PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
 
+import { SPRING_SETTINGS } from '../../constants';
 import { random } from '../../utils';
 
 type Props = {
@@ -61,7 +62,7 @@ class ValueGenerator extends PureComponent<Props, State> {
     return (
       <Motion
         defaultStyle={{ value: 0 }}
-        style={{ value: spring(this.state.value) }}
+        style={{ value: spring(this.state.value, SPRING_SETTINGS) }}
       >
         {({ value }) => this.props.children(value)}
       </Motion>
