@@ -232,9 +232,9 @@ class IntroRoute extends PureComponent<Props, State> {
                   <IntroRouteSection
                     key={section.id}
                     id={section.id}
+                    currentStep={currentStep}
                     margin={section.getMargin(windowHeight)}
                     onIntersect={this.handleIntersect}
-                    isSelected={currentStep === section.id}
                     innerRef={elem => (this.sectionRefs[index] = elem)}
                   >
                     {typeof section.children === 'function'

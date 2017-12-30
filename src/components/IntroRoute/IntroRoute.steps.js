@@ -33,9 +33,13 @@ export type IntroStep =
   | 'how-sound-works-air-grid'
   | 'how-sound-works-air-grid-pt2'
   | 'harmonics-intro'
+  | 'sine-wave-graph'
   | 'triangle-wave'
+  | 'triangle-wave-graph'
   | 'square-wave'
-  | 'sawtooth-wave';
+  | 'square-wave-graph'
+  | 'sawtooth-wave'
+  | 'sawtooth-wave-graph';
 
 export const INTRO_STEPS: Array<IntroStep> = [
   'title',
@@ -52,9 +56,13 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'how-sound-works-air-grid',
   'how-sound-works-air-grid-pt2',
   'harmonics-intro',
+  'sine-wave-graph',
   'triangle-wave',
+  'triangle-wave-graph',
   'square-wave',
+  'square-wave-graph',
   'sawtooth-wave',
+  'sawtooth-wave-graph',
 ];
 
 export type StepData = {
@@ -458,7 +466,8 @@ export const steps = {
   },
   'harmonics-intro': {
     ...defaults,
-    frequencyOverride: 2,
+    isPlaying: true,
+    frequencyOverride: 1,
     amplitudeOverride: 1,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
@@ -476,7 +485,16 @@ export const steps = {
           the only thing you hear is a 440Hz tone. Sine waves are the "vanilla"
           wave; it doesn't have any bells or whistles.
         </Paragraph>
-
+      </Aux>
+    ),
+  },
+  'sine-wave-graph': {
+    ...defaults,
+    showAmplitudeSlider: true,
+    showFrequencySlider: true,
+    getMargin: marginFunctions.small,
+    children: ({ frequency, amplitude, currentStep }) => (
+      <Aux>
         <Paragraph>
           To understand what this means, let's take a look at a graph of the
           frequencies audible for a given waveform. Let's start with the sine
@@ -485,7 +503,7 @@ export const steps = {
 
         <MountWhenVisible
           currentStep={currentStep}
-          belongsToStep="harmonics-intro"
+          belongsToStep="sine-wave-graph"
           estimatedSize={390}
         >
           <FrequencyGraph
@@ -512,10 +530,7 @@ export const steps = {
   },
   'triangle-wave': {
     ...defaults,
-    isPlaying: false,
     waveformShape: 'triangle',
-    frequencyOverride: 2,
-    amplitudeOverride: 1,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     getMargin: marginFunctions.small,
@@ -539,7 +554,19 @@ export const steps = {
           Notice that the sound is a little "brighter"? It doesn't quite sound
           so muffled? This is because of <strong>harmonics</strong>
         </Paragraph>
-
+      </Aux>
+    ),
+  },
+  'triangle-wave-graph': {
+    ...defaults,
+    waveformShape: 'triangle',
+    amplitudeOverride: 1,
+    isPlaying: true,
+    showAmplitudeSlider: true,
+    showFrequencySlider: true,
+    getMargin: marginFunctions.small,
+    children: ({ frequency, amplitude, currentStep }) => (
+      <Aux>
         <Paragraph>
           Harmonics are additional frequencies that happen automatically with
           certain waveforms. We'll learn more about why that is soon, but first,
@@ -548,7 +575,7 @@ export const steps = {
 
         <MountWhenVisible
           currentStep={currentStep}
-          belongsToStep="triangle-wave"
+          belongsToStep="triangle-wave-graph"
           estimatedSize={390}
         >
           <FrequencyGraph
@@ -562,14 +589,14 @@ export const steps = {
   },
   'square-wave': {
     ...defaults,
-    isPlaying: false,
+    isPlaying: true,
     waveformShape: 'square',
     frequencyOverride: 2,
     amplitudeOverride: 1,
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     getMargin: marginFunctions.small,
-    children: ({ frequency, amplitude, currentStep }) => (
+    children: ({ frequency, amplitude, progress, currentStep }) => (
       <Aux>
         <Heading>The Square Wave</Heading>
 
@@ -630,7 +657,27 @@ export const steps = {
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
-        <Paragraph>sawtooth wave</Paragraph>
+        <Heading>The Sawtooth Wave</Heading>
+
+        <Paragraph>
+          Finally, we have the sawtooth. Named after the blades of a saw, This
+          waveform exhibits the linear rise of the triangle wave with the hard
+          drop of the square wave.
+        </Paragraph>
+
+        <Paragraph>
+          In terms of harmonics, sawtooth waveforms have additional frequencies
+          at every interval, unlike triangles and squares which only add
+          harmonics at every second interval.
+        </Paragraph>
+
+        <Paragraph>
+          In terms of sound, it's vaguely similar to string instruments: when
+          you run a bow across a violin's string, the friction between the two
+          items causes the string to slip and catch, which causes the string to
+          vibrate in a sawtooth-like pattern. Of course, real instruments
+          produce far more complex waveforms than these basic ones!
+        </Paragraph>
 
         <MountWhenVisible
           currentStep={currentStep}

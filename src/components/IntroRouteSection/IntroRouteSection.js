@@ -4,31 +4,44 @@ import styled from 'styled-components';
 
 import IntersectionObserver from '../IntersectionObserver';
 
+import { INTRO_STEPS } from '../IntroRoute/IntroRoute.steps';
+
 import type { IntroStep } from '../IntroRoute/IntroRoute.steps';
 
 type Props = {
   id: IntroStep,
+  currentStep: IntroStep,
   margin?: number,
   onIntersect: (id: IntroStep) => void,
-  isSelected: boolean,
   innerRef: (elem: HTMLElement) => void,
   children: React$Node,
 };
 
 class IntroRouteSection extends Component<Props> {
   shouldComponentUpdate(nextProps: Props) {
-    return this.props.isSelected || nextProps.isSelected;
+    if (nextProps.id === nextProps.currentStep) {
+      return true;
+    }
+
+    const delta = Math.abs(
+      INTRO_STEPS.indexOf(nextProps.id) -
+        INTRO_STEPS.indexOf(nextProps.currentStep)
+    );
+
+    return delta <= 1;
   }
 
   render() {
     const {
       id,
+      currentStep,
       onIntersect,
       margin = 0,
-      isSelected,
       innerRef,
       children,
     } = this.props;
+
+    const isSelected = id === currentStep;
 
     return (
       <IntersectionObserver id={id} onIntersect={onIntersect} onlyFireOn="exit">
