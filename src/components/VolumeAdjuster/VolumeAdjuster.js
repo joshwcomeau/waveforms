@@ -56,7 +56,7 @@ const VolumeAdjuster = ({
   );
 };
 
-const BORDER_WIDTH = 2;
+const BORDER_WIDTH = 1;
 
 const Wrapper = styled.div`
   display: inline-block;
@@ -95,7 +95,7 @@ const VolumeBlock = styled.button`
   background: #fff;
   border: ${BORDER_WIDTH + 'px'} solid ${COLORS.gray[300]};
   border-radius: 0;
-  margin-right: 2px;
+  margin-right: 1px;
   outline: none;
 `;
 

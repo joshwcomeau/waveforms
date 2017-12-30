@@ -14,6 +14,7 @@ import Aux from '../Aux';
 import FrequencyGraph from '../FrequencyGraph';
 import IntroRouteAirGrid from '../IntroRouteAirGrid';
 import MountWhenVisible from '../MountWhenVisible';
+import RevealableAnswer from '../RevealableAnswer';
 
 import type { WaveformShape } from '../../types';
 
@@ -520,9 +521,7 @@ export const steps = {
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
-        <Paragraph>
-          Here's another common waveform: the <strong>triangle wave</strong>.
-        </Paragraph>
+        <Heading>The Triangle Wave</Heading>
 
         <Paragraph>
           It looks quite a bit like a sine wave, but with the curviness removed.
@@ -572,7 +571,22 @@ export const steps = {
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
-        <Paragraph>Square wave</Paragraph>
+        <Heading>The Square Wave</Heading>
+
+        <Paragraph>
+          The square wave is arguably the most extreme of the common periodic
+          waveforms. It jumps between the highest and lowest possible values.
+          It's a binary wave: it's either +1 or -1.
+        </Paragraph>
+
+        <Paragraph>
+          In terms of harmonics, the square wave features exactly the same
+          intervals as the triangle wave: Every "odd" harmonic (3rd, 5th, 7th,
+          etc). The difference between the square and the triangle is that the
+          square's harmonics are louder: they don't fall off so quickly, so you
+          get more higher frequencies. This is plainly noticeable in the sound:
+          squares sound much "brighter" than triangles.
+        </Paragraph>
 
         <MountWhenVisible
           currentStep={currentStep}
@@ -585,6 +599,23 @@ export const steps = {
             baseAmplitude={amplitude}
           />
         </MountWhenVisible>
+
+        <Sidebar>
+          <Paragraph>
+            Unlike the previous two waveforms, a perfect square wave is
+            impossible; it cannot exist in nature, we can only approximate it.
+            Can you think of why that might be?
+          </Paragraph>
+          <Paragraph>
+            <RevealableAnswer>
+              Remember, the waveform represents the displacement of air
+              molecules. Molecules cannot "teleport" from the +1 position to the
+              -1 position. In reality, when a square wave is played through a
+              speaker, it causes the air to move very quickly from both
+              positions, but it is not instantaneous.
+            </RevealableAnswer>
+          </Paragraph>
+        </Sidebar>
       </Aux>
     ),
   },

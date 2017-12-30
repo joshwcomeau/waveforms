@@ -181,7 +181,7 @@ class IntroRoute extends PureComponent<Props, State> {
 
     const stepData = steps[currentStep];
 
-    const effectiveAudioVolume = audioMuted ? 0 : audioVolume;
+    const effectiveAudioVolume = (audioMuted ? 0 : audioVolume) * 0.5;
 
     // While our waveforms will render between 0.2Hz and 3Hz, we also have an
     // oscillator that needs to vibrate at normal ranges.

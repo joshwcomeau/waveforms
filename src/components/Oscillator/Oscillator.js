@@ -40,7 +40,11 @@ class Oscillator extends PureComponent<Props> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { frequency, amplitude, masterVolume } = this.props;
+    const { shape, frequency, amplitude, masterVolume } = this.props;
+
+    if (shape !== prevProps.shape) {
+      this.updateShape(shape);
+    }
 
     if (frequency !== prevProps.frequency) {
       this.updateFrequency(frequency);
@@ -77,18 +81,16 @@ class Oscillator extends PureComponent<Props> {
     this.amplitudeGainNode.connect(this.masterVolumeGainNode);
     this.masterVolumeGainNode.connect(audioCtx.destination);
 
-    console.log(
-      'init',
-      this.amplitudeGainNode.gain.value,
-      this.masterVolumeGainNode.gain.value
-    );
-
     fade({
       direction: 'in',
       oscillator: this.oscillatorNode,
       output: this.amplitudeGainNode,
       duration: FADE_DURATION,
     });
+  };
+
+  updateShape = (shape: WaveformShape) => {
+    this.oscillatorNode.type = shape;
   };
 
   updateFrequency = (frequency: number) => {
