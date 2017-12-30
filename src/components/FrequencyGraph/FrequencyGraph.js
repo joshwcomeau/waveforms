@@ -83,7 +83,7 @@ class FrequencyGraph extends PureComponent<Props, State> {
 
     // Filter out any harmonics that are too high-frequency to draw.
     const drawableHarmonics = harmonics.filter(
-      harmonic => harmonic.frequency < xMax
+      harmonic => harmonic.frequency <= xMax
     );
 
     return drawableHarmonics.map(({ frequency, amplitude }, index) => {
