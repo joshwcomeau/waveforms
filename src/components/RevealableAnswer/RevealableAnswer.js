@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
+import { isMobile } from '../../helpers/responsive.helpers';
+
 class RevealableAnswer extends PureComponent {
   state = {
     isRevealed: false,
@@ -14,10 +16,12 @@ class RevealableAnswer extends PureComponent {
     const { children } = this.props;
     const { isRevealed } = this.state;
 
+    const verb = isMobile() ? 'Tap' : 'Click';
+
     return isRevealed ? (
       children
     ) : (
-      <Trigger onClick={this.reveal}>Click to reveal the answer</Trigger>
+      <Trigger onClick={this.reveal}>{verb} to reveal the answer</Trigger>
     );
   }
 }
