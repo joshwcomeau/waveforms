@@ -863,7 +863,7 @@ export const steps = {
           sine wave is the <strong>fundamental waveform</strong>. It doesn't
           have any harmonics of its own. So if we know the harmonics of any
           other waveform, we can just add sine waves in the right places to
-          re-create them!
+          approximate them!
         </Paragraph>
       </Aux>
     ),

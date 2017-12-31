@@ -18,14 +18,24 @@ import FadeTransition from '../FadeTransition';
 
 import { steps, stepsArray, INTRO_STEPS } from './IntroRoute.steps';
 
+import type { WaveformShape } from '../../types';
 import type { IntroStep } from './IntroRoute.steps';
 
 type Props = {};
 type State = {
   currentStep: IntroStep,
   windowHeight: number,
+
+  // Waveform data
   amplitude: number,
   frequency: number,
+
+  // Waveform addition data
+  harmonicsForShape: WaveformShape,
+  numOfHarmonics: number,
+  convergence: number,
+
+  // Audio data
   audioVolume: number,
   audioMuted: boolean,
 };
@@ -36,6 +46,9 @@ class IntroRoute extends PureComponent<Props, State> {
     windowHeight: window.innerHeight,
     amplitude: 1,
     frequency: 1,
+    harmonicsForShape: 'square',
+    numOfHarmonics: 2,
+    convergence: 0,
     audioVolume: 0.5,
     audioMuted: true,
   };
@@ -90,13 +103,15 @@ class IntroRoute extends PureComponent<Props, State> {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-  handleUpdateAmplitude = (val: number) => {
-    this.setState({ amplitude: val });
+  handleUpdateField = (field: string) => (val: any) => {
+    this.setState({ [field]: val });
   };
 
-  handleUpdateFrequency = (val: number) => {
-    this.setState({ frequency: val });
-  };
+  handleUpdateAmplitude = this.handleUpdateField('amplitude');
+  handleUpdateFrequency = this.handleUpdateField('frequency');
+  handleUpdateHarmonicsForShape = this.handleUpdateField('harmonicsForShape');
+  handleUpdateNumOfHarmonics = this.handleUpdateField('numOfHarmonics');
+  handleUpdateConvergence = this.handleUpdateField('convergence');
 
   handleUpdateAudioVolume = (val: number) => {
     this.setState({ audioVolume: val, audioMuted: false });
@@ -182,6 +197,9 @@ class IntroRoute extends PureComponent<Props, State> {
       windowHeight,
       amplitude,
       frequency,
+      harmonicsForShape,
+      numOfHarmonics,
+      convergence,
       audioVolume,
       audioMuted,
     } = this.state;
@@ -232,6 +250,18 @@ class IntroRoute extends PureComponent<Props, State> {
                         <IntroRouteWaveformAddition
                           width={width}
                           stepData={stepData}
+                          baseAmplitude={amplitude}
+                          baseFrequency={frequency}
+                          harmonicsForShape={harmonicsForShape}
+                          numOfHarmonics={numOfHarmonics}
+                          convergence={convergence}
+                          handleUpdateHarmonicsForShape={
+                            this.handleUpdateHarmonicsForShape
+                          }
+                          handleUpdateNumOfHarmonics={
+                            this.handleUpdateNumOfHarmonics
+                          }
+                          handleUpdateConvergence={this.handleUpdateConvergence}
                         />
                       )}
                     </Aux>

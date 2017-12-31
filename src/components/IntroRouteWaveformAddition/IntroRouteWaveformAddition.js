@@ -22,65 +22,29 @@ import type { StepData } from '../IntroRoute/IntroRoute.steps';
 type Props = {
   width: number,
   stepData: StepData,
-};
-
-type State = {
   baseFrequency: number,
   baseAmplitude: number,
-  harmonicsFor: WaveformShape,
+  harmonicsForShape: WaveformShape,
   numOfHarmonics: number,
   convergence: number,
+  handleUpdateHarmonicsForShape: (shape: WaveformShape) => void,
+  handleUpdateNumOfHarmonics: (val: number) => void,
+  handleUpdateConvergence: (val: number) => void,
 };
 
-class IntroRouteWaveformAddition extends PureComponent<Props, State> {
-  state = {
-    baseFrequency: 1,
-    baseAmplitude: 1,
-    harmonicsFor: 'square',
-    numOfHarmonics: 2,
-    convergence: 0,
-  };
-
-  componentDidUpdate(prevProps: Props) {
-    const {
-      harmonicsForOverride,
-      numOfHarmonicsOverride,
-    } = this.props.stepData;
-
-    if (
-      typeof harmonicsForOverride === 'string' &&
-      prevProps.stepData.harmonicsForOverride !== harmonicsForOverride
-    ) {
-      this.handleUpdateHarmonicsFor(harmonicsForOverride);
-    }
-
-    if (
-      typeof numOfHarmonicsOverride === 'number' &&
-      prevProps.stepData.numOfHarmonicsOverride !== numOfHarmonicsOverride
-    ) {
-      this.handleUpdateNumOfHarmonics(numOfHarmonicsOverride);
-    }
-  }
-
-  handleUpdateValue = (key: string) => (val: number) => {
-    this.setState({ [key]: val });
-  };
-
-  handleUpdateBaseFrequency = this.handleUpdateValue('baseFrequency');
-  handleUpdateBaseAmplitude = this.handleUpdateValue('baseAmplitude');
-  handleUpdateHarmonicsFor = this.handleUpdateValue('harmonicsFor');
-  handleUpdateNumOfHarmonics = this.handleUpdateValue('numOfHarmonics');
-  handleUpdateConvergence = this.handleUpdateValue('convergence');
-
+class IntroRouteWaveformAddition extends PureComponent<Props> {
   render() {
-    const { width, stepData } = this.props;
     const {
+      width,
+      stepData,
       baseFrequency,
       baseAmplitude,
-      harmonicsFor,
+      harmonicsForShape,
       numOfHarmonics,
       convergence,
-    } = this.state;
+      handleUpdateNumOfHarmonics,
+      handleUpdateConvergence,
+    } = this.props;
 
     const waveforms = [
       {
@@ -92,7 +56,7 @@ class IntroRouteWaveformAddition extends PureComponent<Props, State> {
         color: COLORS.primary[500] + '88',
       },
       ...getHarmonicsForWave({
-        shape: harmonicsFor,
+        shape: harmonicsForShape,
         baseFrequency: baseFrequency,
         baseAmplitude: baseAmplitude,
         maxNumberToGenerate: numOfHarmonics,
@@ -145,7 +109,7 @@ class IntroRouteWaveformAddition extends PureComponent<Props, State> {
                 step={0.01}
                 defaultValue={0}
                 value={convergence}
-                onChange={this.handleUpdateConvergence}
+                onChange={handleUpdateConvergence}
               />
             </FadeTransition>
 
@@ -158,7 +122,7 @@ class IntroRouteWaveformAddition extends PureComponent<Props, State> {
                 step={1}
                 defaultValue={1}
                 value={numOfHarmonics}
-                onChange={this.handleUpdateNumOfHarmonics}
+                onChange={handleUpdateNumOfHarmonics}
               />
             </FadeTransition>
           </Row>
