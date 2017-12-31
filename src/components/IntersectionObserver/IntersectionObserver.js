@@ -20,14 +20,14 @@ class IntersectionObserver extends PureComponent<Props> {
   componentDidMount() {
     if (typeof window.IntersectionObserver === 'undefined') {
       import('../../polyfills/intersection-observer.js')
-        .then(res => this.beginObservation(res.IntersectionObserver))
+        .then(() => this.beginObservation())
         .catch(err =>
           console.error('Could not load IntersectionObserver polyfill')
         );
       return;
     }
 
-    this.beginObservation(window.IntersectionObserver);
+    this.beginObservation();
   }
 
   componentWillUnmount() {
@@ -36,7 +36,7 @@ class IntersectionObserver extends PureComponent<Props> {
     }
   }
 
-  beginObservation = IntersectionObserver => {
+  beginObservation = () => {
     const {
       id,
       children,
@@ -45,7 +45,7 @@ class IntersectionObserver extends PureComponent<Props> {
       ...intersectionOptions
     } = this.props;
 
-    this.observer = new IntersectionObserver(entries => {
+    this.observer = new window.IntersectionObserver(entries => {
       // While the IntersectionObserver API supports multiple entries, we'll
       // only ever have 1, since we're only observing a single node.
       const [entry] = entries;
