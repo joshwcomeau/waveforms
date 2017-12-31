@@ -36,12 +36,15 @@ class AudioOutput extends PureComponent<Props> {
   initializeAudio() {
     const { masterVolume } = this.props;
 
-    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    this.masterVolumeGainNode = this.audioCtx.createGain();
-    this.masterVolumeGainNode.gain.value = masterVolume;
+    const masterVolumeGainNode = audioCtx.createGain();
 
-    this.masterVolumeGainNode.connect(this.audioCtx.destination);
+    masterVolumeGainNode.gain.value = masterVolume;
+    masterVolumeGainNode.connect(audioCtx.destination);
+
+    this.audioCtx = audioCtx;
+    this.masterVolumeGainNode = masterVolumeGainNode;
   }
 
   render() {
