@@ -6,9 +6,17 @@ type Props = {
   children: (audioCtx: AudioContext, masterOut: GainNode) => void,
 };
 
-class AudioOutput extends PureComponent<Props> {
+type State = {
+  isInitialized: boolean,
+};
+
+class AudioOutput extends PureComponent<Props, State> {
   audioCtx: ?AudioContext;
   masterVolumeGainNode: ?GainNode;
+
+  state = {
+    isInitialized: false,
+  };
 
   componentWillReceiveProps(nextProps: Props) {
     const isAudibleForTheFirstTime =
@@ -17,7 +25,7 @@ class AudioOutput extends PureComponent<Props> {
       nextProps.masterVolume > 0;
 
     if (isAudibleForTheFirstTime) {
-      this.initializeAudio();
+      this.initializeAudio(nextProps.masterVolume);
       return;
     }
 
@@ -33,27 +41,26 @@ class AudioOutput extends PureComponent<Props> {
     }
   }
 
-  initializeAudio() {
-    const { masterVolume } = this.props;
-
+  initializeAudio(volume: number) {
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
     const masterVolumeGainNode = audioCtx.createGain();
 
-    masterVolumeGainNode.gain.value = masterVolume;
+    masterVolumeGainNode.gain.value = volume;
     masterVolumeGainNode.connect(audioCtx.destination);
 
     this.audioCtx = audioCtx;
     this.masterVolumeGainNode = masterVolumeGainNode;
+
+    this.setState({ isInitialized: true });
   }
 
   render() {
-    // Our `audioCtx` isn't created before mount.
-    // This means that for the first render, we won't invoke the children or
-    // create the oscillators. This is a feature, not a bug: our app doesn't
-    // auto-play sound, and so we defer the cost of setting all this up until
-    // it's actually needed.
-    if (!this.audioCtx || !this.masterVolumeGainNode) {
+    if (
+      !this.state.isInitialized ||
+      !this.audioCtx ||
+      !this.masterVolumeGainNode
+    ) {
       return null;
     }
 

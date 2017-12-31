@@ -15,9 +15,9 @@ type Props = {
   amplitude: number,
 };
 
-// FADE_DURATION controls the duration over amplitude changes when
-// starting/stopping. really just used to avoid clipping. Extremely quick.
-const FADE_DURATION = 0.015;
+// CLIP_FADE_DURATION controls the duration over amplitude changes when
+// starting/stopping, to avoid pops/clicks.
+const CLIP_FADE_DURATION = 0.015;
 // GLIDE_DURATION is used for the frequency, to smoothly shift to a new value.
 const GLIDE_DURATION = 0.5;
 
@@ -74,7 +74,7 @@ class Oscillator extends PureComponent<Props> {
       direction: 'in',
       oscillator: this.oscillatorNode,
       output: this.amplitudeGainNode,
-      duration: FADE_DURATION,
+      duration: CLIP_FADE_DURATION,
       context: audioCtx,
     });
   };
@@ -116,7 +116,7 @@ class Oscillator extends PureComponent<Props> {
         direction: 'out',
         oscillator: this.oscillatorNode,
         output: this.amplitudeGainNode,
-        duration: FADE_DURATION,
+        duration: CLIP_FADE_DURATION,
         context: audioCtx,
       });
     }

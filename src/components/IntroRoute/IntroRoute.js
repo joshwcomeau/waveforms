@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { COLORS } from '../../constants';
 import { debounce } from '../../utils';
+import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
 
 import Aux from '../Aux';
 import MaxWidthWrapper from '../MaxWidthWrapper';
@@ -218,15 +219,36 @@ class IntroRoute extends PureComponent<Props, State> {
     return (
       <MaxWidthWrapper>
         <AudioOutput masterVolume={effectiveAudioVolume}>
-          {(audioCtx, masterOut) => (
+          {(audioCtx, masterOut) => [
+            // Our primary oscillator, at the "base" frequency/amplitude
             <Oscillator
-              audioCtx={audioCtx}
-              masterOut={masterOut}
+              key="base-frequency"
               shape={stepData.waveformShape}
               amplitude={amplitude}
               frequency={adjustedAudibleFrequency}
-            />
-          )}
+              audioCtx={audioCtx}
+              masterOut={masterOut}
+            />,
+
+            // If we're in the addition phase, we may wish to generate
+            // harmonics as well.
+            stepData.useWaveformAddition &&
+              getHarmonicsForWave({
+                shape: harmonicsForShape,
+                baseFrequency: adjustedAudibleFrequency,
+                baseAmplitude: amplitude,
+                maxNumberToGenerate: numOfHarmonics,
+              }).map(({ frequency, amplitude }) => (
+                <Oscillator
+                  key={frequency}
+                  shape="sine"
+                  amplitude={amplitude}
+                  frequency={frequency}
+                  audioCtx={audioCtx}
+                  masterOut={masterOut}
+                />
+              )),
+          ]}
         </AudioOutput>
 
         <WaveformPlayer

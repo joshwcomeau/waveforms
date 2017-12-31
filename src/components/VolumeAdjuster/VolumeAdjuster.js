@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import VolumeOff from 'react-icons/lib/md/volume-off';
 import VolumeOn from 'react-icons/lib/md/volume-up';
@@ -8,53 +8,63 @@ import { COLORS } from '../../constants';
 import { range } from '../../utils';
 
 type Props = {
-  blockSize?: number,
+  blockSize: number,
   currentVolume: number,
-  steps?: number,
-  isMuted?: boolean,
+  steps: number,
+  isMuted: boolean,
   onAdjustVolume: (volume: number) => void,
   onToggleMute: () => void,
 };
 
-const VolumeAdjuster = ({
-  blockSize = 16,
-  currentVolume,
-  steps = 10,
-  isMuted = false,
-  onAdjustVolume,
-  onToggleMute,
-}: Props) => {
-  const isAudible = !isMuted && currentVolume > 0;
-  const VolumeIcon = isAudible ? VolumeOn : VolumeOff;
+class VolumeAdjuster extends PureComponent<Props> {
+  static defaultProps = {
+    blockSize: 16,
+    steps: 10,
+    isMuted: false,
+  };
 
-  return (
-    <Wrapper>
-      <Header>
-        <Label>Volume</Label>
-        <MuteButton onClick={() => onToggleMute()}>
-          <VolumeIcon
-            color={isAudible ? COLORS.primary[500] : COLORS.gray[300]}
-          />
-        </MuteButton>
-      </Header>
+  render() {
+    const {
+      blockSize = 16,
+      currentVolume,
+      steps = 10,
+      isMuted = false,
+      onAdjustVolume,
+      onToggleMute,
+    } = this.props;
 
-      <VolumeBlocks>
-        {range(1, steps - 1).map(index => (
-          <VolumeBlock
-            key={index}
-            size={blockSize}
-            onClick={() => onAdjustVolume(index / steps)}
-          >
-            <VolumeBlockFill
-              isFilled={index / steps <= currentVolume}
-              isEnabled={!isMuted}
+    const isAudible = !isMuted && currentVolume > 0;
+    const VolumeIcon = isAudible ? VolumeOn : VolumeOff;
+
+    return (
+      <Wrapper>
+        <Header>
+          <Label>Volume</Label>
+          <MuteButton onClick={() => onToggleMute()}>
+            <VolumeIcon
+              color={isAudible ? COLORS.primary[500] : COLORS.gray[300]}
             />
-          </VolumeBlock>
-        ))}
-      </VolumeBlocks>
-    </Wrapper>
-  );
-};
+          </MuteButton>
+        </Header>
+
+        <VolumeBlocks>
+          {range(1, steps - 1).map(index => (
+            <VolumeBlock
+              key={index}
+              size={blockSize}
+              onClick={() => onAdjustVolume(index / steps)}
+            >
+              <VolumeBlockFill
+                isFilled={index / steps <= currentVolume}
+                isEnabled={!isMuted}
+              />
+            </VolumeBlock>
+          ))}
+        </VolumeBlocks>
+      </Wrapper>
+    );
+  }
+}
 
 const BORDER_WIDTH = 1;
 
