@@ -12,7 +12,6 @@ import FadeTransition from '../FadeTransition';
 import type { WaveformShape } from '../../types';
 
 type Props = {
-  width?: number,
   shape: WaveformShape,
   baseFrequency: number,
   baseAmplitude: number,
@@ -110,7 +109,7 @@ class FrequencyGraph extends PureComponent<Props, State> {
 
           <FadeTransition typeName="g" duration={200} isVisible={isHovered}>
             <HoverText textAnchor="end" x={VIEWBOX_WIDTH} y={0} dy={5}>
-              {roundTo(frequency, 2)}Hz at {roundTo(amplitude, 2)}dB
+              {roundTo(frequency, 2)}Hz at {roundTo(Math.abs(amplitude), 2)}dB
             </HoverText>
           </FadeTransition>
         </Aux>

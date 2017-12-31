@@ -49,6 +49,14 @@ class Oscillator extends PureComponent<Props> {
     if (amplitude !== prevProps.amplitude) {
       this.updateAmplitude(amplitude);
     }
+
+    if (
+      prevProps.audioCtx &&
+      prevProps.audioCtx.state === 'suspended' &&
+      this.props.audioCtx.state === 'running'
+    ) {
+      this.initializeAudio();
+    }
   }
 
   componentWillUnmount() {

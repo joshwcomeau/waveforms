@@ -165,7 +165,7 @@ export const steps = {
     getMargin: marginFunctions.small,
     children: (
       <Aux>
-        <Paragraph>Hi there!</Paragraph>
+        <Paragraph>Boo Hi there!</Paragraph>
         <Paragraph>
           This interactive guide introduces waveforms. We'll go over the
           fundamental physics of sound, learn how it relates to music and

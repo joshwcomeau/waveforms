@@ -31,10 +31,13 @@ const titleColors = {
 const SidebarElem = styled.div`
   position: relative;
   background: ${props => backgroundColors[props.type]};
-  padding: ${PADDING + 'px'};
-  margin-left: ${-PADDING + 'px'};
-  margin-right: ${-PADDING + 'px'};
   margin-top: 75px;
+  padding: ${PADDING + 'px'};
+
+  @media (orientation: landscape) {
+    margin-left: ${-PADDING + 'px'};
+    margin-right: ${-PADDING + 'px'};
+  }
 
   p {
     font-size: 20px;

@@ -62,6 +62,13 @@ export const COLORS: Colors = {
     '700': '#7B1FA2',
     '900': '#4A148C',
   },
+  pink: {
+    '100': '#F8BBD0',
+    '300': '#F06292',
+    '500': '#E91E63',
+    '700': '#C2185B',
+    '900': '#880E4F',
+  },
   gray: {
     '50': '#FAFAFA',
     '100': '#F5F5F5',
@@ -77,7 +84,7 @@ export const COLORS: Colors = {
 };
 
 COLORS.primary = COLORS.blue;
-COLORS.secondary = COLORS.green;
+COLORS.secondary = COLORS.pink;
 
 // Media queries
 export const BREAKPOINT_SIZES = {

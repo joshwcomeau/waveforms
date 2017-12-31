@@ -8,6 +8,7 @@ import { Motion, spring } from 'react-motion';
 import styled from 'styled-components';
 
 import { COLORS } from '../../constants';
+import { convertHexToRGBA } from '../../utils';
 import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
 
 import WaveformAddition from '../WaveformAddition';
@@ -46,23 +47,27 @@ class IntroRouteWaveformAddition extends PureComponent<Props> {
       handleUpdateConvergence,
     } = this.props;
 
+    // We want to render our base waveform, plus all available harmonics.
+    // I'm reversing their order since the order affects draw layer in
+    // SVG/Canvas. I want the base waveform to be on "top", so it has to be
+    // last in the array.
     const waveforms = [
-      {
-        shape: 'sine',
-        frequency: baseFrequency,
-        amplitude: baseAmplitude,
-        offset: 0,
-        strokeWidth: 5,
-        color: COLORS.primary[500] + '88',
-      },
       ...getHarmonicsForWave({
         shape: harmonicsForShape,
         baseFrequency: baseFrequency,
         baseAmplitude: baseAmplitude,
         maxNumberToGenerate: numOfHarmonics,
         strokeWidth: 5,
-        color: COLORS.secondary[500] + '44',
+        color: convertHexToRGBA(COLORS.secondary[500], 0.6),
       }),
+      {
+        shape: 'sine',
+        frequency: baseFrequency,
+        amplitude: baseAmplitude,
+        offset: 0,
+        strokeWidth: 5,
+        color: convertHexToRGBA(COLORS.primary[500], 0.6),
+      },
     ];
 
     return (

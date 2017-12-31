@@ -77,7 +77,7 @@ export const debounce = (callback, wait, timeoutId = null) => (...args) => {
 
 export const isEmpty = obj => Object.keys(obj).length === 0;
 
-const omit = function(obj, key) {
+export const omit = function(obj, key) {
   var newObj = {};
 
   for (var name in obj) {
@@ -127,4 +127,12 @@ export const deleteCookie = key => {
   document.cookie = `${encodeURIComponent(
     key
   )}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+};
+
+export const convertHexToRGBA = (hex, alpha = 1) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };

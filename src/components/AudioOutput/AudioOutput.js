@@ -3,32 +3,18 @@ import { PureComponent } from 'react';
 
 type Props = {
   masterVolume: number,
-  children: (audioCtx: AudioContext, masterOut: GainNode) => void,
-};
-
-type State = {
-  isInitialized: boolean,
+  children: (audioCtx: ?AudioContext, masterOut: ?GainNode) => void,
 };
 
 class AudioOutput extends PureComponent<Props, State> {
   audioCtx: ?AudioContext;
   masterVolumeGainNode: ?GainNode;
 
-  state = {
-    isInitialized: false,
-  };
+  componentDidMount() {
+    this.initializeAudio(this.props.masterVolume);
+  }
 
   componentWillReceiveProps(nextProps: Props) {
-    const isAudibleForTheFirstTime =
-      !this.audioCtx &&
-      !this.masterVolumeGainNode &&
-      nextProps.masterVolume > 0;
-
-    if (isAudibleForTheFirstTime) {
-      this.initializeAudio(nextProps.masterVolume);
-      return;
-    }
-
     // Should be impossible, this is just Flow appeasement:
     if (!this.masterVolumeGainNode) {
       return;
@@ -52,18 +38,10 @@ class AudioOutput extends PureComponent<Props, State> {
     this.audioCtx = audioCtx;
     this.masterVolumeGainNode = masterVolumeGainNode;
 
-    this.setState({ isInitialized: true });
+    this.forceUpdate();
   }
 
   render() {
-    if (
-      !this.state.isInitialized ||
-      !this.audioCtx ||
-      !this.masterVolumeGainNode
-    ) {
-      return null;
-    }
-
     return this.props.children(this.audioCtx, this.masterVolumeGainNode);
   }
 }
