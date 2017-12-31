@@ -1,19 +1,21 @@
 // @flow
-type fadeWithContextArgs = {
+type fadeArgs = {
   oscillator: OscillatorNode,
   direction: 'in' | 'out',
   output: GainNode,
   maxAmplitude?: number,
   duration?: number,
+  context: AudioContext,
 };
 
-export const fadeWithContext = (context: AudioContext) => ({
+export const fade = ({
   oscillator,
   direction,
   output,
   maxAmplitude = 1,
   duration = 0.015,
-}: fadeWithContextArgs) => {
+  context,
+}: fadeArgs) => {
   const now = context.currentTime;
   const end = now + duration;
   output.gain.cancelScheduledValues(now);

@@ -3,19 +3,17 @@ import { PureComponent } from 'react';
 
 import { DEFAULT_WAVEFORM_SHAPE } from '../../constants';
 
-import { fadeWithContext } from './Oscillator.helpers';
+import { fade } from './Oscillator.helpers';
 
 import type { WaveformShape } from '../../types';
 
 type Props = {
+  audioCtx: AudioContext,
+  masterOut: AudioDestinationNode,
   shape: WaveformShape,
   frequency: number,
   amplitude: number,
-  masterVolume: number,
 };
-
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const fade = fadeWithContext(audioCtx);
 
 // FADE_DURATION controls the duration over amplitude changes when
 // starting/stopping. really just used to avoid clipping. Extremely quick.
@@ -27,7 +25,6 @@ class Oscillator extends PureComponent<Props> {
   audioCtx: AudioContext;
   oscillatorNode: OscillatorNode;
   amplitudeGainNode: GainNode;
-  masterVolumeGainNode: GainNode;
 
   static defaultProps = {
     shape: DEFAULT_WAVEFORM_SHAPE,
@@ -39,7 +36,7 @@ class Oscillator extends PureComponent<Props> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { shape, frequency, amplitude, masterVolume } = this.props;
+    const { shape, frequency, amplitude } = this.props;
 
     if (shape !== prevProps.shape) {
       this.updateShape(shape);
@@ -52,10 +49,6 @@ class Oscillator extends PureComponent<Props> {
     if (amplitude !== prevProps.amplitude) {
       this.updateAmplitude(amplitude);
     }
-
-    if (masterVolume !== prevProps.masterVolume) {
-      this.updateMasterVolume(masterVolume);
-    }
   }
 
   componentWillUnmount() {
@@ -63,28 +56,26 @@ class Oscillator extends PureComponent<Props> {
   }
 
   initializeAudio = () => {
-    const { shape, frequency, amplitude, masterVolume } = this.props;
+    const { audioCtx, masterOut, shape, frequency, amplitude } = this.props;
 
     this.oscillatorNode = audioCtx.createOscillator();
 
     this.amplitudeGainNode = audioCtx.createGain();
-    this.masterVolumeGainNode = audioCtx.createGain();
 
     this.oscillatorNode.type = shape;
     this.oscillatorNode.frequency.value = frequency;
 
     this.amplitudeGainNode.gain.value = amplitude;
-    this.masterVolumeGainNode.gain.value = masterVolume;
 
     this.oscillatorNode.connect(this.amplitudeGainNode);
-    this.amplitudeGainNode.connect(this.masterVolumeGainNode);
-    this.masterVolumeGainNode.connect(audioCtx.destination);
+    this.amplitudeGainNode.connect(masterOut);
 
     fade({
       direction: 'in',
       oscillator: this.oscillatorNode,
       output: this.amplitudeGainNode,
       duration: FADE_DURATION,
+      context: audioCtx,
     });
   };
 
@@ -93,6 +84,8 @@ class Oscillator extends PureComponent<Props> {
   };
 
   updateFrequency = (frequency: number) => {
+    const { audioCtx } = this.props;
+
     this.oscillatorNode.frequency.exponentialRampToValueAtTime(
       frequency,
       audioCtx.currentTime + GLIDE_DURATION
@@ -100,6 +93,8 @@ class Oscillator extends PureComponent<Props> {
   };
 
   updateAmplitude = (amplitude: number) => {
+    const { audioCtx } = this.props;
+
     // For some reason, `exponentialRampToValueAtTime` doesn't like 0s.
     // In that case, let's just cut it off instantly, whatever.
     if (amplitude === 0) {
@@ -113,17 +108,16 @@ class Oscillator extends PureComponent<Props> {
     );
   };
 
-  updateMasterVolume = (volume: number) => {
-    this.masterVolumeGainNode.gain.value = volume;
-  };
-
   stop = () => {
+    const { audioCtx } = this.props;
+
     if (this.oscillatorNode) {
       fade({
         direction: 'out',
         oscillator: this.oscillatorNode,
         output: this.amplitudeGainNode,
         duration: FADE_DURATION,
+        context: audioCtx,
       });
     }
   };

@@ -11,6 +11,7 @@ import WaveformPlayer from '../WaveformPlayer';
 import IntroRouteWaveformWrapper from '../IntroRouteWaveformWrapper';
 import IntroRouteWaveform from '../IntroRouteWaveform';
 import IntroRouteWaveformAddition from '../IntroRouteWaveformAddition';
+import AudioOutput from '../AudioOutput';
 import Oscillator from '../Oscillator';
 import IntroRouteSection from '../IntroRouteSection';
 import VolumeAdjuster from '../VolumeAdjuster';
@@ -216,12 +217,17 @@ class IntroRoute extends PureComponent<Props, State> {
 
     return (
       <MaxWidthWrapper>
-        <Oscillator
-          shape={stepData.waveformShape}
-          amplitude={amplitude}
-          frequency={adjustedAudibleFrequency}
-          masterVolume={effectiveAudioVolume}
-        />
+        <AudioOutput masterVolume={effectiveAudioVolume}>
+          {(audioCtx, masterOut) => (
+            <Oscillator
+              audioCtx={audioCtx}
+              masterOut={masterOut}
+              shape={stepData.waveformShape}
+              amplitude={amplitude}
+              frequency={adjustedAudibleFrequency}
+            />
+          )}
+        </AudioOutput>
 
         <WaveformPlayer
           isPlaying={stepData.isPlaying}
