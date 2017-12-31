@@ -2,7 +2,6 @@
 import { PureComponent } from 'react';
 
 import { DEFAULT_WAVEFORM_SHAPE } from '../../constants';
-import { allPropsSameExcept } from '../../utils';
 
 import { fadeWithContext } from './Oscillator.helpers';
 
