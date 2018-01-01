@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { COLORS } from '../../constants';
 import { debounce } from '../../utils';
 import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
+import { getApproximateWindowHeight } from '../../helpers/responsive.helpers';
 
 import Aux from '../Aux';
 import MaxWidthWrapper from '../MaxWidthWrapper';
@@ -46,7 +47,7 @@ type State = {
 class IntroRoute extends PureComponent<Props, State> {
   state = {
     currentStep: INTRO_STEPS[0],
-    windowHeight: window.innerHeight,
+    windowHeight: getApproximateWindowHeight(),
     amplitude: 1,
     frequency: 1,
     harmonicsForShape: 'square',
@@ -141,7 +142,7 @@ class IntroRoute extends PureComponent<Props, State> {
   };
 
   handleResize = debounce(() => {
-    this.setState({ windowHeight: window.innerHeight });
+    this.setState({ windowHeight: getApproximateWindowHeight() });
   }, 500);
 
   handleScroll = debounce(() => {
