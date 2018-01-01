@@ -20,6 +20,7 @@ import UnorderedList from '../UnorderedList';
 import KeyboardCharacter from '../KeyboardCharacter';
 import PortraitOnly from '../PortraitOnly';
 import LandscapeOnly from '../LandscapeOnly';
+import Link from '../Link';
 
 import type { WaveformShape } from '../../types';
 
@@ -444,13 +445,14 @@ export const steps = {
             super interesting stuff!
           </Paragraph>
           <Paragraph>
-            <a
+            <Link
+              external
               target="_blank"
               rel="noopener noreferrer"
-              href="https://www.nidcd.nih.gov/health/how-do-we-hear"
+              to="https://www.nidcd.nih.gov/health/how-do-we-hear"
             >
               Learn more about our ears and sound.
-            </a>
+            </Link>
           </Paragraph>
         </Sidebar>
       </Aux>
