@@ -1,8 +1,7 @@
 * React Router query params for each section (to be read on pageload as well)
 * Mobile: Crashes when toggling sound sometimes?
-* Mobile: Bigger slider handles
-* Mobile: padding fixes, horizontal scroll :(
+* Mobile: FrequencyGraph don't fit
 
-* Safari: Page jumps a bit on section change.
+* section on noise-cancelling headphones
 
-- IntersectionObserver to fire when the next step reaches the middle of the screen, rather than when the current one exits?
+* IntersectionObserver to fire when the next step reaches the middle of the screen, rather than when the current one exits?
