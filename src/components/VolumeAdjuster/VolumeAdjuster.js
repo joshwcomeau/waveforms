@@ -61,7 +61,12 @@ class VolumeAdjuster extends PureComponent<Props> {
 
 const BORDER_WIDTH = 1;
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  /*
+    Disable double-tap-to-zoom, which can be frustrating when adjusting volume
+  */
+  touch-action: none;
+`;
 
 const Header = styled.div`
   display: flex;

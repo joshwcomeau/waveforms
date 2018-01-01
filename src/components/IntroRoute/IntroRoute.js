@@ -275,16 +275,18 @@ class IntroRoute extends PureComponent<Props, State> {
     const stepData = steps[currentStep];
 
     return (
-      <FadeTransition isVisible={stepData.showVolumeControls}>
-        <VolumeAdjusterWrapper>
-          <VolumeAdjuster
-            currentVolume={audioVolume}
-            isMuted={audioMuted}
-            onAdjustVolume={this.handleUpdateAudioVolume}
-            onToggleMute={this.handleToggleMuteAudio}
-          />
-        </VolumeAdjusterWrapper>
-      </FadeTransition>
+      <VolumeAdjusterLayer>
+        <FadeTransition isVisible={stepData.showVolumeControls}>
+          <VolumeAdjusterWrapper>
+            <VolumeAdjuster
+              currentVolume={audioVolume}
+              isMuted={audioMuted}
+              onAdjustVolume={this.handleUpdateAudioVolume}
+              onToggleMute={this.handleToggleMuteAudio}
+            />
+          </VolumeAdjusterWrapper>
+        </FadeTransition>
+      </VolumeAdjusterLayer>
     );
   }
 
@@ -400,25 +402,28 @@ class IntroRoute extends PureComponent<Props, State> {
 // The distance between them is fixed:
 const LANDSCAPE_GUTTER = 120;
 
-const VolumeAdjusterWrapper = styled.div`
+const VolumeAdjusterLayer = styled.div`
   z-index: 10;
-  background: ${COLORS.gray[50]};
-
-  padding: 1rem;
+  position: fixed;
 
   @media (orientation: portrait) {
-    position: fixed;
     top: 0;
     right: 0;
   }
 
   @media (orientation: landscape) {
-    position: fixed;
     bottom: 1rem;
   }
 `;
 
+const VolumeAdjusterWrapper = styled.div`
+  background: ${COLORS.gray[50]};
+  padding: 0.4rem 1rem 1rem;
+`;
+
 const MainContent = styled.div`
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: row;
 
