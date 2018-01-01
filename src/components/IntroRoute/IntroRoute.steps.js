@@ -17,9 +17,9 @@ import MountWhenVisible from '../MountWhenVisible';
 import RevealableAnswer from '../RevealableAnswer';
 import WaveformEquation from '../WaveformEquation';
 import UnorderedList from '../UnorderedList';
+import KeyboardCharacter from '../KeyboardCharacter';
 
 import type { WaveformShape } from '../../types';
-import type { Props as WaveformProps } from '../Waveform';
 
 export type IntroStep =
   | 'title'
@@ -199,11 +199,16 @@ export const steps = {
         </Paragraph>
         <Paragraph>
           You can also use keyboard shortcuts! The numbers{' '}
-          <strong>0 through 9</strong> control the volume. You can also press{' '}
-          <strong>"m"</strong> to mute or unmute the audio.
+          <KeyboardCharacter>0</KeyboardCharacter> –{' '}
+          <KeyboardCharacter>9</KeyboardCharacter> control the volume. You can
+          also press <KeyboardCharacter>M</KeyboardCharacter> to mute or unmute
+          the audio.
         </Paragraph>
         <Paragraph>
-          <Emphasized>Try it now by pressing "m" on your keyboard!</Emphasized>
+          <Emphasized>
+            Try it now by pressing <KeyboardCharacter>M</KeyboardCharacter> on
+            your keyboard!
+          </Emphasized>
         </Paragraph>
       </Aux>
     ),

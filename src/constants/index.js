@@ -81,6 +81,7 @@ export const COLORS: Colors = {
   cream: {
     '50': '#FFFEFC',
   },
+  white: '#FFFFFF',
 };
 
 COLORS.primary = COLORS.blue;
