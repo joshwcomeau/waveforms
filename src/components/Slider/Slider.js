@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import RcSlider, { createSliderWithTooltip } from 'rc-slider';
 import { injectGlobal } from 'styled-components';
 
-import { COLORS } from '../../constants';
+import { COLORS, IS_MOBILE_USER_AGENT } from '../../constants';
 
 type Props = {
   width: number,
@@ -42,7 +42,7 @@ class Slider extends Component<Props> {
 
 // HACK: RC Slider uses specific class names for styling, so we'll just use
 // those.
-const SLIDER_HEIGHT = 16;
+const SLIDER_HEIGHT = IS_MOBILE_USER_AGENT ? 28 : 16;
 const SLIDER_BAR_HEIGHT = 2;
 
 injectGlobal`
