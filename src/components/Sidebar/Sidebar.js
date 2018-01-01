@@ -52,6 +52,10 @@ const SidebarElem = styled.div`
     color: ${COLORS.white};
   }
 
+  a:after {
+    background-color: ${COLORS.white};
+  }
+
   p:last-of-type {
     margin-bottom: 0;
   }

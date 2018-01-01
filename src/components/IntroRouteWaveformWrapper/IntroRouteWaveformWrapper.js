@@ -44,7 +44,7 @@ const Wrapper = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 1.25rem 3rem 2rem;
+    padding: 1.25rem 1rem 2rem 1rem;
     background: ${COLORS.gray[50]};
   }
 `;

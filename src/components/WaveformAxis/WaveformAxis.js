@@ -6,6 +6,7 @@ import {
   COLORS,
   DEFAULT_WAVEFORM_SIZE,
   WAVEFORM_ASPECT_RATIO,
+  IS_MOBILE_USER_AGENT,
 } from '../../constants/index';
 import { range } from '../../utils';
 
@@ -112,6 +113,10 @@ class WaveformAxis extends PureComponent<Props> {
       strokeDasharray: STROKE_DASHARRAY,
     };
 
+    const yAxisGuideSquish = IS_MOBILE_USER_AGENT
+      ? -SIDE_AXIS_SPACING
+      : SIDE_AXIS_SPACING;
+
     return (
       <WaveformAxisSvg width={width} height={height}>
         <FadeTransition isVisible={showXLabels} typeName="g">
@@ -144,20 +149,33 @@ class WaveformAxis extends PureComponent<Props> {
             <line
               x1={-SIDE_AXIS_SPACING}
               y1={0}
-              x2={width + SIDE_AXIS_SPACING}
+              x2={width + yAxisGuideSquish}
               y2={0}
               {...labelLineStyles}
             />
-            <text x={axisWidth} y={0} dx={2} dy={4} style={{ fontSize: 14 }}>
+            <text
+              x={axisWidth}
+              y={0}
+              dx={yAxisGuideSquish}
+              dy={4}
+              style={{ fontSize: 14, textAnchor: 'end' }}
+            >
               +1
             </text>
 
+            <line
+              x1={-SIDE_AXIS_SPACING}
+              y1={halfHeight}
+              x2={width + yAxisGuideSquish}
+              y2={halfHeight}
+              {...labelLineStyles}
+            />
             <text
               x={axisWidth}
-              y={axisHeight / 2}
-              dx={8}
-              dy={-6}
-              style={{ fontSize: 14 }}
+              y={halfHeight}
+              dx={yAxisGuideSquish}
+              dy={4}
+              style={{ fontSize: 14, textAnchor: 'end' }}
             >
               0
             </text>
@@ -165,16 +183,16 @@ class WaveformAxis extends PureComponent<Props> {
             <line
               x1={-SIDE_AXIS_SPACING}
               y1={height}
-              x2={width + SIDE_AXIS_SPACING}
+              x2={width + yAxisGuideSquish}
               y2={height}
               {...labelLineStyles}
             />
             <text
-              x={axisWidth + 4}
-              dx={0}
+              x={axisWidth}
+              dx={yAxisGuideSquish}
               y={axisHeight}
               dy={-16}
-              style={{ fontSize: 14 }}
+              style={{ fontSize: 14, textAnchor: 'end' }}
             >
               -1
             </text>

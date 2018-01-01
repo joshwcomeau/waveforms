@@ -250,6 +250,7 @@ export const steps = {
     ...defaults,
     waveformOpacity: 0.5,
     showYAxisLabels: true,
+    showXAxis: false,
     getMargin: marginFunctions.small,
     children: (
       <Aux>
@@ -266,6 +267,7 @@ export const steps = {
     ...defaults,
     getMargin: marginFunctions.small,
     showYAxisLabels: true,
+    showXAxis: false,
     showAmplitudeSlider: true,
     children: (
       <Aux>
@@ -451,8 +453,8 @@ export const steps = {
               rel="noopener noreferrer"
               to="https://www.nidcd.nih.gov/health/how-do-we-hear"
             >
-              Learn more about our ears and sound.
-            </Link>
+              Learn more about our ears and sound
+            </Link>.
           </Paragraph>
         </Sidebar>
       </Aux>
