@@ -359,12 +359,10 @@ export const getHarmonicsForWave = ({
   maxNumberToGenerate,
   ...delegated
 }: GetHarmonicsForWaveArgs) => {
-  const harmonics = [];
-
   switch (shape) {
     // Sine waves have no harmonics
     case 'sine':
-      return harmonics;
+      return [];
 
     case 'sawtooth': {
       return range(1, maxNumberToGenerate).map(i => {
@@ -455,6 +453,22 @@ export const getHarmonicsForWave = ({
 
         return { shape: 'sine', frequency, amplitude, ...delegated };
       });
+    }
+
+    // While not technically a shape, we want to be able to show how noise
+    // cancelling works, by having the "harmonic" be an inverse of the base
+    // waveform.
+    // This is leaky af, as it's not a true harmonic. If I find the time, I'd
+    // like to pull this out into a proper abstraction.
+    case 'cancelling': {
+      return [
+        {
+          shape: 'sine',
+          frequency: baseFrequency,
+          amplitude: baseAmplitude * -1,
+          ...delegated,
+        },
+      ];
     }
 
     default:

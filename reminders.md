@@ -7,6 +7,9 @@
 * IntersectionObserver to fire when the next step reaches the middle of the screen, rather than when the current one exits?
 
 * Get opinions from people about the copy/content!
+
   * Pat from Vanier
   * Phil
   * KA folk
+
+* Slider indicator icon

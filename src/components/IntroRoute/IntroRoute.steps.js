@@ -22,7 +22,7 @@ import PortraitOnly from '../PortraitOnly';
 import LandscapeOnly from '../LandscapeOnly';
 import Link from '../Link';
 
-import type { WaveformShape } from '../../types';
+import type { WaveformShape, HarmonicsForShape } from '../../types';
 
 export type IntroStep =
   | 'title'
@@ -49,7 +49,9 @@ export type IntroStep =
   | 'additive-synthesis-intro'
   | 'additive-synthesis-basic-add'
   | 'additive-synthesis-intro-convergence'
-  | 'additive-synthesis-intro-num-of-harmonics';
+  | 'additive-synthesis-intro-num-of-harmonics'
+  | 'additive-synthesis-harmonics-tie-in'
+  | 'additive-synthesis-noise-cancelling';
 
 export const INTRO_STEPS: Array<IntroStep> = [
   'title',
@@ -77,6 +79,8 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'additive-synthesis-basic-add',
   'additive-synthesis-intro-convergence',
   'additive-synthesis-intro-num-of-harmonics',
+  'additive-synthesis-harmonics-tie-in',
+  'additive-synthesis-noise-cancelling',
 ];
 
 export type StepData = {
@@ -110,7 +114,7 @@ export type StepData = {
   useWaveformAddition: boolean,
   showConvergenceSlider: boolean,
   showNumOfHarmonicsSlider: boolean,
-  harmonicsForOverride: WaveformShape,
+  harmonicsForShapeOverride: HarmonicsForShape,
   numOfHarmonicsOverride: number,
   convergenceOverride: number,
 
@@ -155,6 +159,7 @@ const defaults: StepData = {
 export const steps = {
   title: {
     ...defaults,
+    frequencyOverride: 1,
     showYAxis: false,
     showVolumeControls: false,
     getMargin: marginFunctions.none,
@@ -189,7 +194,7 @@ export const steps = {
     getMargin: marginFunctions.small,
     children: ({ orientation }) => (
       <Aux>
-        <Heading icon={<VolumeOn />}>Listen in</Heading>
+        <Heading>Listen in</Heading>
         <Paragraph>
           Because this guide deals with audio waveforms, it's beneficial to be
           able to hear stuff. This way, when you change parameters, you can hear
@@ -238,6 +243,7 @@ export const steps = {
     getMargin: marginFunctions.small,
     children: (
       <Aux>
+        <Heading>Amplitude</Heading>
         <Paragraph>
           The horizontal line, our X axis, represents time. The exact units
           don't really matter right now, but to make it concrete, let's say that
@@ -277,22 +283,22 @@ export const steps = {
         </Paragraph>
 
         <Paragraph>
-          Try setting it all the way to 0, and notice how the line disappears.
+          Try setting it all the way to 0, and notice how the line flattens out.
+          0 amplitude means that it's complete ly silent.
         </Paragraph>
       </Aux>
     ),
   },
   'frequency-introduction': {
     ...defaults,
+    amplitudeOverride: 1,
     waveformOpacity: 0.5,
     showXAxisLabels: true,
     showCycleIndicator: true,
     frequencyOverride: 2,
     children: (
       <Aux>
-        <Paragraph>
-          Next, let's look at <strong>frequency</strong>.
-        </Paragraph>
+        <Heading>Frequency</Heading>
 
         <Paragraph>
           The waveform we've been looking at is of a <em>sine wave</em>. This
@@ -777,31 +783,33 @@ export const steps = {
   'additive-synthesis-basic-add': {
     ...defaults,
     useWaveformAddition: true,
-    harmonicsForOverride: 'square',
-    numOfHarmonicsOverride: 2,
-
+    harmonicsForShapeOverride: 'square',
+    numOfHarmonicsOverride: 1,
+    convergenceOverride: 0,
     getMargin: marginFunctions.small,
     children: ({ currentStep }) => (
       <Aux>
         <Paragraph>
-          The waveform graph we've been looking at now shows multiple waves:
+          The waveform graph we've been looking at now shows two waves:
         </Paragraph>
 
         <UnorderedList>
           <li>
-            <strong style={{ color: COLORS.primary[500] }}>1Hz at 1dB</strong>
+            <strong style={{ color: COLORS.primary[500] }}>1Hz at 1dB</strong>{' '}
+            (our base note)
           </li>
           <li>
             <strong style={{ color: COLORS.secondary[500] }}>
               3Hz at 0.33dB
-            </strong>
-          </li>
-          <li>
-            <strong style={{ color: COLORS.secondary[500] }}>
-              5Hz at 0.2dB
-            </strong>
+            </strong>{' '}
+            (our first harmonic)
           </li>
         </UnorderedList>
+
+        <Paragraph>
+          Put another way, this new wave is 3 times as fast, but at one-third
+          the amplitude.
+        </Paragraph>
 
         <Paragraph>
           If you've ever used audio editing software, you've seen how a full
@@ -809,21 +817,22 @@ export const steps = {
           creates a single wave. What we're looking at over there is not a wave
           yet: we have to combine the 3 lines into 1.
         </Paragraph>
+
         <Paragraph>
           This is known as <strong>waveform addition</strong>, and it makes
           sense when you think of it in real-world terms.
         </Paragraph>
 
         <Paragraph>
-          Remember, sound is just the vibration of air molecules. If you play 3
-          distinct tones, you don't get 3 separate air molecules vibrating at 3
-          separate frequencies; the 3 tones combine to form a single waveform.
+          Remember, sound is just the vibration of air molecules. If you play 2
+          distinct tones, you don't get 2 separate air molecules vibrating at 2
+          separate frequencies; the 2 tones combine to form a single waveform.
         </Paragraph>
 
         <Paragraph>
           How does the addition work? It's arithmetic: in our example, amplitude
-          ranges from -1dB to 0dB. So, we can just add up the values. The 3
-          waves will converge at a single point for every moment in time.
+          ranges from -1dB to 0dB. So, we can just add up the values. The waves
+          will converge at a single point for every moment in time.
         </Paragraph>
       </Aux>
     ),
@@ -831,16 +840,36 @@ export const steps = {
   'additive-synthesis-intro-convergence': {
     ...defaults,
     useWaveformAddition: true,
+    harmonicsForShapeOverride: 'square',
+    numOfHarmonicsOverride: 1,
     showConvergenceSlider: true,
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
         <Paragraph>
-          Use the new <strong>Convergence</strong> slider to watch the 3 lines
-          converge into a single waveform.
+          Use the new <strong>Convergence</strong> slider to watch as the two
+          lines are added together.
         </Paragraph>
 
-        <Paragraph>Notice how it kinda looks like a square wave?</Paragraph>
+        <Paragraph>
+          Notice how it kinda looks like a square wave, if you squint?
+        </Paragraph>
+      </Aux>
+    ),
+  },
+  'additive-synthesis-intro-num-of-harmonics': {
+    ...defaults,
+    useWaveformAddition: true,
+    harmonicsForShapeOverride: 'square',
+    numOfHarmonicsOverride: 2,
+    showConvergenceSlider: true,
+    getMargin: marginFunctions.xsmall,
+    children: ({ frequency, amplitude, currentStep }) => (
+      <Aux>
+        <Paragraph>
+          Try adding even more additional waves, using the{' '}
+          <strong># of Harmonics slider</strong>.
+        </Paragraph>
 
         <Paragraph>
           You were probably wondering where those numbers for the additional
@@ -875,12 +904,13 @@ export const steps = {
       </Aux>
     ),
   },
-  'additive-synthesis-intro-num-of-harmonics': {
+  'additive-synthesis-harmonics-tie-in': {
     ...defaults,
     useWaveformAddition: true,
+    harmonicsForShapeOverride: 'square',
+    numOfHarmonicsOverride: 1,
     showConvergenceSlider: true,
     showNumOfHarmonicsSlider: true,
-    numOfHarmonicsOverride: 2,
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
@@ -890,6 +920,64 @@ export const steps = {
           to change the number rendered, and see how it affects the converged
           line.
         </Paragraph>
+
+        <Sidebar type="warning">
+          <Paragraph>
+            The slider lets you add up to 75 additional harmonics, but it's
+            computationally intensive to calculate and render all these waves!
+            If you're on a slower device, it may make the page slow /
+            unresponsive if you climb up too high.
+          </Paragraph>
+        </Sidebar>
+      </Aux>
+    ),
+  },
+  'additive-synthesis-noise-cancelling': {
+    ...defaults,
+    useWaveformAddition: true,
+    harmonicsForShapeOverride: 'cancelling',
+    numOfHarmonicsOverride: 1,
+    convergenceOverride: 0,
+    showConvergenceSlider: true,
+    getMargin: marginFunctions.small,
+    children: ({ frequency, amplitude, currentStep }) => (
+      <Aux>
+        <Paragraph>
+          Something counter-intuitive about waveform addition is that it doesn't
+          always make the resulting sound louder. While it feels like adding 2
+          waves together will always produce a louder wave, it isn't so, because
+          amplitude values can be positive <em>or</em> negative.
+        </Paragraph>
+
+        <Paragraph>
+          For instance, use the "convergence" slider to check out what happens
+          when we add the <em>inverse</em> of a sine wave to itself. A wave is
+          considered "inverted" when it's flipped over the horizontal axis.
+        </Paragraph>
+
+        <Paragraph>
+          Notice how the end result is silence? That's because by its very
+          definition, inverting a wave means applying the opposite amplitude.
+          The two values cancel each other out: the molecules in the air wind up
+          not moving at all, since they're acted upon by equal and opposite
+          forces.
+        </Paragraph>
+
+        <Sidebar>
+          <Paragraph>
+            Incidentally, this is how noise-cancelling headphones work! They
+            record the ambient noise around the headphones, invert the wave, and
+            mix it in with the sound coming out of the headphone's speakers.
+          </Paragraph>
+          <Paragraph>
+            This process is imperfect - real noise isn't as simple or consistent
+            as sine waves, and there's latency between the sound being recorded
+            and played back, so it generally works better on lower-frequency
+            noise where the latency matters less - but it can be a remarkable
+            effect in areas with consistent low-frequency noise, like airplanes
+            or subways.
+          </Paragraph>
+        </Sidebar>
       </Aux>
     ),
   },

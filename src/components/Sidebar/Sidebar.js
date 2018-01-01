@@ -8,7 +8,7 @@ const PORTRAIT_PADDING = '16px';
 const LANDSCAPE_PADDING = '25px';
 
 type Props = {
-  type?: 'notice' | 'warning',
+  type?: 'notice' | 'warning' | 'explanation',
   children: React$Node,
 };
 
@@ -21,18 +21,21 @@ const Sidebar = ({ type = 'note', children }: Props) => (
 
 const backgroundColors = {
   note: COLORS.primary[500],
-  warning: COLORS.orange[500],
+  warning: COLORS.orange[700],
+  explanation: COLORS.green[500],
 };
 
 const titleColors = {
   note: COLORS.primary[500],
-  warning: COLORS.orange[500],
+  warning: COLORS.orange[700],
+  explanation: COLORS.green[500],
 };
 
 const SidebarElem = styled.div`
   position: relative;
   background: ${props => backgroundColors[props.type]};
   margin-top: 75px;
+  margin-bottom: 75px;
 
   @media (orientation: portrait) {
     padding: ${PORTRAIT_PADDING};

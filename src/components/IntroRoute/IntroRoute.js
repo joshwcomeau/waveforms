@@ -21,7 +21,7 @@ import FadeTransition from '../FadeTransition';
 
 import { steps, stepsArray, INTRO_STEPS } from './IntroRoute.steps';
 
-import type { WaveformShape } from '../../types';
+import type { HarmonicsForShape } from '../../types';
 import type { IntroStep } from './IntroRoute.steps';
 
 type Props = {};
@@ -34,7 +34,7 @@ type State = {
   frequency: number,
 
   // Waveform addition data
-  harmonicsForShape: WaveformShape,
+  harmonicsForShape: HarmonicsForShape,
   numOfHarmonics: number,
   convergence: number,
 
@@ -74,30 +74,25 @@ class IntroRoute extends PureComponent<Props, State> {
     // component manages this all internally).
     // For future routes, let's use Redux instead. Would make this much nicer.
     if (this.state.currentStep !== prevState.currentStep) {
-      const currentStepIndex = INTRO_STEPS.indexOf(this.state.currentStep);
-      const previousStepIndex = INTRO_STEPS.indexOf(prevState.currentStep);
-
-      // Note that we don't do this while going backwards, for the simple reason
-      // that if the user has already seen a section, it's more important to
-      // preserve their changes than to revert to the optimal value. They've
-      // seen the section already, they understand how it works.
-      // TODO: Maybe a better solution is to keep track of a `maxSeenStep`,
-      // so that when they rewind and then go forward, it doesn't re-adjust?
-      if (currentStepIndex < previousStepIndex) {
-        return;
-      }
-
       const stepData = steps[this.state.currentStep];
 
-      const nextState = {};
+      const nextState: any = {};
 
-      if (typeof stepData.frequencyOverride === 'number') {
-        nextState.frequency = stepData.frequencyOverride;
-      }
+      const overrideableFields = [
+        'frequency',
+        'amplitude',
+        'harmonicsForShape',
+        'numOfHarmonics',
+        'convergence',
+      ];
 
-      if (typeof stepData.amplitudeOverride === 'number') {
-        nextState.amplitude = stepData.amplitudeOverride;
-      }
+      overrideableFields.forEach(field => {
+        const fieldOverride = `${field}Override`;
+
+        if (stepData[fieldOverride] != null) {
+          nextState[field] = stepData[fieldOverride];
+        }
+      });
 
       this.setState(nextState);
     }
