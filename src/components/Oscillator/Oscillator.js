@@ -35,27 +35,19 @@ class Oscillator extends PureComponent<Props> {
     this.initializeAudio();
   }
 
-  componentDidUpdate(prevProps: Props) {
-    const { shape, frequency, amplitude } = this.props;
+  componentWillReceiveProps(nextProps: Props) {
+    const { shape, frequency, amplitude } = nextProps;
 
-    if (shape !== prevProps.shape) {
+    if (shape !== this.props.shape) {
       this.updateShape(shape);
     }
 
-    if (frequency !== prevProps.frequency) {
+    if (frequency !== this.props.frequency) {
       this.updateFrequency(frequency);
     }
 
-    if (amplitude !== prevProps.amplitude) {
+    if (amplitude !== this.props.amplitude) {
       this.updateAmplitude(amplitude);
-    }
-
-    if (
-      prevProps.audioCtx &&
-      prevProps.audioCtx.state === 'suspended' &&
-      this.props.audioCtx.state === 'running'
-    ) {
-      this.initializeAudio();
     }
   }
 

@@ -12,7 +12,6 @@ type Props = {
   currentVolume: number,
   steps: number,
   isMuted: boolean,
-  audioCtx: AudioContext,
   onAdjustVolume: (volume: number) => void,
   onToggleMute: () => void,
 };
@@ -24,26 +23,8 @@ class VolumeAdjuster extends PureComponent<Props> {
     isMuted: false,
   };
 
-  toggleMute = () => {
-    this.props.audioCtx.resume();
-
-    this.props.onToggleMute();
-  };
-
-  adjustVolume = (volume: number) => {
-    this.props.audioCtx.resume();
-
-    this.props.onAdjustVolume(volume);
-  };
-
   render() {
-    const {
-      blockSize,
-      currentVolume,
-      steps,
-      isMuted,
-      onToggleMute,
-    } = this.props;
+    const { blockSize, currentVolume, steps, isMuted } = this.props;
 
     const isAudible = !isMuted && currentVolume > 0;
     const VolumeIcon = isAudible ? VolumeOn : VolumeOff;
@@ -52,7 +33,7 @@ class VolumeAdjuster extends PureComponent<Props> {
       <Wrapper>
         <Header>
           <Label>Volume</Label>
-          <MuteButton onClick={this.toggleMute}>
+          <MuteButton onClick={this.props.onToggleMute}>
             <VolumeIcon
               color={isAudible ? COLORS.primary[500] : COLORS.gray[300]}
             />
@@ -64,8 +45,7 @@ class VolumeAdjuster extends PureComponent<Props> {
             <VolumeBlock
               key={index}
               size={blockSize}
-              onMouseDown={() => this.adjustVolume(index / steps)}
-              onTouchEnd={() => this.adjustVolume(index / steps)}
+              onClick={() => this.props.onAdjustVolume(index / steps)}
             >
               <VolumeBlockFill
                 isFilled={index / steps <= currentVolume}
@@ -81,9 +61,7 @@ class VolumeAdjuster extends PureComponent<Props> {
 
 const BORDER_WIDTH = 1;
 
-const Wrapper = styled.div`
-  display: inline-block;
-`;
+const Wrapper = styled.div``;
 
 const Header = styled.div`
   display: flex;

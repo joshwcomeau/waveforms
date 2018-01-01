@@ -40,6 +40,7 @@ type State = {
   // Audio data
   audioVolume: number,
   audioMuted: boolean,
+  audioEnabled: boolean,
 };
 
 class IntroRoute extends PureComponent<Props, State> {
@@ -53,6 +54,7 @@ class IntroRoute extends PureComponent<Props, State> {
     convergence: 0,
     audioVolume: 0.5,
     audioMuted: true,
+    audioEnabled: false,
   };
 
   sectionRefs: Array<HTMLElement> = [];
@@ -115,12 +117,12 @@ class IntroRoute extends PureComponent<Props, State> {
   handleUpdateNumOfHarmonics = this.handleUpdateField('numOfHarmonics');
   handleUpdateConvergence = this.handleUpdateField('convergence');
 
-  handleUpdateAudioVolume = (val: number) => {
-    this.setState({ audioVolume: val, audioMuted: false });
+  handleUpdateAudioVolume = (audioVolume: number) => {
+    this.setState({ audioVolume, audioMuted: false, audioEnabled: true });
   };
 
   handleToggleMuteAudio = () => {
-    this.setState({ audioMuted: !this.state.audioMuted });
+    this.setState({ audioMuted: !this.state.audioMuted, audioEnabled: true });
   };
 
   handleKeydown = (ev: SyntheticKeyboardEvent<*>) => {
@@ -149,7 +151,12 @@ class IntroRoute extends PureComponent<Props, State> {
     // Unfortunately, when scrolling quickly, the IntersectionObserver API has
     // the bad habit of "missing" intersections sometimes.
     //
-    // This method handles those edge-cases, by scanning through the sections
+    // Also, IntersectionObserver isn't supported in all browsers, like Safari.
+    // In those cases, I async-load a polyfill, but it's entirely possible the
+    // user will begin scrolling before the polyfill is loaded, and so it's good
+    // to have a fallback.
+    //
+    // This method handles these edge-cases, by scanning through the sections
     // and finding the first one in the viewport.
     const activeSectionIndex = this.sectionRefs.findIndex(
       section => section.getBoundingClientRect().bottom >= 0
@@ -195,18 +202,27 @@ class IntroRoute extends PureComponent<Props, State> {
     this.setState({ currentStep: nextStep });
   };
 
-  render() {
+  renderAudio() {
     const {
       currentStep,
-      windowHeight,
       amplitude,
       frequency,
       harmonicsForShape,
       numOfHarmonics,
-      convergence,
       audioVolume,
       audioMuted,
+      audioEnabled,
     } = this.state;
+
+    // This renders the actual audio: No visual UI.
+    // This is dependent on audio being enabled, which only happens when the
+    // user unmutes the audio somehow.
+    //
+    // This is mostly to get around mobile Safari's requirement that audio only
+    // happen as a response to user action.
+    if (!audioEnabled) {
+      return null;
+    }
 
     const stepData = steps[currentStep];
 
@@ -219,131 +235,161 @@ class IntroRoute extends PureComponent<Props, State> {
     const adjustedAudibleFrequency = frequency * 100 + 100;
 
     return (
-      <MaxWidthWrapper>
-        <AudioOutput masterVolume={effectiveAudioVolume}>
-          {(audioCtx, masterOut) => (
-            <Aux>
-              {audioCtx && (
+      <AudioOutput masterVolume={effectiveAudioVolume}>
+        {(audioCtx, masterOut) => (
+          <Aux>
+            <Oscillator
+              key="base-frequency"
+              shape={stepData.waveformShape}
+              amplitude={amplitude}
+              frequency={adjustedAudibleFrequency}
+              audioCtx={audioCtx}
+              masterOut={masterOut}
+            />
+
+            {stepData.useWaveformAddition &&
+              getHarmonicsForWave({
+                shape: harmonicsForShape,
+                baseFrequency: adjustedAudibleFrequency,
+                baseAmplitude: amplitude,
+                maxNumberToGenerate: numOfHarmonics,
+              }).map(({ frequency, amplitude }) => (
                 <Oscillator
-                  key="base-frequency"
-                  shape={stepData.waveformShape}
+                  key={frequency}
+                  shape="sine"
                   amplitude={amplitude}
-                  frequency={adjustedAudibleFrequency}
+                  frequency={frequency}
                   audioCtx={audioCtx}
                   masterOut={masterOut}
                 />
+              ))}
+          </Aux>
+        )}
+      </AudioOutput>
+    );
+  }
+
+  renderVolumeControl() {
+    const { currentStep, audioVolume, audioMuted } = this.state;
+
+    const stepData = steps[currentStep];
+
+    return (
+      <FadeTransition isVisible={stepData.showVolumeControls}>
+        <VolumeAdjusterWrapper>
+          <VolumeAdjuster
+            currentVolume={audioVolume}
+            isMuted={audioMuted}
+            onAdjustVolume={this.handleUpdateAudioVolume}
+            onToggleMute={this.handleToggleMuteAudio}
+          />
+        </VolumeAdjusterWrapper>
+      </FadeTransition>
+    );
+  }
+
+  renderWaveformColumn(amplitude: number, frequency: number, progress: number) {
+    const {
+      currentStep,
+      harmonicsForShape,
+      numOfHarmonics,
+      convergence,
+    } = this.state;
+
+    const stepData = steps[currentStep];
+
+    return (
+      <WaveformColumn>
+        <IntroRouteWaveformWrapper>
+          {(width: number) => (
+            <Aux>
+              {!stepData.useWaveformAddition && (
+                <IntroRouteWaveform
+                  width={width}
+                  amplitude={amplitude}
+                  frequency={frequency}
+                  progress={progress}
+                  handleUpdateAmplitude={this.handleUpdateAmplitude}
+                  handleUpdateFrequency={this.handleUpdateFrequency}
+                  stepData={stepData}
+                />
               )}
 
-              {audioCtx &&
-                stepData.useWaveformAddition &&
-                getHarmonicsForWave({
-                  shape: harmonicsForShape,
-                  baseFrequency: adjustedAudibleFrequency,
-                  baseAmplitude: amplitude,
-                  maxNumberToGenerate: numOfHarmonics,
-                }).map(({ frequency, amplitude }) => (
-                  <Oscillator
-                    key={frequency}
-                    shape="sine"
-                    amplitude={amplitude}
-                    frequency={frequency}
-                    audioCtx={audioCtx}
-                    masterOut={masterOut}
-                  />
-                ))}
-
-              <WaveformPlayer
-                isPlaying={stepData.isPlaying}
-                amplitude={amplitude}
-                frequency={frequency}
-              >
-                {({ amplitude, frequency, progress }) => (
-                  <MainContent>
-                    <WaveformColumn>
-                      <IntroRouteWaveformWrapper>
-                        {(width: number) => (
-                          <Aux>
-                            {!stepData.useWaveformAddition && (
-                              <IntroRouteWaveform
-                                width={width}
-                                amplitude={amplitude}
-                                frequency={frequency}
-                                progress={progress}
-                                handleUpdateAmplitude={
-                                  this.handleUpdateAmplitude
-                                }
-                                handleUpdateFrequency={
-                                  this.handleUpdateFrequency
-                                }
-                                stepData={stepData}
-                              />
-                            )}
-
-                            {stepData.useWaveformAddition && (
-                              <IntroRouteWaveformAddition
-                                width={width}
-                                stepData={stepData}
-                                baseAmplitude={amplitude}
-                                baseFrequency={frequency}
-                                harmonicsForShape={harmonicsForShape}
-                                numOfHarmonics={numOfHarmonics}
-                                convergence={convergence}
-                                handleUpdateHarmonicsForShape={
-                                  this.handleUpdateHarmonicsForShape
-                                }
-                                handleUpdateNumOfHarmonics={
-                                  this.handleUpdateNumOfHarmonics
-                                }
-                                handleUpdateConvergence={
-                                  this.handleUpdateConvergence
-                                }
-                              />
-                            )}
-                          </Aux>
-                        )}
-                      </IntroRouteWaveformWrapper>
-
-                      <FadeTransition isVisible={stepData.showVolumeControls}>
-                        <VolumeAdjusterWrapper>
-                          <VolumeAdjuster
-                            audioCtx={audioCtx}
-                            currentVolume={audioVolume}
-                            isMuted={audioMuted}
-                            onAdjustVolume={this.handleUpdateAudioVolume}
-                            onToggleMute={this.handleToggleMuteAudio}
-                          />
-                        </VolumeAdjusterWrapper>
-                      </FadeTransition>
-                    </WaveformColumn>
-
-                    <TutorialColumn>
-                      {stepsArray.map((section, index) => (
-                        <IntroRouteSection
-                          key={section.id}
-                          id={section.id}
-                          currentStep={currentStep}
-                          margin={section.getMargin(windowHeight)}
-                          onIntersect={this.handleIntersect}
-                          innerRef={elem => (this.sectionRefs[index] = elem)}
-                        >
-                          {typeof section.children === 'function'
-                            ? section.children({
-                                amplitude,
-                                frequency,
-                                progress,
-                                currentStep: this.state.currentStep,
-                              })
-                            : section.children}
-                        </IntroRouteSection>
-                      ))}
-                      <BottomTextSpacer height={window.innerHeight} />
-                    </TutorialColumn>
-                  </MainContent>
-                )}
-              </WaveformPlayer>
+              {stepData.useWaveformAddition && (
+                <IntroRouteWaveformAddition
+                  width={width}
+                  stepData={stepData}
+                  baseAmplitude={amplitude}
+                  baseFrequency={frequency}
+                  harmonicsForShape={harmonicsForShape}
+                  numOfHarmonics={numOfHarmonics}
+                  convergence={convergence}
+                  handleUpdateHarmonicsForShape={
+                    this.handleUpdateHarmonicsForShape
+                  }
+                  handleUpdateNumOfHarmonics={this.handleUpdateNumOfHarmonics}
+                  handleUpdateConvergence={this.handleUpdateConvergence}
+                />
+              )}
             </Aux>
           )}
-        </AudioOutput>
+        </IntroRouteWaveformWrapper>
+      </WaveformColumn>
+    );
+  }
+
+  renderTutorialColumn(amplitude: number, frequency: number, progress: number) {
+    const { currentStep, windowHeight } = this.state;
+
+    return (
+      <TutorialColumn>
+        {stepsArray.map((section, index) => (
+          <IntroRouteSection
+            key={section.id}
+            id={section.id}
+            currentStep={currentStep}
+            margin={section.getMargin(windowHeight)}
+            onIntersect={this.handleIntersect}
+            innerRef={elem => (this.sectionRefs[index] = elem)}
+          >
+            {typeof section.children === 'function'
+              ? section.children({
+                  amplitude,
+                  frequency,
+                  progress,
+                  currentStep,
+                })
+              : section.children}
+          </IntroRouteSection>
+        ))}
+        <BottomTextSpacer height={window.innerHeight} />
+      </TutorialColumn>
+    );
+  }
+
+  render() {
+    const { currentStep, amplitude, frequency } = this.state;
+
+    const stepData = steps[currentStep];
+
+    return (
+      <MaxWidthWrapper>
+        {this.renderAudio()}
+
+        {this.renderVolumeControl()}
+
+        <WaveformPlayer
+          isPlaying={stepData.isPlaying}
+          amplitude={amplitude}
+          frequency={frequency}
+        >
+          {({ amplitude, frequency, progress }) => (
+            <MainContent>
+              {this.renderWaveformColumn(amplitude, frequency, progress)}
+              {this.renderTutorialColumn(amplitude, frequency, progress)}
+            </MainContent>
+          )}
+        </WaveformPlayer>
       </MaxWidthWrapper>
     );
   }

@@ -42,6 +42,10 @@ class AudioOutput extends PureComponent<Props, State> {
   }
 
   render() {
+    if (!this.audioCtx) {
+      return null;
+    }
+
     return this.props.children(this.audioCtx, this.masterVolumeGainNode);
   }
 }
