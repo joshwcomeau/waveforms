@@ -18,6 +18,8 @@ import RevealableAnswer from '../RevealableAnswer';
 import WaveformEquation from '../WaveformEquation';
 import UnorderedList from '../UnorderedList';
 import KeyboardCharacter from '../KeyboardCharacter';
+import PortraitOnly from '../PortraitOnly';
+import LandscapeOnly from '../LandscapeOnly';
 
 import type { WaveformShape } from '../../types';
 
@@ -195,21 +197,24 @@ export const steps = {
         <Paragraph>
           Because nobody likes autoplaying sounds, the volume is currently
           muted. You can control it using the "volume" widget in the{' '}
-          {orientation === 'portrait' ? 'top-right' : 'bottom left'} corner.
+          <PortraitOnly>top-right</PortraitOnly>
+          <LandscapeOnly>bottom-left</LandscapeOnly> corner.
         </Paragraph>
-        <Paragraph>
-          You can also use keyboard shortcuts! The numbers{' '}
-          <KeyboardCharacter>0</KeyboardCharacter> –{' '}
-          <KeyboardCharacter>9</KeyboardCharacter> control the volume. You can
-          also press <KeyboardCharacter>M</KeyboardCharacter> to mute or unmute
-          the audio.
-        </Paragraph>
-        <Paragraph>
-          <Emphasized>
-            Try it now by pressing <KeyboardCharacter>M</KeyboardCharacter> on
-            your keyboard!
-          </Emphasized>
-        </Paragraph>
+        <LandscapeOnly>
+          <Paragraph>
+            You can also use keyboard shortcuts! The numbers{' '}
+            <KeyboardCharacter>0</KeyboardCharacter> –{' '}
+            <KeyboardCharacter>9</KeyboardCharacter> control the volume. You can
+            also press <KeyboardCharacter>M</KeyboardCharacter> to mute or
+            unmute the audio.
+          </Paragraph>
+          <Paragraph>
+            <Emphasized>
+              Try it now by pressing <KeyboardCharacter>M</KeyboardCharacter> on
+              your keyboard!
+            </Emphasized>
+          </Paragraph>
+        </LandscapeOnly>
       </Aux>
     ),
   },
