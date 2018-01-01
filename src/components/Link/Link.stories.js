@@ -19,4 +19,9 @@ storiesOf('Link', module)
         External!
       </Link>
     </Wrapper>
+  ))
+  .add('with descenders', () => (
+    <Wrapper>
+      <Link to="some-internal-path">Let's go get some proper coffee</Link>
+    </Wrapper>
   ));
