@@ -20,12 +20,12 @@ const Sidebar = ({ type = 'note', children }: Props) => (
 );
 
 const backgroundColors = {
-  note: COLORS.blue[100],
-  warning: COLORS.orange[100],
+  note: COLORS.primary[500],
+  warning: COLORS.orange[500],
 };
 
 const titleColors = {
-  note: COLORS.blue[500],
+  note: COLORS.primary[500],
   warning: COLORS.orange[500],
 };
 
@@ -46,8 +46,10 @@ const SidebarElem = styled.div`
     margin-right: -${LANDSCAPE_PADDING};
   }
 
-  p {
+  p,
+  a {
     font-size: 20px;
+    color: ${COLORS.white};
   }
 
   p:last-of-type {

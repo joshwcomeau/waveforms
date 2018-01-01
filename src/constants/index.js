@@ -22,9 +22,7 @@ export const SPRING_SETTINGS = {
 };
 
 type Colors = {
-  [color: string]: {
-    [label: string | number]: string,
-  },
+  [color: string]: { [label: string | number]: string } | string,
 };
 export const COLORS: Colors = {
   red: {
@@ -47,6 +45,13 @@ export const COLORS: Colors = {
     '500': '#8BC34A',
     '700': '#689F38',
     '900': '#33691E',
+  },
+  indigo: {
+    '100': '#b3defc',
+    '300': '#4f9ef7',
+    '500': '#0380f4',
+    '700': '#0268d1',
+    '900': '#01499b',
   },
   blue: {
     '100': '#B3E5FC',
@@ -84,7 +89,7 @@ export const COLORS: Colors = {
   white: '#FFFFFF',
 };
 
-COLORS.primary = COLORS.blue;
+COLORS.primary = COLORS.indigo;
 COLORS.secondary = COLORS.pink;
 
 // Media queries
