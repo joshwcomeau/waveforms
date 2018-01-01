@@ -192,6 +192,11 @@ const FrequencyGraphSvg = styled.svg`
   width: 100%;
   margin-top: 2rem;
   margin-bottom: 5rem;
+
+  @media (orientation: portrait) {
+    width: 86%;
+    margin-left: 7%;
+  }
 `;
 
 const Axis = styled.line`
@@ -216,18 +221,18 @@ const BackgroundLine = styled.line`
 `;
 
 const Bar = styled.line`
-  stroke: ${COLORS.primary[700]};
+  stroke: ${COLORS.primary[500]};
   stroke-width: 2;
 
   &:hover {
-    stroke: ${COLORS.primary[500]};
+    stroke: ${COLORS.primary[700]};
   }
 `;
 
 const HoverText = styled.text`
   font-size: 4px;
   font-weight: bold;
-  fill: ${COLORS.primary[700]};
+  fill: ${COLORS.primary[500]};
 `;
 
 const AxisNubLabel = styled.text`
