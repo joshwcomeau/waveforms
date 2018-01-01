@@ -4,7 +4,8 @@ import styled from 'styled-components';
 
 import { COLORS } from '../../constants';
 
-const PADDING = 25;
+const PORTRAIT_PADDING = '16px';
+const LANDSCAPE_PADDING = '25px';
 
 type Props = {
   type?: 'notice' | 'warning',
@@ -32,11 +33,17 @@ const SidebarElem = styled.div`
   position: relative;
   background: ${props => backgroundColors[props.type]};
   margin-top: 75px;
-  padding: ${PADDING + 'px'};
+
+  @media (orientation: portrait) {
+    padding: ${PORTRAIT_PADDING};
+    padding-top: calc(${PORTRAIT_PADDING} - 4px);
+  }
 
   @media (orientation: landscape) {
-    margin-left: ${-PADDING + 'px'};
-    margin-right: ${-PADDING + 'px'};
+    padding: ${LANDSCAPE_PADDING};
+    padding-top: calc(${LANDSCAPE_PADDING} - 6px);
+    margin-left: -${LANDSCAPE_PADDING};
+    margin-right: -${LANDSCAPE_PADDING};
   }
 
   p {
@@ -51,12 +58,20 @@ const SidebarElem = styled.div`
 const Title = styled.div`
   position: absolute;
   top: 0;
-  left: ${PADDING};
+
   color: ${props => titleColors[props.type]};
   font-size: 21px;
   font-weight: 500;
   text-transform: uppercase;
   transform: translateY(-125%);
+
+  @media (orientation: portrait) {
+    left: ${PORTRAIT_PADDING};
+  }
+
+  @media (orientation: landscape) {
+    left: ${LANDSCAPE_PADDING};
+  }
 `;
 
 export default Sidebar;

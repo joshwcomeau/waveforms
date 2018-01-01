@@ -186,14 +186,7 @@ export const steps = {
     getMargin: marginFunctions.small,
     children: ({ orientation }) => (
       <Aux>
-        <Heading>
-          Listen in{' '}
-          <span
-            style={{ display: 'inline-block', transform: 'translateY(-2px)' }}
-          >
-            <VolumeOn />
-          </span>
-        </Heading>
+        <Heading icon={<VolumeOn />}>Listen in</Heading>
         <Paragraph>
           Because this guide deals with audio waveforms, it's beneficial to be
           able to hear stuff. This way, when you change parameters, you can hear
