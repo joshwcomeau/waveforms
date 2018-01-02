@@ -120,7 +120,7 @@ class IntroRouteWaveformAddition extends PureComponent<Props> {
 
             <FadeTransition isVisible={stepData.showNumOfHarmonicsSlider}>
               <Slider
-                label="Number of Harmonics"
+                label="# of Harmonics"
                 width={width / 2 - 15}
                 min={1}
                 max={75}

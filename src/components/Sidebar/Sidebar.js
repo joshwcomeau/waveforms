@@ -8,7 +8,7 @@ const PORTRAIT_PADDING = '16px';
 const LANDSCAPE_PADDING = '25px';
 
 type Props = {
-  type?: 'notice' | 'warning' | 'explanation',
+  type?: 'notice' | 'warning' | 'explanation' | 'summary',
   children: React$Node,
 };
 
@@ -19,21 +19,23 @@ const Sidebar = ({ type = 'note', children }: Props) => (
   </SidebarElem>
 );
 
-const backgroundColors = {
+const BACKGROUND_COLORS = {
   note: COLORS.primary[500],
   warning: COLORS.orange[700],
   explanation: COLORS.green[500],
+  summary: COLORS.gray[900],
 };
 
-const titleColors = {
+const TITLE_COLORS = {
   note: COLORS.primary[500],
   warning: COLORS.orange[700],
   explanation: COLORS.green[500],
+  summary: COLORS.gray[700],
 };
 
 const SidebarElem = styled.div`
   position: relative;
-  background: ${props => backgroundColors[props.type]};
+  background: ${props => BACKGROUND_COLORS[props.type]};
   margin-top: 75px;
   margin-bottom: 75px;
 
@@ -68,7 +70,7 @@ const Title = styled.div`
   position: absolute;
   top: 0;
 
-  color: ${props => titleColors[props.type]};
+  color: ${props => TITLE_COLORS[props.type]};
   font-size: 21px;
   font-weight: 500;
   text-transform: uppercase;

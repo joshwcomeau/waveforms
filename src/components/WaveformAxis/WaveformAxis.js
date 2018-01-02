@@ -148,9 +148,9 @@ class WaveformAxis extends PureComponent<Props> {
           <Aux>
             <line
               x1={-SIDE_AXIS_SPACING}
-              y1={0}
+              y1={-3}
               x2={width + yAxisGuideSquish}
-              y2={0}
+              y2={-3}
               {...labelLineStyles}
             />
             <text
@@ -182,9 +182,9 @@ class WaveformAxis extends PureComponent<Props> {
 
             <line
               x1={-SIDE_AXIS_SPACING}
-              y1={height}
+              y1={height + 3}
               x2={width + yAxisGuideSquish}
-              y2={height}
+              y2={height + 3}
               {...labelLineStyles}
             />
             <text

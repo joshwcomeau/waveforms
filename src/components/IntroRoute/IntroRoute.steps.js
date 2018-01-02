@@ -21,6 +21,7 @@ import KeyboardCharacter from '../KeyboardCharacter';
 import PortraitOnly from '../PortraitOnly';
 import LandscapeOnly from '../LandscapeOnly';
 import Link from '../Link';
+import SliderIcon from '../SliderIcon';
 
 import type { WaveformShape, HarmonicsForShape } from '../../types';
 
@@ -243,11 +244,10 @@ export const steps = {
     getMargin: marginFunctions.small,
     children: (
       <Aux>
-        <Heading>Amplitude</Heading>
+        <Heading>Time</Heading>
         <Paragraph>
-          The horizontal line, our X axis, represents time. The exact units
-          don't really matter right now, but to make it concrete, let's say that
-          the current graph represents 1 second.
+          The horizontal line, our X axis, represents <strong>time</strong>.
+          This graph shows a 1-second window.
         </Paragraph>
       </Aux>
     ),
@@ -260,6 +260,7 @@ export const steps = {
     getMargin: marginFunctions.small,
     children: (
       <Aux>
+        <Heading>Amplitude</Heading>
         <Paragraph>
           The vertical line, our Y axis, represents <strong>amplitude</strong>.
           We'll go into more detail in a bit about what amplitude really is, but
@@ -271,21 +272,38 @@ export const steps = {
   },
   'y-axis-amplitude-with-control': {
     ...defaults,
-    getMargin: marginFunctions.small,
+    getMargin: marginFunctions.xsmall,
     showYAxisLabels: true,
     showXAxis: false,
     showAmplitudeSlider: true,
     children: (
       <Aux>
         <Paragraph>
-          Go ahead and tweak the waveform's amplitude, using the slider on the
-          left.
+          Go ahead and tweak the waveform's amplitude, using the{' '}
+          <SliderIcon fieldName="amplitude" />{' '}
+          <LandscapeOnly>below</LandscapeOnly>
+          <PortraitOnly>above</PortraitOnly> the waveform.
+        </Paragraph>
+
+        <Paragraph>
+          The unit of measurement for amplitude is the <em>decibel</em>,
+          abbreviated as "dB". Decibels are a relative unit, and there are many
+          different scales that they can be relative to. In our case, the
+          maximum "loudness" is at 1 and -1 (both values are equally loud). All
+          values will fall somewhere in that range.
         </Paragraph>
 
         <Paragraph>
           Try setting it all the way to 0, and notice how the line flattens out.
-          0 amplitude means that it's complete ly silent.
+          0 amplitude means that it's completely silent.
         </Paragraph>
+
+        <Sidebar type="summary">
+          <Paragraph>
+            A waveform is a <strong>graph</strong> that shows a wave's change in{' '}
+            <strong>amplitude</strong> over <strong>time</strong>.
+          </Paragraph>
+        </Sidebar>
       </Aux>
     ),
   },
@@ -301,27 +319,26 @@ export const steps = {
         <Heading>Frequency</Heading>
 
         <Paragraph>
-          The waveform we've been looking at is of a <em>sine wave</em>. This
-          refers to the "shape" of the line in the waveform graph. The sine wave
-          is "periodic": This means that the wave repeats.
+          You may have noticed that the wave being graphed is circular; it
+          starts where it ends, and it's a repeating pattern. In audio terms,
+          this is a <strong>periodic waveform</strong>, and each iteration is
+          its own <strong>period</strong>.
         </Paragraph>
 
         <Paragraph>
-          Waveforms are windows into a wave over a specific amount of time. In
-          this case, our waveform covers two "periods" of a sine wave.
+          Looking at the waveform graph, we can see that the current wave
+          repeats twice, so there are 2 periods.
         </Paragraph>
 
         <Paragraph>
-          Important to note: The amount of time hasn't changed. This is still 1
-          second of audio. We've just squeezed two periods of the sine wave into
-          our waveform, instead of 1.
+          <strong>Frequency</strong> is a measure of how many periods there are
+          in a second. The common unit of measurement for frequency is the{' '}
+          <em>hertz</em>, abbreviated as "Hz". Because we know that this
+          waveform graph shows a 1-second interval, we can deduce that this wave
+          is oscillating at <strong>2Hz</strong>.
         </Paragraph>
 
-        <Paragraph>
-          The number of periods per second is known as the frequency. The unit
-          of measurement is called the Hertz (abbreviated as 'Hz'). The wave
-          over there is 2Hz, since the waveform repeats twice.
-        </Paragraph>
+        <Paragraph />
       </Aux>
     ),
   },
@@ -334,19 +351,33 @@ export const steps = {
     children: (
       <Aux>
         <Paragraph>
-          Frequency is just the technical term for "pitch". For example, When
-          you sing an "A4" note (The "A" in the middle of a typical piano), your
-          throat vibrates at 440Hz.
+          Frequency is just the technical term for "pitch". The faster a wave
+          repeats itself, the higher the pitch of the note.
         </Paragraph>
+        <Paragraph>
+          For example, when a singer sings an "A4" note (The "A" in the middle
+          of a typical piano), their throat vibrates at 440Hz. If their voice
+          raises to a "C5" note, 3 semitones higher, their throat would vibrate
+          at ~523Hz.
+        </Paragraph>
+
         <Sidebar>
           <Paragraph>
-            For sound to be audible, it needs to be much faster than this: the
-            human hearing range is from 20Hz to 20,000Hz.
+            It is very important to point out that the waves we've been dealing
+            with so far, at 1Hz and 2Hz, have been far too low-frequency to be
+            audible. Perfect human hearing ranges from 20Hz to 20,000Hz, with
+            20Hz being the lowest sub-bass you can possibly hear.
           </Paragraph>
           <Paragraph>
-            The frequencies in this guide use slower frequencies to keep the
-            numbers and visualizations simpler, since the concepts are more
-            important than the specific frequencies.
+            The reason for this discrepancy is that it's much easier to teach
+            the concepts when the waves are slower. You wouldn't be able to see
+            a 440Hz wave oscillate: it's much too fast. The math to calculate
+            frequency is simpler when the period of time shown is 1 second,
+            since the Hertz is a periods-per-second unit.
+          </Paragraph>
+          <Paragraph>
+            The waves you hear when you unmute the sound are running at{' '}
+            <strong>100x</strong> the selected frequency.
           </Paragraph>
         </Sidebar>
       </Aux>
@@ -360,14 +391,16 @@ export const steps = {
     children: (
       <Aux>
         <Paragraph>
-          So, we now have control over 2 settings: <strong>amplitude</strong>{' '}
-          and <strong>frequency</strong>.
+          Try tweaking the frequency with the{' '}
+          <SliderIcon fieldName="frequency" />.
         </Paragraph>
-
         <Paragraph>
-          Play around with the sliders to see how they affect the waveform. If
-          you'd like, you can also enable sound using the button in the top
-          right. This way, you can hear how these parameters affect the sound.
+          Don't forget to enable sound with the{' '}
+          <LandscapeOnly>
+            <KeyboardCharacter>M</KeyboardCharacter> key
+          </LandscapeOnly>
+          <PortraitOnly>volume control above</PortraitOnly> to see how frequency
+          and amplitude affect the waveform!
         </Paragraph>
       </Aux>
     ),
@@ -750,6 +783,7 @@ export const steps = {
   },
   'additive-synthesis-intro': {
     ...defaults,
+    frequencyOverride: 2,
     children: (
       <Aux>
         <SectionTitle>4. Additive Synthesis</SectionTitle>
