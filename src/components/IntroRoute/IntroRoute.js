@@ -37,6 +37,7 @@ type State = {
   harmonicsForShape: HarmonicsForShape,
   numOfHarmonics: number,
   convergence: number,
+  phase: number,
 
   // Audio data
   audioVolume: number,
@@ -53,6 +54,7 @@ class IntroRoute extends PureComponent<Props, State> {
     harmonicsForShape: 'square',
     numOfHarmonics: 2,
     convergence: 0,
+    phase: 0,
     audioVolume: 0.5,
     audioMuted: true,
     audioEnabled: false,
@@ -112,6 +114,7 @@ class IntroRoute extends PureComponent<Props, State> {
   handleUpdateHarmonicsForShape = this.handleUpdateField('harmonicsForShape');
   handleUpdateNumOfHarmonics = this.handleUpdateField('numOfHarmonics');
   handleUpdateConvergence = this.handleUpdateField('convergence');
+  handleUpdatePhase = this.handleUpdateField('phase');
 
   handleUpdateAudioVolume = (audioVolume: number) => {
     this.setState({ audioVolume, audioMuted: false, audioEnabled: true });
@@ -295,6 +298,7 @@ class IntroRoute extends PureComponent<Props, State> {
       harmonicsForShape,
       numOfHarmonics,
       convergence,
+      phase,
     } = this.state;
 
     const stepData = steps[currentStep];
@@ -318,6 +322,7 @@ class IntroRoute extends PureComponent<Props, State> {
 
               {stepData.useWaveformAddition && (
                 <IntroRouteWaveformAddition
+                  type={stepData.waveformAdditionType}
                   width={width}
                   stepData={stepData}
                   baseAmplitude={amplitude}
@@ -325,11 +330,13 @@ class IntroRoute extends PureComponent<Props, State> {
                   harmonicsForShape={harmonicsForShape}
                   numOfHarmonics={numOfHarmonics}
                   convergence={convergence}
+                  phase={phase}
                   handleUpdateHarmonicsForShape={
                     this.handleUpdateHarmonicsForShape
                   }
                   handleUpdateNumOfHarmonics={this.handleUpdateNumOfHarmonics}
                   handleUpdateConvergence={this.handleUpdateConvergence}
+                  handleUpdatePhase={this.handleUpdatePhase}
                 />
               )}
             </Aux>

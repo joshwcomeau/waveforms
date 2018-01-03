@@ -17,58 +17,98 @@ import FadeTransition from '../FadeTransition';
 import Slider from '../Slider';
 import Row from '../Row';
 
-import type { WaveformShape } from '../../types';
+import type { WaveformShape, WaveformAdditionType } from '../../types';
 import type { StepData } from '../IntroRoute/IntroRoute.steps';
 
 type Props = {
+  type: WaveformAdditionType,
   width: number,
   stepData: StepData,
   baseFrequency: number,
   baseAmplitude: number,
+  phase: number,
   harmonicsForShape: WaveformShape,
   numOfHarmonics: number,
   convergence: number,
+  phase: number,
   handleUpdateHarmonicsForShape: (shape: WaveformShape) => void,
   handleUpdateNumOfHarmonics: (val: number) => void,
   handleUpdateConvergence: (val: number) => void,
+  handleUpdatePhase: (val: number) => void,
 };
 
 class IntroRouteWaveformAddition extends PureComponent<Props> {
+  getWaveforms() {
+    const {
+      type,
+      baseFrequency,
+      baseAmplitude,
+      phase,
+      harmonicsForShape,
+      numOfHarmonics,
+    } = this.props;
+
+    switch (type) {
+      case 'phase': {
+        const offset = phase * 100 / 360;
+
+        return [
+          {
+            shape: 'sine',
+            frequency: baseFrequency,
+            amplitude: baseAmplitude,
+            offset,
+            strokeWidth: 5,
+            color: convertHexToRGBA(COLORS.secondary[500], 0.6),
+          },
+          {
+            shape: 'sine',
+            frequency: baseFrequency,
+            amplitude: baseAmplitude,
+            offset: 0,
+            strokeWidth: 5,
+            color: convertHexToRGBA(COLORS.primary[500], 0.6),
+          },
+        ];
+      }
+
+      case 'harmonics':
+        return [
+          ...getHarmonicsForWave({
+            shape: harmonicsForShape,
+            baseFrequency: baseFrequency,
+            baseAmplitude: baseAmplitude,
+            maxNumberToGenerate: numOfHarmonics,
+            strokeWidth: 5,
+            color: convertHexToRGBA(COLORS.secondary[500], 0.6),
+          }),
+          {
+            shape: 'sine',
+            frequency: baseFrequency,
+            amplitude: baseAmplitude,
+            offset: 0,
+            strokeWidth: 5,
+            color: convertHexToRGBA(COLORS.primary[500], 0.6),
+          },
+        ];
+
+      default:
+        throw new Error('Unrecognized type for `IntroRouteWaveformAddition`');
+    }
+  }
   render() {
     const {
       width,
       stepData,
-      baseFrequency,
-      baseAmplitude,
-      harmonicsForShape,
       numOfHarmonics,
       convergence,
+      phase,
       handleUpdateNumOfHarmonics,
       handleUpdateConvergence,
+      handleUpdatePhase,
     } = this.props;
 
-    // We want to render our base waveform, plus all available harmonics.
-    // I'm reversing their order since the order affects draw layer in
-    // SVG/Canvas. I want the base waveform to be on "top", so it has to be
-    // last in the array.
-    const waveforms = [
-      ...getHarmonicsForWave({
-        shape: harmonicsForShape,
-        baseFrequency: baseFrequency,
-        baseAmplitude: baseAmplitude,
-        maxNumberToGenerate: numOfHarmonics,
-        strokeWidth: 5,
-        color: convertHexToRGBA(COLORS.secondary[500], 0.6),
-      }),
-      {
-        shape: 'sine',
-        frequency: baseFrequency,
-        amplitude: baseAmplitude,
-        offset: 0,
-        strokeWidth: 5,
-        color: convertHexToRGBA(COLORS.primary[500], 0.6),
-      },
-    ];
+    const waveforms = this.getWaveforms();
 
     return (
       <FlexParent>
@@ -105,7 +145,11 @@ class IntroRouteWaveformAddition extends PureComponent<Props> {
 
         <ControlsWrapper>
           <Row gutter={15}>
-            <FadeTransition isVisible={stepData.showConvergenceSlider}>
+            <FadeTransition
+              mountOnEnter
+              unmountOnExit
+              isVisible={stepData.showConvergenceSlider}
+            >
               <Slider
                 label="Convergence"
                 width={width / 2 - 15}
@@ -118,7 +162,11 @@ class IntroRouteWaveformAddition extends PureComponent<Props> {
               />
             </FadeTransition>
 
-            <FadeTransition isVisible={stepData.showNumOfHarmonicsSlider}>
+            <FadeTransition
+              mountOnEnter
+              unmountOnExit
+              isVisible={stepData.showNumOfHarmonicsSlider}
+            >
               <Slider
                 label="# of Harmonics"
                 width={width / 2 - 15}
@@ -128,6 +176,33 @@ class IntroRouteWaveformAddition extends PureComponent<Props> {
                 defaultValue={1}
                 value={numOfHarmonics}
                 onChange={handleUpdateNumOfHarmonics}
+              />
+            </FadeTransition>
+
+            <FadeTransition
+              mountOnEnter
+              unmountOnExit
+              isVisible={stepData.showPhaseSlider}
+              // HACK: our 3 items don't fit in the 2-item row.
+              // By convention, we never show the # of Harmonics slider at the
+              // same time as the phase slider (the two don't make sense to
+              // be used together).
+              // Unfortunately, when scrolling up, the # of Harmonics intro
+              // animation pushes the phase slider to the right, into the
+              // tutorial column, as it fades away.
+              // We fix this by setting the fade-out duration to 1ms, but it's
+              // not a great solution. `0` breaks for unknown reasons.
+              duration={stepData.showNumOfHarmonicsSlider ? 1 : 500}
+            >
+              <Slider
+                label="Phase"
+                width={width / 2 - 15}
+                min={0}
+                max={360}
+                step={1}
+                defaultValue={0}
+                value={phase}
+                onChange={handleUpdatePhase}
               />
             </FadeTransition>
           </Row>

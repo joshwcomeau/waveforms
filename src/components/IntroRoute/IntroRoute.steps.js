@@ -23,7 +23,11 @@ import LandscapeOnly from '../LandscapeOnly';
 import Link from '../Link';
 import SliderIcon from '../SliderIcon';
 
-import type { WaveformShape, HarmonicsForShape } from '../../types';
+import type {
+  WaveformShape,
+  HarmonicsForShape,
+  WaveformAdditionType,
+} from '../../types';
 
 export type IntroStep =
   | 'title'
@@ -52,6 +56,7 @@ export type IntroStep =
   | 'additive-synthesis-intro-convergence'
   | 'additive-synthesis-intro-num-of-harmonics'
   | 'additive-synthesis-harmonics-tie-in'
+  | 'additive-synthesis-phase'
   | 'additive-synthesis-noise-cancelling';
 
 export const INTRO_STEPS: Array<IntroStep> = [
@@ -81,6 +86,7 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'additive-synthesis-intro-convergence',
   'additive-synthesis-intro-num-of-harmonics',
   'additive-synthesis-harmonics-tie-in',
+  'additive-synthesis-phase',
   'additive-synthesis-noise-cancelling',
 ];
 
@@ -113,8 +119,10 @@ export type StepData = {
 
   // WaveformAddition params
   useWaveformAddition: boolean,
-  showConvergenceSlider: boolean,
+  waveformAdditionType: WaveformAdditionType,
   showNumOfHarmonicsSlider: boolean,
+  showConvergenceSlider: boolean,
+  showPhaseSlider: boolean,
   harmonicsForShapeOverride: HarmonicsForShape,
   numOfHarmonicsOverride: number,
   convergenceOverride: number,
@@ -138,6 +146,7 @@ const defaults: StepData = {
   waveformShape: DEFAULT_WAVEFORM_SHAPE,
   waveformColor: COLORS.primary[500],
   waveformOpacity: 1,
+
   showXAxis: true,
   showYAxis: true,
   showXAxisLabels: false,
@@ -152,8 +161,13 @@ const defaults: StepData = {
   frequencySliderStep: 0.1,
   showCycleIndicator: false,
   showVolumeControls: true,
+
   useWaveformAddition: false,
+  waveformAdditionType: 'harmonics',
+  showNumOfHarmonicsSlider: false,
   showConvergenceSlider: false,
+  showPhaseSlider: false,
+
   getMargin: marginFunctions.large,
 };
 
@@ -970,48 +984,70 @@ export const steps = {
       </Aux>
     ),
   },
+  'additive-synthesis-phase': {
+    ...defaults,
+    frequencyOverride: 1,
+    amplitudeOverride: 0.75,
+    useWaveformAddition: true,
+    waveformAdditionType: 'phase',
+    showPhaseSlider: true,
+    convergenceOverride: 0,
+    showConvergenceSlider: true,
+    children: ({ frequency, amplitude, currentStep }) => (
+      <Aux>
+        <Heading>Phase</Heading>
+        <Paragraph>
+          Something counter-intuitive about waveform addition is that it doesn't
+          always make the resulting sound louder.
+        </Paragraph>
+        <Paragraph>
+          To demonstrate this more clearly, first we have to learn about another
+          waveform property: <strong>phase</strong>.
+        </Paragraph>
+
+        <Paragraph>
+          Simply put, phase is the amount of offset applied to a wave, measured
+          in degrees. If a wave is 180 degrees out of phase, for example, that
+          means it's delayed by 1/2 a period.
+        </Paragraph>
+
+        <Paragraph>
+          Our waveform graph on the right has been updated to show two identical
+          waves in terms of amplitude and frequency. Try adjusting the new{' '}
+          <SliderIcon fieldName="phase" /> to see how phase affects the second
+          waveform, relative to the first.
+        </Paragraph>
+      </Aux>
+    ),
+  },
   'additive-synthesis-noise-cancelling': {
     ...defaults,
     useWaveformAddition: true,
-    harmonicsForShapeOverride: 'cancelling',
-    numOfHarmonicsOverride: 1,
+    waveformAdditionType: 'phase',
+    showPhaseSlider: true,
     convergenceOverride: 0,
     showConvergenceSlider: true,
-    getMargin: marginFunctions.small,
+    getMargin: marginFunctions.xsmall,
     children: ({ frequency, amplitude, currentStep }) => (
       <Aux>
         <Paragraph>
-          Something counter-intuitive about waveform addition is that it doesn't
-          always make the resulting sound louder. While it feels like adding 2
-          waves together will always produce a louder wave, it isn't so, because
-          amplitude values can be positive <em>or</em> negative.
-        </Paragraph>
-
-        <Paragraph>
-          For instance, use the "convergence" slider to check out what happens
-          when we add the <em>inverse</em> of a sine wave to itself. A wave is
-          considered "inverted" when it's flipped over the horizontal axis.
-        </Paragraph>
-
-        <Paragraph>
-          Notice how the end result is silence? That's because by its very
-          definition, inverting a wave means applying the opposite amplitude.
-          The two values cancel each other out: the molecules in the air wind up
-          not moving at all, since they're acted upon by equal and opposite
-          forces.
+          Try adjusting the <SliderIcon fieldName="convergence" /> to see how
+          the phase of a waveform affects how loud the resulting wave is.
         </Paragraph>
 
         <Sidebar>
           <Paragraph>
-            Incidentally, this is how noise-cancelling headphones work! They
-            record the ambient noise around the headphones, invert the wave, and
-            mix it in with the sound coming out of the headphone's speakers.
+            Incidentally, this is exactly how noise-cancelling headphones work!
+            They record the ambient noise around the headphones, offset its
+            phase by 180 degrees, and mix it in with the sound coming out of the
+            headphone's speakers. This "cancels out" the background noise, just
+            as the 180-degree sine wave cancels out the original sine wave.
           </Paragraph>
           <Paragraph>
-            This process is imperfect - real noise isn't as simple or consistent
+            This process is imperfect—real noise isn't as simple or consistent
             as sine waves, and there's latency between the sound being recorded
             and played back, so it generally works better on lower-frequency
-            noise where the latency matters less - but it can be a remarkable
+            noise where the latency matters less—but it can be a remarkable
             effect in areas with consistent low-frequency noise, like airplanes
             or subways.
           </Paragraph>

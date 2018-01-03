@@ -359,6 +359,10 @@ export const getHarmonicsForWave = ({
   maxNumberToGenerate,
   ...delegated
 }: GetHarmonicsForWaveArgs) => {
+  if (maxNumberToGenerate === 0) {
+    return [];
+  }
+
   switch (shape) {
     // Sine waves have no harmonics
     case 'sine':
