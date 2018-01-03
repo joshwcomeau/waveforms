@@ -144,7 +144,8 @@ class IntroRoute extends PureComponent<Props, State> {
   }, 500);
 
   handleScroll = debounce(() => {
-    return;
+    // TODO: Update this to use the new intersection logic
+
     // We rely on the IntersectionObserver API within each IntroRouteSection
     // to update the current section, in the `handleIntersect` method.
     //

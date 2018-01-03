@@ -7,7 +7,7 @@ import React, { PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
 import styled from 'styled-components';
 
-import { COLORS } from '../../constants';
+import { COLORS, SPRING_SETTINGS } from '../../constants';
 import { convertHexToRGBA } from '../../utils';
 import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
 
@@ -38,19 +38,18 @@ type Props = {
 };
 
 class IntroRouteWaveformAddition extends PureComponent<Props> {
-  getWaveforms() {
+  getWaveforms(phase) {
     const {
       type,
       baseFrequency,
       baseAmplitude,
-      phase,
       harmonicsForShape,
       numOfHarmonics,
     } = this.props;
 
     switch (type) {
       case 'phase': {
-        const offset = phase * 100 / 360;
+        const offset = 100 - phase * 100 / 360;
 
         return [
           {
@@ -108,19 +107,20 @@ class IntroRouteWaveformAddition extends PureComponent<Props> {
       handleUpdatePhase,
     } = this.props;
 
-    const waveforms = this.getWaveforms();
-
     return (
       <FlexParent>
         <WaveformWrapper>
           <Motion
-            defaultStyle={{ convergence: 0 }}
-            style={{ convergence: spring(convergence) }}
+            defaultStyle={{ convergence: 0, phase: 0 }}
+            style={{
+              convergence: spring(convergence, SPRING_SETTINGS),
+              phase: spring(phase, SPRING_SETTINGS),
+            }}
           >
-            {({ convergence }) => (
+            {({ convergence, phase }) => (
               <WaveformAddition
                 size={width}
-                waveforms={waveforms}
+                waveforms={this.getWaveforms(phase)}
                 convergence={convergence}
               />
             )}
