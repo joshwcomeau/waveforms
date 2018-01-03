@@ -13,3 +13,5 @@
   * KA folk
 
 * Slider indicator icon
+
+* For noise-cancelling, maybe it'd be better to switch to phase-shifting instead of inverting, so that we can make it a control and see how it makes waves louder or quieter as you move it?

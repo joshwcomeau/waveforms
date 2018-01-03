@@ -122,7 +122,7 @@ class IntroRouteWaveformAddition extends PureComponent<Props> {
               <Slider
                 label="# of Harmonics"
                 width={width / 2 - 15}
-                min={1}
+                min={0}
                 max={75}
                 step={1}
                 defaultValue={1}

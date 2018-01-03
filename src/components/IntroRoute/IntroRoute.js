@@ -244,21 +244,24 @@ class IntroRoute extends PureComponent<Props, State> {
             />
 
             {stepData.useWaveformAddition &&
+              numOfHarmonics > 0 &&
               getHarmonicsForWave({
                 shape: harmonicsForShape,
                 baseFrequency: adjustedAudibleFrequency,
                 baseAmplitude: amplitude,
                 maxNumberToGenerate: numOfHarmonics,
-              }).map(({ frequency, amplitude }) => (
-                <Oscillator
-                  key={frequency}
-                  shape="sine"
-                  amplitude={amplitude}
-                  frequency={frequency}
-                  audioCtx={audioCtx}
-                  masterOut={masterOut}
-                />
-              ))}
+              })
+                .filter(({ frequency }) => frequency < 20000)
+                .map(({ frequency, amplitude }) => (
+                  <Oscillator
+                    key={frequency}
+                    shape="sine"
+                    amplitude={amplitude}
+                    frequency={frequency}
+                    audioCtx={audioCtx}
+                    masterOut={masterOut}
+                  />
+                ))}
           </Aux>
         )}
       </AudioOutput>

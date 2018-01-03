@@ -600,6 +600,8 @@ export const steps = {
   'triangle-wave': {
     ...defaults,
     isPlaying: true,
+    frequencyOverride: 1,
+    amplitudeOverride: 1,
     waveformShape: 'triangle',
     showAmplitudeSlider: true,
     showFrequencySlider: true,
@@ -660,6 +662,8 @@ export const steps = {
   'square-wave': {
     ...defaults,
     isPlaying: true,
+    frequencyOverride: 1,
+    amplitudeOverride: 1,
     waveformShape: 'square',
     showAmplitudeSlider: true,
     showFrequencySlider: true,
@@ -783,7 +787,7 @@ export const steps = {
   },
   'additive-synthesis-intro': {
     ...defaults,
-    frequencyOverride: 2,
+    // frequencyOverride: 2,
     children: (
       <Aux>
         <SectionTitle>4. Additive Synthesis</SectionTitle>

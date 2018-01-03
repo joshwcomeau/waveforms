@@ -33,7 +33,8 @@ const MiniSlider = styled.span`
   margin-left: 4px;
 `;
 
-const Bar = styled.div`
+const Bar = styled.span`
+  display: block;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -52,7 +53,8 @@ const Bar2 = styled(Bar)`
   background-color: ${COLORS.gray[400]};
 `;
 
-const Handle = styled.div`
+const Handle = styled.span`
+  display: block;
   position: absolute;
   top: 0;
   left: 50%;
