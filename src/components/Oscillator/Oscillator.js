@@ -65,8 +65,6 @@ class Oscillator extends PureComponent<Props> {
     this.oscillatorNode.type = shape;
     this.oscillatorNode.frequency.value = frequency;
 
-    this.amplitudeGainNode.gain.value = amplitude;
-
     this.oscillatorNode.connect(this.amplitudeGainNode);
     this.amplitudeGainNode.connect(masterOut);
 
@@ -74,6 +72,7 @@ class Oscillator extends PureComponent<Props> {
       direction: 'in',
       oscillator: this.oscillatorNode,
       output: this.amplitudeGainNode,
+      maxAmplitude: amplitude,
       duration: CLIP_FADE_DURATION,
       context: audioCtx,
     });

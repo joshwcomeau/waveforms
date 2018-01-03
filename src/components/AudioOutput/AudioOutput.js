@@ -31,9 +31,17 @@ class AudioOutput extends PureComponent<Props, State> {
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
     const masterVolumeGainNode = audioCtx.createGain();
-
     masterVolumeGainNode.gain.value = volume;
-    masterVolumeGainNode.connect(audioCtx.destination);
+
+    // Squares and sawtooths can be a bit piercing. Let's apply a subtle filter
+    // to keep it gentler.
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 5000;
+    filter.gain.value = 20;
+
+    masterVolumeGainNode.connect(filter);
+    filter.connect(audioCtx.destination);
 
     this.audioCtx = audioCtx;
     this.masterVolumeGainNode = masterVolumeGainNode;
