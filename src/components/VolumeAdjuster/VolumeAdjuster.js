@@ -35,7 +35,7 @@ class VolumeAdjuster extends PureComponent<Props> {
           <Label>Volume</Label>
           <MuteButton onClick={this.props.onToggleMute}>
             <VolumeIcon
-              color={isAudible ? COLORS.primary[500] : COLORS.gray[300]}
+              color={isAudible ? COLORS.primary[500] : COLORS.gray[700]}
             />
           </MuteButton>
         </Header>
@@ -79,7 +79,7 @@ const Label = styled.span`
   font-size: 14px;
   text-transform: uppercase;
   font-weight: 400;
-  color: ${COLORS.gray[500]};
+  color: ${COLORS.gray[700]};
 `;
 
 const MuteButton = styled.button`
@@ -112,7 +112,7 @@ const VolumeBlockFill = styled.div`
   right: ${-BORDER_WIDTH + 'px'};
   bottom: ${-BORDER_WIDTH + 'px'};
   background: ${props =>
-    props.isEnabled ? COLORS.primary[500] : COLORS.gray[500]};
+    props.isEnabled ? COLORS.primary[500] : COLORS.gray[700]};
   opacity: ${props => (props.isFilled ? 1 : 0)};
   transition: opacity 250ms;
 `;

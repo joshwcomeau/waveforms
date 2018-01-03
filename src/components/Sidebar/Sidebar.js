@@ -21,14 +21,14 @@ const Sidebar = ({ type = 'note', children }: Props) => (
 
 const BACKGROUND_COLORS = {
   note: COLORS.primary[500],
-  warning: COLORS.orange[700],
+  warning: COLORS.orange[900],
   explanation: COLORS.green[500],
   summary: COLORS.gray[900],
 };
 
 const TITLE_COLORS = {
   note: COLORS.primary[500],
-  warning: COLORS.orange[700],
+  warning: COLORS.orange[900],
   explanation: COLORS.green[500],
   summary: COLORS.gray[700],
 };
