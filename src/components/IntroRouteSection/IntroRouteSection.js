@@ -44,7 +44,12 @@ class IntroRouteSection extends Component<Props> {
     const isSelected = id === currentStep;
 
     return (
-      <IntersectionObserver id={id} onIntersect={onIntersect} onlyFireOn="exit">
+      <IntersectionObserver
+        onlyFireOn="enter"
+        id={id}
+        onIntersect={onIntersect}
+        rootMargin={`0px 0px -${window.innerHeight * 0.5}px 0px`}
+      >
         <IntroRouteSectionElem
           innerRef={innerRef}
           margin={margin}

@@ -60,6 +60,7 @@ class IntersectionObserver extends PureComponent<Props> {
 
   triggerCallbackIfNecessary = (entry: IntersectionObserverEntry) => {
     const { id, onIntersect, onlyFireOn } = this.props;
+
     // IntersectionObserver API has this annoying habit of firing right when
     // we begin observing it. While this may be intended behaviour, it messes
     // with my plans.
@@ -86,6 +87,7 @@ class IntersectionObserver extends PureComponent<Props> {
       }
     }
 
+    // console.log('On intersect', id, entry);
     onIntersect(id, entry);
   };
 

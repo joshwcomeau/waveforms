@@ -144,6 +144,7 @@ class IntroRoute extends PureComponent<Props, State> {
   }, 500);
 
   handleScroll = debounce(() => {
+    return;
     // We rely on the IntersectionObserver API within each IntroRouteSection
     // to update the current section, in the `handleIntersect` method.
     //
@@ -182,12 +183,12 @@ class IntroRoute extends PureComponent<Props, State> {
     // matches the current step (after all, the current step is on the way out).
     // When scrolling back up, the item enters the viewport, which means the
     // item's step number will be less than the current one.
-    const direction = id === this.state.currentStep ? 'forwards' : 'backwards';
+    const direction = id === this.state.currentStep ? 'backwards' : 'forwards';
 
     const nextStep =
       direction === 'forwards'
-        ? INTRO_STEPS[intersectStepIndex + 1]
-        : INTRO_STEPS[intersectStepIndex];
+        ? INTRO_STEPS[intersectStepIndex]
+        : INTRO_STEPS[intersectStepIndex - 1];
 
     // If they've scrolled past the final step (to the footer or w/e), there
     // may not be a next step. We can abort in this case.
