@@ -302,14 +302,14 @@ class IntroRoute extends PureComponent<Props, State> {
     );
   }
 
-  renderWaveformColumn(amplitude: number, frequency: number, progress: number) {
-    const {
-      currentStep,
-      harmonicsForShape,
-      numOfHarmonics,
-      convergence,
-      phase,
-    } = this.state;
+  renderWaveformColumn(
+    amplitude: number,
+    frequency: number,
+    convergence: number,
+    phase: number,
+    progress: number
+  ) {
+    const { currentStep, harmonicsForShape, numOfHarmonics } = this.state;
 
     const stepData = steps[currentStep];
 
@@ -387,7 +387,13 @@ class IntroRoute extends PureComponent<Props, State> {
   }
 
   render() {
-    const { currentStep, amplitude, frequency } = this.state;
+    const {
+      currentStep,
+      amplitude,
+      frequency,
+      convergence,
+      phase,
+    } = this.state;
 
     const stepData = steps[currentStep];
 
@@ -401,10 +407,18 @@ class IntroRoute extends PureComponent<Props, State> {
           isPlaying={stepData.isPlaying}
           amplitude={amplitude}
           frequency={frequency}
+          convergence={convergence}
+          phase={phase}
         >
-          {({ amplitude, frequency, progress }) => (
+          {({ amplitude, frequency, convergence, phase, progress }) => (
             <MainContent>
-              {this.renderWaveformColumn(amplitude, frequency, progress)}
+              {this.renderWaveformColumn(
+                amplitude,
+                frequency,
+                convergence,
+                phase,
+                progress
+              )}
               {this.renderTutorialColumn(amplitude, frequency, progress)}
             </MainContent>
           )}

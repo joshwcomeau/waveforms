@@ -13,6 +13,8 @@ import Aux from '../Aux';
 type DynamicValues = {
   amplitude: number,
   frequency: number,
+  convergence: number,
+  phase: number,
   progress: number,
 };
 
@@ -22,6 +24,8 @@ type Props = {
   // How many times does the waveform repeat within the viewable area of this
   // player? Defaults to 1, which shows a single "period" of the waveform.
   frequency: number,
+  convergence: number,
+  phase: number,
 
   children: (values: DynamicValues) => React$Node,
 };
@@ -157,27 +161,35 @@ class WaveformPlayer extends PureComponent<Props, State> {
     });
   };
 
-  renderValues = ({ progress, amplitude, frequency }: DynamicValues) => {
+  renderValues = (values: DynamicValues) => {
     const { children } = this.props;
 
     // To appease React Motion, we have to return a React element, so we use
     // the self-erasing <Aux>. This is really just a bit of a hack; I shouldn't
     // really be using React Motion for this at all, I should just manage my own
     // spring values.
-    return <Aux>{children({ amplitude, frequency, progress })}</Aux>;
+    return <Aux>{children(values)}</Aux>;
   };
 
   render() {
-    const { amplitude, frequency } = this.props;
+    const { amplitude, frequency, convergence, phase } = this.props;
     const { progress } = this.state;
 
     return (
       <Motion
-        defaultStyle={{ progress: 0, amplitude, frequency }}
+        defaultStyle={{
+          progress: 0,
+          amplitude,
+          frequency,
+          convergence: 0,
+          phase: 0,
+        }}
         style={{
           amplitude: spring(amplitude, SPRING_SETTINGS),
           frequency: spring(frequency, SPRING_SETTINGS),
           progress: spring(progress, SPRING_SETTINGS),
+          convergence: spring(convergence, SPRING_SETTINGS),
+          phase: spring(phase, SPRING_SETTINGS),
         }}
       >
         {this.renderValues}

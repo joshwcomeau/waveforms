@@ -4,10 +4,9 @@
  * Still not sure if it should be standalone, or merged in.
  */
 import React, { PureComponent } from 'react';
-import { Motion, spring } from 'react-motion';
 import styled from 'styled-components';
 
-import { COLORS, SPRING_SETTINGS } from '../../constants';
+import { COLORS } from '../../constants';
 import { convertHexToRGBA } from '../../utils';
 import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
 
@@ -49,6 +48,9 @@ class IntroRouteWaveformAddition extends PureComponent<Props> {
 
     switch (type) {
       case 'phase': {
+        // Our phase ranges from 0 to 360, but we need to convert that to our
+        // 0-100 offset for the waves. Additionally, we want the value to go
+        // from 100-o, so that the phase moves to the right instead of the left.
         const offset = 100 - phase * 100 / 360;
 
         return [
@@ -110,21 +112,11 @@ class IntroRouteWaveformAddition extends PureComponent<Props> {
     return (
       <FlexParent>
         <WaveformWrapper>
-          <Motion
-            defaultStyle={{ convergence: 0, phase: 0 }}
-            style={{
-              convergence: spring(convergence, SPRING_SETTINGS),
-              phase: spring(phase, SPRING_SETTINGS),
-            }}
-          >
-            {({ convergence, phase }) => (
-              <WaveformAddition
-                size={width}
-                waveforms={this.getWaveforms(phase)}
-                convergence={convergence}
-              />
-            )}
-          </Motion>
+          <WaveformAddition
+            size={width}
+            waveforms={this.getWaveforms(phase)}
+            convergence={convergence}
+          />
 
           <WaveformAxis
             x
