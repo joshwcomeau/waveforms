@@ -19,23 +19,16 @@ const Sidebar = ({ type = 'note', children }: Props) => (
   </SidebarElem>
 );
 
-const BACKGROUND_COLORS = {
+const THEME_COLORS = {
   note: COLORS.primary[500],
   warning: COLORS.orange[900],
   explanation: COLORS.green[500],
   summary: COLORS.gray[900],
 };
 
-const TITLE_COLORS = {
-  note: COLORS.primary[500],
-  warning: COLORS.orange[900],
-  explanation: COLORS.green[500],
-  summary: COLORS.gray[700],
-};
-
 const SidebarElem = styled.div`
   position: relative;
-  background: ${props => BACKGROUND_COLORS[props.type]};
+  background: ${props => THEME_COLORS[props.type]};
   margin-top: 75px;
   margin-bottom: 75px;
 
@@ -70,7 +63,7 @@ const Title = styled.div`
   position: absolute;
   top: 0;
 
-  color: ${props => TITLE_COLORS[props.type]};
+  color: ${props => THEME_COLORS[props.type]};
   font-size: 21px;
   font-weight: 500;
   text-transform: uppercase;

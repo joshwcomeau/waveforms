@@ -33,13 +33,14 @@ export type IntroStep =
   | 'title'
   | 'about-this-thing'
   | 'about-sound-toggling'
-  | 'intro-with-labels'
+  | 'reading-waveform-graphs-intro'
   | 'x-axis-time'
   | 'y-axis-amplitude'
   | 'y-axis-amplitude-with-control'
   | 'frequency-introduction'
   | 'frequency-introduction-pt2'
   | 'frequency-with-control'
+  | 'reading-waveform-graphs-summary'
   | 'how-sound-works-intro'
   | 'how-sound-works-air-grid'
   | 'how-sound-works-air-grid-pt2'
@@ -63,13 +64,14 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'title',
   'about-this-thing',
   'about-sound-toggling',
-  'intro-with-labels',
+  'reading-waveform-graphs-intro',
   'x-axis-time',
   'y-axis-amplitude',
   'y-axis-amplitude-with-control',
   'frequency-introduction',
   'frequency-introduction-pt2',
   'frequency-with-control',
+  'reading-waveform-graphs-summary',
   'how-sound-works-intro',
   'how-sound-works-air-grid',
   'how-sound-works-air-grid-pt2',
@@ -190,14 +192,16 @@ export const steps = {
       <Aux>
         <Paragraph>Hi there!</Paragraph>
         <Paragraph>
-          This interactive guide introduces waveforms. We'll go over the
-          fundamental physics of sound, learn how it relates to music and
+          This interactive guide introduces waves and waveforms. We'll go over
+          the fundamental physics of sound, learn how it relates to music and
           harmony, and discover how to build complex tones from simple ones.
         </Paragraph>
         <Paragraph>
-          This guide is primarily geared towards folks who produce music, but no
-          prior knowledge is required. Even if you don't have any interest in
-          music production, this guide may still interest you!
+          This guide is aimed at a general audience–no prior knowledge is
+          required. It may be of particular interest to musicians, producers,
+          and aspiring audio engineers, but the goal is to make it compelling
+          enough that even folks without a particular passion for audio find it
+          interesting.
         </Paragraph>
       </Aux>
     ),
@@ -211,9 +215,9 @@ export const steps = {
       <Aux>
         <Heading>Listen in</Heading>
         <Paragraph>
-          Because this guide deals with audio waveforms, it's beneficial to be
-          able to hear stuff. This way, when you change parameters, you can hear
-          the difference it makes.
+          Because this guide deals with audio waves, it's beneficial to be able
+          to hear stuff. This way, when you change parameters, you can hear the
+          difference it makes.
         </Paragraph>
         <Paragraph>
           Because nobody likes autoplaying sounds, the volume is currently
@@ -223,7 +227,7 @@ export const steps = {
         </Paragraph>
         <LandscapeOnly>
           <Paragraph>
-            You can also use keyboard shortcuts! The numbers{' '}
+            You can also use <strong>keyboard shortcuts</strong>! The numbers{' '}
             <KeyboardCharacter>0</KeyboardCharacter> –{' '}
             <KeyboardCharacter>9</KeyboardCharacter> control the volume. You can
             also press <KeyboardCharacter>M</KeyboardCharacter> to mute or
@@ -239,15 +243,24 @@ export const steps = {
       </Aux>
     ),
   },
-  'intro-with-labels': {
+  'reading-waveform-graphs-intro': {
     ...defaults,
     children: (
       <Aux>
-        <SectionTitle>1. Reading Waveforms</SectionTitle>
+        <SectionTitle>1. Reading Waveform Graphs</SectionTitle>
         <Paragraph>
-          The waveform over there is a graph, a cartesian plane. It's showing
-          the relationship between two dimensions.
+          First, let's take a closer look at the waveform{' '}
+          <PortraitOnly>above</PortraitOnly>
+          <LandscapeOnly>to the left</LandscapeOnly>.
         </Paragraph>
+
+        <Paragraph>
+          We're looking at a graph, AKA a cartesian plane. The blue line is the
+          data we're graphing, and it represents a waveform. Specifically, we're
+          graphing the waveform's <strong>amplitude over time</strong>.
+        </Paragraph>
+
+        <Paragraph>Let's dig into what that means.</Paragraph>
       </Aux>
     ),
   },
@@ -255,13 +268,18 @@ export const steps = {
     ...defaults,
     waveformOpacity: 0.5,
     showXAxisLabels: true,
-    getMargin: marginFunctions.small,
+    getMargin: marginFunctions.xsmall,
     children: (
       <Aux>
         <Heading>Time</Heading>
         <Paragraph>
           The horizontal line, our X axis, represents <strong>time</strong>.
-          This graph shows a 1-second window.
+        </Paragraph>
+
+        <Paragraph>
+          In this case, our graph is showing a 1-second interval. Don't worry
+          too much about the specific unit, though; the important bit is to
+          understand that we're graphing how something changes over time.
         </Paragraph>
       </Aux>
     ),
@@ -271,7 +289,7 @@ export const steps = {
     waveformOpacity: 0.5,
     showYAxisLabels: true,
     showXAxis: false,
-    getMargin: marginFunctions.small,
+    getMargin: marginFunctions.xsmall,
     children: (
       <Aux>
         <Heading>Amplitude</Heading>
@@ -281,11 +299,18 @@ export const steps = {
           for now, you can think of it as volume. The bigger the wave, the
           louder the sound.
         </Paragraph>
+        <Paragraph>
+          The unit of measurement for amplitude is the <em>decibel</em>,
+          abbreviated as "dB". Decibels are a relative unit, and there are many
+          different scales that they can be relative to. In our case, the value
+          ranges from -1 to 1.
+        </Paragraph>
       </Aux>
     ),
   },
   'y-axis-amplitude-with-control': {
     ...defaults,
+    frequencyOverride: 1,
     getMargin: marginFunctions.xsmall,
     showYAxisLabels: true,
     showXAxis: false,
@@ -293,24 +318,19 @@ export const steps = {
     children: (
       <Aux>
         <Paragraph>
-          Go ahead and tweak the waveform's amplitude, using the{' '}
+          Let's make this interactive! Use the{' '}
           <SliderIcon fieldName="amplitude" />{' '}
           <LandscapeOnly>below</LandscapeOnly>
-          <PortraitOnly>above</PortraitOnly> the waveform.
-        </Paragraph>
-
-        <Paragraph>
-          The unit of measurement for amplitude is the <em>decibel</em>,
-          abbreviated as "dB". Decibels are a relative unit, and there are many
-          different scales that they can be relative to. In our case, the
-          maximum "loudness" is at 1 and -1 (both values are equally loud). All
-          values will fall somewhere in that range.
+          <PortraitOnly>above</PortraitOnly> the waveform to see how changing
+          the amplitude of the waveform affects the graph.
         </Paragraph>
 
         <Paragraph>
           Try setting it all the way to 0, and notice how the line flattens out.
           0 amplitude means that it's completely silent.
         </Paragraph>
+
+        <br />
 
         <Sidebar type="summary">
           <Paragraph>
@@ -324,41 +344,52 @@ export const steps = {
   'frequency-introduction': {
     ...defaults,
     amplitudeOverride: 1,
+    frequencyOverride: 2,
     waveformOpacity: 0.5,
     showXAxisLabels: true,
     showCycleIndicator: true,
-    frequencyOverride: 2,
     children: (
       <Aux>
         <Heading>Frequency</Heading>
 
         <Paragraph>
-          You may have noticed that the wave being graphed is circular; it
-          starts where it ends, and it's a repeating pattern. In audio terms,
-          this is a <strong>periodic waveform</strong>, and each iteration is
-          its own <strong>period</strong>.
+          Let's update the waveform so that it repeats twice in the available
+          time.
         </Paragraph>
 
         <Paragraph>
-          Looking at the waveform graph, we can see that the current wave
-          repeats twice, so there are 2 periods.
+          We're able to seamlessly repeat the waveform because it's{' '}
+          <strong>periodic</strong>. What this means is that it's a loopable,
+          repeatable pattern; you can stack them end-to-end and they form a
+          continuous shape.
         </Paragraph>
 
         <Paragraph>
-          <strong>Frequency</strong> is a measure of how many periods there are
-          in a second. The common unit of measurement for frequency is the{' '}
-          <em>hertz</em>, abbreviated as "Hz". Because we know that this
-          waveform graph shows a 1-second interval, we can deduce that this wave
-          is oscillating at <strong>2Hz</strong>.
+          <strong>Frequency</strong> is a measure of how many times the waveform
+          repeats in a given period of time. The common unit of measurement for
+          frequency is the <em>hertz</em>, abbreviated as "Hz", which measures
+          the number of repetitions per second.
         </Paragraph>
 
-        <Paragraph />
+        <Paragraph>
+          Because we know that this waveform graph shows a 1-second interval, we
+          can deduce that this wave is oscillating at <strong>2Hz</strong>.
+        </Paragraph>
+
+        <Sidebar>
+          <Paragraph>
+            Not all waveforms are periodic. For example, white noise—the sound
+            of static, or waves crashing on the beach—is just a uniform
+            distribution of all frequencies. Because it isn't periodic, it
+            doesn't have a discernable pitch.
+          </Paragraph>
+        </Sidebar>
       </Aux>
     ),
   },
   'frequency-introduction-pt2': {
     ...defaults,
-    getMargin: marginFunctions.small,
+    getMargin: marginFunctions.xsmall,
     waveformOpacity: 0.5,
     showXAxisLabels: true,
     frequencyOverride: 2,
@@ -384,10 +415,8 @@ export const steps = {
           </Paragraph>
           <Paragraph>
             The reason for this discrepancy is that it's much easier to teach
-            the concepts when the waves are slower. You wouldn't be able to see
-            a 440Hz wave oscillate: it's much too fast. The math to calculate
-            frequency is simpler when the period of time shown is 1 second,
-            since the Hertz is a periods-per-second unit.
+            the concepts when the waves are slower. For example, you wouldn't be
+            able to see a 440Hz wave oscillate: it's much too fast.
           </Paragraph>
           <Paragraph>
             The waves you hear when you unmute the sound are running at{' '}
@@ -414,8 +443,48 @@ export const steps = {
             <KeyboardCharacter>M</KeyboardCharacter> key
           </LandscapeOnly>
           <PortraitOnly>volume control above</PortraitOnly> to see how frequency
-          and amplitude affect the waveform!
+          and amplitude affect the resulting sound!
         </Paragraph>
+      </Aux>
+    ),
+  },
+  'reading-waveform-graphs-summary': {
+    ...defaults,
+    getMargin: marginFunctions.small,
+    showAmplitudeSlider: true,
+    showFrequencySlider: true,
+    children: (
+      <Aux>
+        <Paragraph>
+          Let's wrap this stuff up in a semi-formal definition.
+        </Paragraph>
+
+        <Paragraph>
+          A waveform is just a schematic that describes how a wave's amplitude
+          changes over time. When the waveform is periodic, it produces a tone,
+          and the pitch of that tone is dependent on how quickly the waveform
+          repeats.
+        </Paragraph>
+
+        <Sidebar>
+          <Paragraph>
+            If you're feeling confused and having trouble understanding, it's my
+            fault for not explaining it more clearly. The{' '}
+            <Link
+              external
+              to="https://en.wikipedia.org/wiki/Curse_of_knowledge"
+              target="_blank"
+            >
+              curse of knowledge
+            </Link>{' '}
+            means it's hard for me to know if I'm teaching this stuff
+            adequately: please{' '}
+            <Link external to="https://twitter.com/JoshWComeau" target="_blank">
+              let me know
+            </Link>{' '}
+            if it doesn't make sense, I'd love to make this clearer.
+          </Paragraph>
+        </Sidebar>
       </Aux>
     ),
   },
@@ -429,19 +498,16 @@ export const steps = {
     children: (
       <Aux>
         <SectionTitle>2. How Sound Works</SectionTitle>
+
         <Paragraph>
-          So, we've learned that waveforms are a graph showing amplitude changes
-          over time, where amplitude swings between negative and positive
-          values. But what the heck does that mean, in real-world terms?
+          So far, what we've covered has been very abstract. We know that waves
+          are just changes in amplitude over time, but what does that actually
+          mean?
         </Paragraph>
 
         <Paragraph>
-          To help us understand, the waveform on the left now has a blue circle
-          that follows the changes in amplitude over time. Because we're using a
-          sine waveform, the motion is smooth.
+          To answer this question, we need to look at some physics.
         </Paragraph>
-
-        <Paragraph>That blue dot</Paragraph>
       </Aux>
     ),
   },
@@ -455,11 +521,23 @@ export const steps = {
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     frequencySliderMax: 2,
+    getMargin: marginFunctions.xsmall,
     children: ({ amplitude, frequency, progress, currentStep }) => (
       <Aux>
         <Paragraph>
-          Sound is vibration. That blue dot's motion? That's what molecules in
-          the air do, when a sine wave is played.
+          The air around us is filled with molecules. When you play a sound out
+          of a speaker, the wave moves through the molecules in the air to reach
+          your ear, and that's how you hear it.
+        </Paragraph>
+        <Paragraph>
+          Sound is vibration. This is something many have discovered, when
+          they've touched a speaker cone and felt how it vibrates as it plays.
+          You can think of waves as a chain reaction of vibrations.
+        </Paragraph>
+
+        <Paragraph>
+          Let's take a look at how this works. Imagine that each dot in this
+          grid is an air molecule:
         </Paragraph>
 
         <MountWhenVisible
@@ -475,41 +553,10 @@ export const steps = {
         </MountWhenVisible>
 
         <Paragraph>
-          The grid on the left below the waveform represents a bunch of air
-          molecules floating in the air. Notice how the molecules themselves
-          aren't travelling through the air; the wave travels by causing a
-          rippling effect through the air molecules.
+          A key thing to note is that the air molecules themselves aren't flying
+          across the space; each molecule is just vibrating back and forth, but
+          the chain-reaction of vibrations sends a pulse forwards.
         </Paragraph>
-
-        <Paragraph>
-          This is similar to what happens when you throw a stone in a smooth
-          pond. Waves radiate outwards, but the actual water molecules don't
-          move from the center out; the wave ripples through the water.
-        </Paragraph>
-
-        <Paragraph>
-          Ever notice how, when you blast a song from a speaker, you can see the
-          speaker cone vibrating? Speakers work by kicking off this chain
-          reaction of vibrations.
-        </Paragraph>
-
-        <Sidebar>
-          <Paragraph>
-            Curious about how our ears translate these waves into sound that the
-            brain understands? It's outside the scope of this guide, but it's
-            super interesting stuff!
-          </Paragraph>
-          <Paragraph>
-            <Link
-              external
-              target="_blank"
-              rel="noopener noreferrer"
-              to="https://www.nidcd.nih.gov/health/how-do-we-hear"
-            >
-              Learn more about our ears and sound
-            </Link>.
-          </Paragraph>
-        </Sidebar>
       </Aux>
     ),
   },
@@ -524,12 +571,16 @@ export const steps = {
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     frequencySliderMax: 2,
+    getMargin: marginFunctions.small,
     children: ({ amplitude, frequency, progress, currentStep }) => (
       <Aux>
         <Paragraph>
-          How does this relate to our previous waveforms? Notice how a single
-          particle moves back and forth. Does the pattern seem familiar? Each
-          particle is moving in a sine wave, same as our waveform.
+          The waveform we've been looking at{' '}
+          <LandscapeOnly>on the left</LandscapeOnly>
+          <PortraitOnly>above</PortraitOnly> shows the trajectory of a single
+          air molecule. Compare the blue dot added to the waveform graph
+          indicating the current amplitude with the first column of air
+          molecules in the grid below:
         </Paragraph>
 
         <MountWhenVisible
@@ -544,6 +595,36 @@ export const steps = {
             progress={progress}
           />
         </MountWhenVisible>
+
+        <Paragraph>
+          Because our waveform graph is just a representation of the change in
+          amplitude over time, it maps directly to what's actually happening
+          with the air molecules!
+        </Paragraph>
+
+        <Paragraph>
+          If you haven't already, try fiddling with the{' '}
+          <SliderIcon fieldName="amplitude" /> and{' '}
+          <SliderIcon fieldName="frequency" /> to see how it affects the air
+          molecules in the grid.
+        </Paragraph>
+
+        <Sidebar>
+          <Paragraph>
+            Curious about how our ears translate these waves into sound that the
+            brain understands? It's outside the scope of this guide, but it's
+            super interesting stuff!
+          </Paragraph>
+          <Paragraph>
+            <Link
+              external
+              target="_blank"
+              to="https://www.nidcd.nih.gov/health/how-do-we-hear"
+            >
+              Learn more about our ears and sound
+            </Link>.
+          </Paragraph>
+        </Sidebar>
       </Aux>
     ),
   },

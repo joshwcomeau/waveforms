@@ -7,12 +7,19 @@ import { COLORS } from '../../constants';
 
 type Props = {
   external?: boolean,
+  target?: '_blank' | '_parent' | '_self' | '_top',
 };
 
-const Link = ({ external, ...delegated }: Props) => {
+const Link = ({ external, target, ...delegated }: Props) => {
   const LinkComponent = external ? ExternalLink : InternalLink;
 
-  return <LinkComponent {...delegated} />;
+  const additionalProps = {};
+
+  if (target === '_blank') {
+    additionalProps.rel = 'noopener noreferrer';
+  }
+
+  return <LinkComponent {...additionalProps} {...delegated} />;
 };
 
 const InternalLink = styled(RRLink)`
@@ -24,7 +31,7 @@ const InternalLink = styled(RRLink)`
   &:after {
     content: '';
     position: absolute;
-    bottom: -2px;
+    bottom: 0;
     left: 0;
     right: 0;
     height: 2px;
