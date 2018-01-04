@@ -13,6 +13,9 @@ type Props = {
   currentStep: IntroStep,
   margin?: number,
   onIntersect: (id: IntroStep) => void,
+  // Used by IntersectionObserver to determine at which point this step
+  // should become active
+  rolloverRatio: number,
   innerRef: (elem: HTMLElement) => void,
   children: React$Node,
 };
@@ -37,6 +40,7 @@ class IntroRouteSection extends Component<Props> {
       currentStep,
       onIntersect,
       margin = 0,
+      rolloverRatio,
       innerRef,
       children,
     } = this.props;
@@ -48,7 +52,8 @@ class IntroRouteSection extends Component<Props> {
         onlyFireOn="enter"
         id={id}
         onIntersect={onIntersect}
-        rootMargin={`0px 0px -${window.innerHeight * 0.5}px 0px`}
+        rootMargin={`0px 0px -${window.innerHeight *
+          (1 - rolloverRatio)}px 0px`}
       >
         <IntroRouteSectionElem
           innerRef={innerRef}

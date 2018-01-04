@@ -20,9 +20,16 @@ import VolumeAdjuster from '../VolumeAdjuster';
 import FadeTransition from '../FadeTransition';
 
 import { steps, stepsArray, INTRO_STEPS } from './IntroRoute.steps';
+import { getActiveSectionInWindow } from './IntroRoute.helpers';
 
 import type { HarmonicsForShape } from '../../types';
 import type { IntroStep } from './IntroRoute.steps';
+
+// At what point from the top should the active step switch?
+// Eg. at 0.5, the step rolls over when the top of the next step reaches half
+// of the viewport's height. At 0.9, the section would have to be scrolled
+// almost to the top before the active section rolls over.
+const ACTIVE_STEP_ROLLOVER_RATIO = 0.45;
 
 type Props = {};
 type State = {
@@ -158,21 +165,22 @@ class IntroRoute extends PureComponent<Props, State> {
     // to have a fallback.
     //
     // This method handles these edge-cases, by scanning through the sections
-    // and finding the first one in the viewport.
-    const activeSectionIndex = this.sectionRefs.findIndex(
-      section => section.getBoundingClientRect().bottom >= 0
+    // and finding the first one from the end that is above the 45% window
+    // threshold.
+    const activeSection = getActiveSectionInWindow(
+      this.sectionRefs,
+      ACTIVE_STEP_ROLLOVER_RATIO
     );
 
-    if (activeSectionIndex !== this.state.currentStep) {
-      const nextStep = INTRO_STEPS[activeSectionIndex];
+    // If they've scrolled to the end, past all the steps, there may not be
+    // a nextStep. We can abort in this case.
 
-      // If they've scrolled to the end, past all the steps, there may not be
-      // a nextStep. We can abort in this case.
-      if (!nextStep) {
-        return;
-      }
+    if (!activeSection) {
+      return;
+    }
 
-      this.setState({ currentStep: nextStep });
+    if (activeSection !== this.state.currentStep) {
+      this.setState({ currentStep: activeSection });
     }
   }, 500);
 
@@ -185,6 +193,8 @@ class IntroRoute extends PureComponent<Props, State> {
     // When scrolling back up, the item enters the viewport, which means the
     // item's step number will be less than the current one.
     const direction = id === this.state.currentStep ? 'backwards' : 'forwards';
+
+    console.log(id, direction);
 
     const nextStep =
       direction === 'forwards'
@@ -360,6 +370,7 @@ class IntroRoute extends PureComponent<Props, State> {
             currentStep={currentStep}
             margin={section.getMargin(windowHeight)}
             onIntersect={this.handleIntersect}
+            rolloverRatio={ACTIVE_STEP_ROLLOVER_RATIO}
             innerRef={elem => (this.sectionRefs[index] = elem)}
           >
             {typeof section.children === 'function'

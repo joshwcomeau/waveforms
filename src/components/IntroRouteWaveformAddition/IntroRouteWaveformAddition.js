@@ -38,7 +38,7 @@ type Props = {
 };
 
 class IntroRouteWaveformAddition extends PureComponent<Props> {
-  getWaveforms(phase) {
+  getWaveforms(phase: number) {
     const {
       type,
       baseFrequency,
