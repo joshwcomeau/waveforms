@@ -194,8 +194,6 @@ class IntroRoute extends PureComponent<Props, State> {
     // item's step number will be less than the current one.
     const direction = id === this.state.currentStep ? 'backwards' : 'forwards';
 
-    console.log(id, direction);
-
     const nextStep =
       direction === 'forwards'
         ? INTRO_STEPS[intersectStepIndex]
