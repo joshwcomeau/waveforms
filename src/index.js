@@ -1,14 +1,8 @@
 import React from 'react';
-import { hydrate, render } from 'react-dom';
-import loadScripts from 'snapshotify';
+import { render } from 'react-dom';
 
 import './polyfills';
 
 import App from './components/App';
 
-const rootElement = document.getElementById('root');
-if (rootElement.hasChildNodes()) {
-  loadScripts().then(() => hydrate(<App />, rootElement));
-} else {
-  render(<App />, rootElement);
-}
+render(<App />, document.getElementById('root'));
