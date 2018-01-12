@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import styled from 'styled-components';
 
 import { COLORS } from '../../constants';
@@ -398,34 +398,35 @@ class IntroRoute extends PureComponent<Props, State> {
     const stepData = steps[currentStep];
 
     return (
-      <MaxWidthWrapper>
-        {this.renderAudio()}
+      <Fragment>
+        <MaxWidthWrapper>
+          {this.renderAudio()}
 
-        {this.renderVolumeControl()}
+          {this.renderVolumeControl()}
 
-        <WaveformPlayer
-          isPlaying={stepData.isPlaying}
-          amplitude={amplitude}
-          frequency={frequency}
-          convergence={convergence}
-          phase={phase}
-        >
-          {({ amplitude, frequency, convergence, phase, progress }) => (
-            <MainContent>
-              {this.renderWaveformColumn(
-                amplitude,
-                frequency,
-                convergence,
-                phase,
-                progress
-              )}
-              {this.renderTutorialColumn(amplitude, frequency, progress)}
-            </MainContent>
-          )}
-        </WaveformPlayer>
-
+          <WaveformPlayer
+            isPlaying={stepData.isPlaying}
+            amplitude={amplitude}
+            frequency={frequency}
+            convergence={convergence}
+            phase={phase}
+          >
+            {({ amplitude, frequency, convergence, phase, progress }) => (
+              <MainContent>
+                {this.renderWaveformColumn(
+                  amplitude,
+                  frequency,
+                  convergence,
+                  phase,
+                  progress
+                )}
+                {this.renderTutorialColumn(amplitude, frequency, progress)}
+              </MainContent>
+            )}
+          </WaveformPlayer>
+        </MaxWidthWrapper>
         <IntroRouteEnd />
-      </MaxWidthWrapper>
+      </Fragment>
     );
   }
 }

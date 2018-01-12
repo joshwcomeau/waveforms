@@ -1131,6 +1131,9 @@ export const steps = {
   },
   conclusion: {
     ...defaults,
+    frequencyOverride: 1,
+    amplitudeOverride: 1,
+    showVolumeControls: false,
     isPlaying: true,
     children: (
       <Fragment>

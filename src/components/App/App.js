@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,6 +10,7 @@ import { injectGlobal } from 'styled-components';
 import { COLORS } from '../../constants';
 
 import IntroRoute from '../IntroRoute';
+import Footer from '../Footer';
 
 // NOTE: Many of the variable-free global CSS lives in public/index.html.
 // I think it's better to leave stuff there to avoid a flash once the JS is
@@ -25,10 +26,13 @@ injectGlobal`
 const App = () => {
   return (
     <Router>
-      <Switch>
-        <Route path="/waveforms-intro" component={IntroRoute} />
-        <Redirect from="/" to="/waveforms-intro" />
-      </Switch>
+      <Fragment>
+        <Switch>
+          <Route path="/waveforms-intro" component={IntroRoute} />
+          <Redirect from="/" to="/waveforms-intro" />
+        </Switch>
+        <Footer />
+      </Fragment>
     </Router>
   );
 };
