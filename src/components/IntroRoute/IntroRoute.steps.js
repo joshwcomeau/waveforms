@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import VolumeOn from 'react-icons/lib/md/volume-up';
 
 import { COLORS, DEFAULT_WAVEFORM_SHAPE } from '../../constants';
@@ -10,7 +10,6 @@ import SectionTitle from '../SectionTitle';
 import Heading from '../Heading';
 import Emphasized from '../Emphasized';
 import Sidebar from '../Sidebar';
-import Aux from '../Aux';
 import FrequencyGraph from '../FrequencyGraph';
 import IntroRouteAirGrid from '../IntroRouteAirGrid';
 import MountWhenVisible from '../MountWhenVisible';
@@ -58,7 +57,8 @@ export type IntroStep =
   | 'additive-synthesis-intro-num-of-harmonics'
   | 'additive-synthesis-harmonics-tie-in'
   | 'additive-synthesis-phase'
-  | 'additive-synthesis-noise-cancelling';
+  | 'additive-synthesis-noise-cancelling'
+  | 'conclusion';
 
 export const INTRO_STEPS: Array<IntroStep> = [
   'title',
@@ -90,6 +90,7 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'additive-synthesis-harmonics-tie-in',
   'additive-synthesis-phase',
   'additive-synthesis-noise-cancelling',
+  'conclusion',
 ];
 
 export type StepData = {
@@ -189,7 +190,7 @@ export const steps = {
     showVolumeControls: false,
     getMargin: marginFunctions.small,
     children: (
-      <Aux>
+      <Fragment>
         <Paragraph>Hi there!</Paragraph>
         <Paragraph>
           This interactive guide introduces waves and waveforms. We'll go over
@@ -203,7 +204,7 @@ export const steps = {
           enough that even folks without a particular passion for audio find it
           interesting.
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'about-sound-toggling': {
@@ -212,7 +213,7 @@ export const steps = {
     showYAxis: false,
     getMargin: marginFunctions.small,
     children: ({ orientation }) => (
-      <Aux>
+      <Fragment>
         <Heading>Listen in</Heading>
         <Paragraph>
           Because this guide deals with audio waves, it's beneficial to be able
@@ -240,13 +241,13 @@ export const steps = {
             </Emphasized>
           </Paragraph>
         </LandscapeOnly>
-      </Aux>
+      </Fragment>
     ),
   },
   'reading-waveform-graphs-intro': {
     ...defaults,
     children: (
-      <Aux>
+      <Fragment>
         <SectionTitle>1. Reading Waveform Graphs</SectionTitle>
         <Paragraph>
           First, let's take a closer look at the waveform{' '}
@@ -261,7 +262,7 @@ export const steps = {
         </Paragraph>
 
         <Paragraph>Let's dig into what that means.</Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'x-axis-time': {
@@ -270,7 +271,7 @@ export const steps = {
     showXAxisLabels: true,
     getMargin: marginFunctions.xsmall,
     children: (
-      <Aux>
+      <Fragment>
         <Heading>Time</Heading>
         <Paragraph>
           The horizontal line, our X axis, represents <strong>time</strong>.
@@ -281,7 +282,7 @@ export const steps = {
           too much about the specific unit, though; the important bit is to
           understand that we're graphing how something changes over time.
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'y-axis-amplitude': {
@@ -291,7 +292,7 @@ export const steps = {
     showXAxis: false,
     getMargin: marginFunctions.xsmall,
     children: (
-      <Aux>
+      <Fragment>
         <Heading>Amplitude</Heading>
         <Paragraph>
           The vertical line, our Y axis, represents <strong>amplitude</strong>.
@@ -305,7 +306,7 @@ export const steps = {
           different scales that they can be relative to. In our case, the value
           ranges from -1 to 1.
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'y-axis-amplitude-with-control': {
@@ -316,7 +317,7 @@ export const steps = {
     showXAxis: false,
     showAmplitudeSlider: true,
     children: (
-      <Aux>
+      <Fragment>
         <Paragraph>
           Let's make this interactive! Use the{' '}
           <SliderIcon fieldName="amplitude" />{' '}
@@ -338,7 +339,7 @@ export const steps = {
             <strong>amplitude</strong> over <strong>time</strong>.
           </Paragraph>
         </Sidebar>
-      </Aux>
+      </Fragment>
     ),
   },
   'frequency-introduction': {
@@ -349,7 +350,7 @@ export const steps = {
     showXAxisLabels: true,
     showCycleIndicator: true,
     children: (
-      <Aux>
+      <Fragment>
         <Heading>Frequency</Heading>
 
         <Paragraph>
@@ -360,7 +361,7 @@ export const steps = {
         <Paragraph>
           We're able to seamlessly repeat the waveform because it's{' '}
           <strong>periodic</strong>. What this means is that it's a loopable,
-          repeatable pattern; you can stack them end-to-end and they form a
+          repeatable pattern; you can stack them side-by-side and they form a
           continuous shape.
         </Paragraph>
 
@@ -384,7 +385,7 @@ export const steps = {
             doesn't have a discernable pitch.
           </Paragraph>
         </Sidebar>
-      </Aux>
+      </Fragment>
     ),
   },
   'frequency-introduction-pt2': {
@@ -394,7 +395,7 @@ export const steps = {
     showXAxisLabels: true,
     frequencyOverride: 2,
     children: (
-      <Aux>
+      <Fragment>
         <Paragraph>
           Frequency is just the technical term for "pitch". The faster a wave
           repeats itself, the higher the pitch of the note.
@@ -423,7 +424,7 @@ export const steps = {
             <strong>100x</strong> the selected frequency.
           </Paragraph>
         </Sidebar>
-      </Aux>
+      </Fragment>
     ),
   },
   'frequency-with-control': {
@@ -432,7 +433,7 @@ export const steps = {
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     children: (
-      <Aux>
+      <Fragment>
         <Paragraph>
           Try tweaking the frequency with the{' '}
           <SliderIcon fieldName="frequency" />.
@@ -445,7 +446,7 @@ export const steps = {
           <PortraitOnly>volume control above</PortraitOnly> to see how frequency
           and amplitude affect the resulting sound!
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'reading-waveform-graphs-summary': {
@@ -454,7 +455,7 @@ export const steps = {
     showAmplitudeSlider: true,
     showFrequencySlider: true,
     children: (
-      <Aux>
+      <Fragment>
         <Paragraph>
           Let's wrap this stuff up in a semi-formal definition.
         </Paragraph>
@@ -485,7 +486,7 @@ export const steps = {
             if it doesn't make sense, I'd love to make this clearer.
           </Paragraph>
         </Sidebar>
-      </Aux>
+      </Fragment>
     ),
   },
   'how-sound-works-intro': {
@@ -496,7 +497,7 @@ export const steps = {
     yAxisOpacity: 0.5,
     frequencyOverride: 1,
     children: (
-      <Aux>
+      <Fragment>
         <SectionTitle>2. How Sound Works</SectionTitle>
 
         <Paragraph>
@@ -508,7 +509,7 @@ export const steps = {
         <Paragraph>
           To answer this question, we need to look at some physics.
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'how-sound-works-air-grid': {
@@ -523,7 +524,7 @@ export const steps = {
     frequencySliderMax: 2,
     getMargin: marginFunctions.xsmall,
     children: ({ amplitude, frequency, progress, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Paragraph>
           The air around us is filled with molecules. When you play a sound out
           of a speaker, the wave moves through the molecules in the air to reach
@@ -557,7 +558,7 @@ export const steps = {
           across the space; each molecule is just vibrating back and forth, but
           the chain-reaction of vibrations sends a pulse forwards.
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'how-sound-works-air-grid-pt2': {
@@ -573,7 +574,7 @@ export const steps = {
     frequencySliderMax: 2,
     getMargin: marginFunctions.small,
     children: ({ amplitude, frequency, progress, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Paragraph>
           The waveform we've been looking at{' '}
           <LandscapeOnly>on the left</LandscapeOnly>
@@ -625,14 +626,14 @@ export const steps = {
             </Link>.
           </Paragraph>
         </Sidebar>
-      </Aux>
+      </Fragment>
     ),
   },
   'harmonics-intro': {
     ...defaults,
     isPlaying: true,
     children: ({ frequency, amplitude, currentStep }) => (
-      <Aux>
+      <Fragment>
         <SectionTitle>3. Harmonics</SectionTitle>
         <Paragraph>
           So far, we've been looking at the sine waveform exclusively, but there
@@ -645,7 +646,7 @@ export const steps = {
           the only thing you hear is a 440Hz tone. Sine waves are the "vanilla"
           wave; it doesn't have any bells or whistles.
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'sine-wave-graph': {
@@ -658,7 +659,7 @@ export const steps = {
     showFrequencySlider: true,
     getMargin: marginFunctions.xsmall,
     children: ({ frequency, amplitude, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Paragraph>
           To understand what this means, let's take a look at a graph of the
           frequencies audible for a given waveform. Let's start with the sine
@@ -689,7 +690,7 @@ export const steps = {
             understanding of what this graph represents!
           </Paragraph>
         </Sidebar>
-      </Aux>
+      </Fragment>
     ),
   },
   'triangle-wave': {
@@ -702,7 +703,7 @@ export const steps = {
     showFrequencySlider: true,
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Heading>The Triangle Wave</Heading>
 
         <Paragraph>
@@ -721,7 +722,7 @@ export const steps = {
           Notice that the sound is a little "brighter"? It doesn't quite sound
           so muffled? This is because of <strong>harmonics</strong>
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'triangle-wave-graph': {
@@ -733,7 +734,7 @@ export const steps = {
     showFrequencySlider: true,
     getMargin: marginFunctions.xsmall,
     children: ({ frequency, amplitude, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Paragraph>
           Harmonics are additional frequencies that happen automatically with
           certain waveforms. We'll learn more about why that is soon, but first,
@@ -751,7 +752,7 @@ export const steps = {
             baseAmplitude={amplitude}
           />
         </MountWhenVisible>
-      </Aux>
+      </Fragment>
     ),
   },
   'square-wave': {
@@ -764,7 +765,7 @@ export const steps = {
     showFrequencySlider: true,
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, progress, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Heading>The Square Wave</Heading>
 
         <Paragraph>
@@ -772,7 +773,7 @@ export const steps = {
           waveforms. It jumps between the highest and lowest possible values.
           It's a binary wave: it's either +1 or -1.
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'square-wave-graph': {
@@ -783,7 +784,7 @@ export const steps = {
     showFrequencySlider: true,
     getMargin: marginFunctions.xsmall,
     children: ({ frequency, amplitude, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Paragraph>
           In terms of harmonics, the square wave features exactly the same
           intervals as the triangle wave: Every "odd" harmonic (3rd, 5th, 7th,
@@ -821,7 +822,7 @@ export const steps = {
             </RevealableAnswer>
           </Paragraph>
         </Sidebar>
-      </Aux>
+      </Fragment>
     ),
   },
   'sawtooth-wave': {
@@ -832,7 +833,7 @@ export const steps = {
     showFrequencySlider: true,
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Heading>The Sawtooth Wave</Heading>
 
         <Paragraph>
@@ -848,7 +849,7 @@ export const steps = {
           vibrate in a sawtooth-like pattern. Of course, real instruments
           produce far more complex waveforms than these basic ones!
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'sawtooth-wave-graph': {
@@ -859,7 +860,7 @@ export const steps = {
     showFrequencySlider: true,
     getMargin: marginFunctions.xsmall,
     children: ({ frequency, amplitude, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Paragraph>
           In terms of harmonics, sawtooth waveforms have additional frequencies
           at every interval, unlike triangles and squares which only add
@@ -877,14 +878,14 @@ export const steps = {
             baseAmplitude={amplitude}
           />
         </MountWhenVisible>
-      </Aux>
+      </Fragment>
     ),
   },
   'additive-synthesis-intro': {
     ...defaults,
     // frequencyOverride: 2,
     children: (
-      <Aux>
+      <Fragment>
         <SectionTitle>4. Additive Synthesis</SectionTitle>
         <Paragraph>
           In the previous section, we learned about how different waveforms have
@@ -910,7 +911,7 @@ export const steps = {
         </Paragraph>
 
         <Paragraph>The answer lies in how waveform addition works.</Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'additive-synthesis-basic-add': {
@@ -921,7 +922,7 @@ export const steps = {
     convergenceOverride: 0,
     getMargin: marginFunctions.small,
     children: ({ currentStep }) => (
-      <Aux>
+      <Fragment>
         <Paragraph>
           The waveform graph we've been looking at now shows two waves:
         </Paragraph>
@@ -958,16 +959,18 @@ export const steps = {
 
         <Paragraph>
           Remember, sound is just the vibration of air molecules. If you play 2
-          distinct tones, you don't get 2 separate air molecules vibrating at 2
-          separate frequencies; the 2 tones combine to form a single waveform.
+          distinct tones, they both cause the air molecules to vibrate. A game
+          of tug-of-war has 2 people pulling on a rope, and the displacement of
+          the rope is the result of both people's effort.
         </Paragraph>
 
         <Paragraph>
-          How does the addition work? It's arithmetic: in our example, amplitude
-          ranges from -1dB to 0dB. So, we can just add up the values. The waves
-          will converge at a single point for every moment in time.
+          How does the addition work? It's arithmetic: imagine the waveform
+          graph as a bunch of individual points. At each point, you simply add
+          the individual amplitude values. The new set of points is our new
+          single waveform.
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'additive-synthesis-intro-convergence': {
@@ -978,7 +981,7 @@ export const steps = {
     showConvergenceSlider: true,
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Paragraph>
           Use the new <strong>Convergence</strong> slider to watch as the two
           lines are added together.
@@ -987,27 +990,21 @@ export const steps = {
         <Paragraph>
           Notice how it kinda looks like a square wave, if you squint?
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'additive-synthesis-intro-num-of-harmonics': {
     ...defaults,
     useWaveformAddition: true,
     harmonicsForShapeOverride: 'square',
-    numOfHarmonicsOverride: 2,
     showConvergenceSlider: true,
     getMargin: marginFunctions.xsmall,
     children: ({ frequency, amplitude, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Paragraph>
-          Try adding even more additional waves, using the{' '}
-          <strong># of Harmonics slider</strong>.
-        </Paragraph>
-
-        <Paragraph>
-          You were probably wondering where those numbers for the additional
-          sine waves came from. Why were we adding 3Hz and 5Hz lines? Why were
-          they at 0.33dB and 0.2dB?
+          You might be wondering where the values for that first harmonic came
+          from. Why did we add a wave at 3x the frequency and 1/3rd the
+          amplitude?
         </Paragraph>
 
         <Paragraph>
@@ -1017,7 +1014,7 @@ export const steps = {
 
         <MountWhenVisible
           currentStep={currentStep}
-          belongsToStep="additive-synthesis-intro-convergence"
+          belongsToStep="additive-synthesis-intro-num-of-harmonics"
           estimatedSize={390}
         >
           <FrequencyGraph
@@ -1028,13 +1025,9 @@ export const steps = {
         </MountWhenVisible>
 
         <Paragraph>
-          We simply selected the first 3 numbers from this chart! Remember, a
-          sine wave is the <strong>fundamental waveform</strong>. It doesn't
-          have any harmonics of its own. So if we know the harmonics of any
-          other waveform, we can just add sine waves in the right places to
-          approximate them!
+          The two waves we're graphing are the 2 first waves in this chart!
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'additive-synthesis-harmonics-tie-in': {
@@ -1044,14 +1037,14 @@ export const steps = {
     numOfHarmonicsOverride: 1,
     showConvergenceSlider: true,
     showNumOfHarmonicsSlider: true,
-    getMargin: marginFunctions.small,
+    getMargin: marginFunctions.xsmall,
     children: ({ frequency, amplitude, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Paragraph>
-          The more harmonics we add, the more our waveform starts to look like a
-          square wave. Use the new <strong>Number of Harmonics</strong> slider
-          to change the number rendered, and see how it affects the converged
-          line.
+          The more harmonics we add from this chart, the more our waveform
+          starts to look like a square wave. Use the new{' '}
+          <strong>Number of Harmonics</strong> slider to change the number
+          rendered, and see how it affects the converged line.
         </Paragraph>
 
         <Sidebar type="warning">
@@ -1062,7 +1055,7 @@ export const steps = {
             unresponsive if you climb up too high.
           </Paragraph>
         </Sidebar>
-      </Aux>
+      </Fragment>
     ),
   },
   'additive-synthesis-phase': {
@@ -1075,7 +1068,7 @@ export const steps = {
     convergenceOverride: 0,
     showConvergenceSlider: true,
     children: ({ frequency, amplitude, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Heading>Phase</Heading>
         <Paragraph>
           Something counter-intuitive about waveform addition is that it doesn't
@@ -1089,7 +1082,7 @@ export const steps = {
         <Paragraph>
           Simply put, phase is the amount of offset applied to a wave, measured
           in degrees. If a wave is 180 degrees out of phase, for example, that
-          means it's delayed by 1/2 a period.
+          means it's delayed by 50% of its period.
         </Paragraph>
 
         <Paragraph>
@@ -1098,7 +1091,7 @@ export const steps = {
           <SliderIcon fieldName="phase" /> to see how phase affects the second
           waveform, relative to the first.
         </Paragraph>
-      </Aux>
+      </Fragment>
     ),
   },
   'additive-synthesis-noise-cancelling': {
@@ -1110,7 +1103,7 @@ export const steps = {
     showConvergenceSlider: true,
     getMargin: marginFunctions.xsmall,
     children: ({ frequency, amplitude, currentStep }) => (
-      <Aux>
+      <Fragment>
         <Paragraph>
           Try adjusting the <SliderIcon fieldName="convergence" /> to see how
           the phase of a waveform affects how loud the resulting wave is.
@@ -1133,7 +1126,54 @@ export const steps = {
             or subways.
           </Paragraph>
         </Sidebar>
-      </Aux>
+      </Fragment>
+    ),
+  },
+  conclusion: {
+    ...defaults,
+    isPlaying: true,
+    children: (
+      <Fragment>
+        <SectionTitle>In Conclusion</SectionTitle>
+        <Paragraph>
+          An audio wave is the vibration of air molecules, which is how sound
+          travels. A waveform describes a wave by graphing how its amplitude
+          changes over time.
+        </Paragraph>
+
+        <Paragraph>
+          Amplitude is the strength of a wave's effect; the higher the
+          amplitude, the more the air molecules vibrate. This also translates
+          into loudness for the human ear; the higher the amplitude, the louder
+          the sound.
+        </Paragraph>
+
+        <Paragraph>
+          There are many different kinds of waveforms. The most common periodic
+          waveforms are the sine, triangle, square, and sawtooth.
+        </Paragraph>
+
+        <Paragraph>
+          These waveforms are said to be periodic because the wave they
+          represent repeats. This repetition gives the waveform its pitch, and
+          the faster the repetition, the higher the pitch.
+        </Paragraph>
+
+        <Paragraph>
+          Different waveforms have different harmonics. A harmonic is simply an
+          additional frequency that occurs. The sine waveform is unique in that
+          it doesn't have any additional harmonics; it is the fundamental
+          waveform.
+        </Paragraph>
+
+        <Paragraph>
+          To understand why certain waveforms have harmonics, we can attack the
+          problem from the opposite end. Because the sine waveform is the
+          fundamental waveform, it can be used to approximate all the other
+          periodic waveforms, by just adding 1 sine wave at the appropriate
+          intervals, and at the appropriate amplitude.
+        </Paragraph>
+      </Fragment>
     ),
   },
 };

@@ -16,6 +16,7 @@ import IntroRouteWaveformAddition from '../IntroRouteWaveformAddition';
 import AudioOutput from '../AudioOutput';
 import Oscillator from '../Oscillator';
 import IntroRouteSection from '../IntroRouteSection';
+import IntroRouteEnd from '../IntroRouteEnd';
 import VolumeAdjuster from '../VolumeAdjuster';
 import FadeTransition from '../FadeTransition';
 
@@ -381,7 +382,6 @@ class IntroRoute extends PureComponent<Props, State> {
               : section.children}
           </IntroRouteSection>
         ))}
-        <BottomTextSpacer height={window.innerHeight} />
       </TutorialColumn>
     );
   }
@@ -423,6 +423,8 @@ class IntroRoute extends PureComponent<Props, State> {
             </MainContent>
           )}
         </WaveformPlayer>
+
+        <IntroRouteEnd />
       </MaxWidthWrapper>
     );
   }
