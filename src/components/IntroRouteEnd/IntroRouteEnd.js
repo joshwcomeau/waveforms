@@ -28,7 +28,7 @@ const IntroRouteEnd = () => {
             external
             to="http://www.r2d3.us/visual-intro-to-machine-learning-part-1/"
           >
-            visual introduction to machine learning
+            visual intro to machine learning
           </Link>.
         </LimitedParagraph>
 

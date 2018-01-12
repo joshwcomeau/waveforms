@@ -7,8 +7,8 @@ import { debounce } from '../../utils';
 import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
 import { getApproximateWindowHeight } from '../../helpers/responsive.helpers';
 
-import Aux from '../Aux';
 import MaxWidthWrapper from '../MaxWidthWrapper';
+import Spacer from '../Spacer';
 import WaveformPlayer from '../WaveformPlayer';
 import IntroRouteWaveformWrapper from '../IntroRouteWaveformWrapper';
 import IntroRouteWaveform from '../IntroRouteWaveform';
@@ -247,7 +247,7 @@ class IntroRoute extends PureComponent<Props, State> {
     return (
       <AudioOutput masterVolume={effectiveAudioVolume}>
         {(audioCtx, masterOut) => (
-          <Aux>
+          <Fragment>
             <Oscillator
               key="base-frequency"
               shape={stepData.waveformShape}
@@ -276,7 +276,7 @@ class IntroRoute extends PureComponent<Props, State> {
                     masterOut={masterOut}
                   />
                 ))}
-          </Aux>
+          </Fragment>
         )}
       </AudioOutput>
     );
@@ -315,10 +315,10 @@ class IntroRoute extends PureComponent<Props, State> {
     const stepData = steps[currentStep];
 
     return (
-      <WaveformColumn>
+      <WaveformColumn isVisible={stepData.showWaveform}>
         <IntroRouteWaveformWrapper>
           {(width: number) => (
-            <Aux>
+            <Fragment>
               {!stepData.useWaveformAddition && (
                 <IntroRouteWaveform
                   width={width}
@@ -350,7 +350,7 @@ class IntroRoute extends PureComponent<Props, State> {
                   handleUpdatePhase={this.handleUpdatePhase}
                 />
               )}
-            </Aux>
+            </Fragment>
           )}
         </IntroRouteWaveformWrapper>
       </WaveformColumn>
@@ -425,6 +425,9 @@ class IntroRoute extends PureComponent<Props, State> {
             )}
           </WaveformPlayer>
         </MaxWidthWrapper>
+
+        <Spacer size={100} />
+
         <IntroRouteEnd />
       </Fragment>
     );
@@ -480,6 +483,16 @@ const WaveformColumn = styled.div`
     */
     max-width: calc(50% - ${LANDSCAPE_GUTTER / 2 + 'px'});
   }
+
+  @media (orientation: portrait) {
+    /*
+      On landscape, the waveform just slides up and out of the way.
+      On mobile, though, because it's fixed to the bottom, it has to be faded
+      away
+    */
+    opacity: ${props => (props.isVisible ? 1 : 0)};
+    transition: opacity 500ms;
+  }
 `;
 
 const TutorialColumn = styled.div`
@@ -488,10 +501,6 @@ const TutorialColumn = styled.div`
   @media (orientation: landscape) {
     margin-left: ${LANDSCAPE_GUTTER / 2 + 'px'};
   }
-`;
-
-const BottomTextSpacer = styled.div`
-  height: ${props => props.height + 'px'};
 `;
 
 export default IntroRoute;

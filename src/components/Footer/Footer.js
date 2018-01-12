@@ -10,21 +10,26 @@ const Footer = () => {
   return (
     <Wrapper>
       <TextWrapper>
-        © Josh Comeau, 2018 and beyond. Use, share, and embed information as you
-        see fit, just please do link back to this page :)
+        <strong>© Josh Comeau, 2018 and beyond.</strong>
+        <br />
+        <br />
+        Feel free to do whatever you want with the content on this page, just
+        please attribute it with a link back here.
       </TextWrapper>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.footer`
-  background-color: ${COLORS.gray[900]};
+  background-color: ${COLORS.primary[700]};
   color: ${COLORS.white};
 `;
 
-const TextWrapper = styled(MaxWidthWrapper)`
-  padding-top: 40px;
-  padding-bottom: 40px;
+const TextWrapper = styled.div`
+  max-width: 500px;
+  margin: auto;
+  padding: 40px;
+  text-align: center;
 `;
 
 export default Footer;

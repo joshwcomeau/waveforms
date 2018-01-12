@@ -58,7 +58,8 @@ export type IntroStep =
   | 'additive-synthesis-harmonics-tie-in'
   | 'additive-synthesis-phase'
   | 'additive-synthesis-noise-cancelling'
-  | 'conclusion';
+  | 'conclusion'
+  | 'over';
 
 export const INTRO_STEPS: Array<IntroStep> = [
   'title',
@@ -91,12 +92,14 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'additive-synthesis-phase',
   'additive-synthesis-noise-cancelling',
   'conclusion',
+  'over',
 ];
 
 export type StepData = {
   id: string,
 
   // Waveform parameters
+  showWaveform: boolean,
   frequencyOverride: ?number,
   amplitudeOverride: ?number,
   isPlaying: boolean,
@@ -143,6 +146,7 @@ const marginFunctions = {
 };
 
 const defaults: StepData = {
+  showWaveform: true,
   frequencyOverride: null,
   amplitudeOverride: null,
   isPlaying: false,
@@ -1132,7 +1136,7 @@ export const steps = {
   conclusion: {
     ...defaults,
     frequencyOverride: 1,
-    amplitudeOverride: 1,
+    amplitudeOverride: 0.75,
     showVolumeControls: false,
     isPlaying: true,
     children: (
@@ -1178,6 +1182,14 @@ export const steps = {
         </Paragraph>
       </Fragment>
     ),
+  },
+  over: {
+    ...defaults,
+    showWaveform: false,
+    showVolumeControls: false,
+    isPlaying: false,
+    getMargin: marginFunctions.none,
+    children: null,
   },
 };
 
