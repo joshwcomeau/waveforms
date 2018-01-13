@@ -83,7 +83,6 @@ class WaveformPlayer extends PureComponent<Props, State> {
   componentWillUnmount() {
     window.cancelAnimationFrame(this.animationFrameId);
   }
-
   handleVisibilityChange = () => {
     // When the user switches tabs or applications, the animation will
     // automatically pause (due to `requestAnimationFrame` implementation).
@@ -97,7 +96,6 @@ class WaveformPlayer extends PureComponent<Props, State> {
       this.setState({ lastTickAt: new Date() });
     }
   };
-
   start = () => {
     this.setState({ lastTickAt: new Date() }, this.tick);
   };
@@ -119,7 +117,11 @@ class WaveformPlayer extends PureComponent<Props, State> {
 
       const tickAt = new Date();
 
-      const secondsSinceLastTick = (tickAt - lastTickAt) / 1000;
+      let secondsSinceLastTick = (tickAt - lastTickAt) / 1000;
+      // Let's clamp the `secondsSinceLastTick` to 0.5 max. This is to avoid the
+      // wild flurry that happens when returning to an inactive tab.
+      secondsSinceLastTick = Math.min(secondsSinceLastTick, 0.5);
+
       const periodsSinceLastTick = secondsSinceLastTick * frequency;
 
       // At first glance, you might think we're just translating a fixed SVG
