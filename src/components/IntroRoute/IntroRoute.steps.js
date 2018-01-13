@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import VolumeOn from 'react-icons/lib/md/volume-up';
 
 import { COLORS, DEFAULT_WAVEFORM_SHAPE } from '../../constants';
 import { roundTo } from '../../utils';

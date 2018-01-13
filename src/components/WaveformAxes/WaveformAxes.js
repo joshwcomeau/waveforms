@@ -3,18 +3,17 @@
  * easier
  */
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 
-import Aux from '../Aux';
 import WaveformAxis from '../WaveformAxis';
 
 import type { Props } from '../WaveformAxis';
 
 const WaveformAxes = (props: Props) => (
-  <Aux>
+  <Fragment>
     <WaveformAxis x {...props} />
     <WaveformAxis y {...props} />
-  </Aux>
+  </Fragment>
 );
 
 export default WaveformAxes;

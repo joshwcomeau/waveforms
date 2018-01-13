@@ -1,10 +1,9 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 
 import { COLORS } from '../../constants';
 
-import Aux from '../Aux';
 import AvailableWidth from '../AvailableWidth';
 
 type Props = {
@@ -12,7 +11,7 @@ type Props = {
 };
 
 const IntroRouteWaveformWrapper = ({ children }: Props) => (
-  <Aux>
+  <Fragment>
     {/*
       InitialSpacer is used on desktop to align the waveform with the
       title. position: sticky takes over but we need this to offset it
@@ -23,7 +22,7 @@ const IntroRouteWaveformWrapper = ({ children }: Props) => (
     <Wrapper>
       <AvailableWidth>{children}</AvailableWidth>
     </Wrapper>
-  </Aux>
+  </Fragment>
 );
 
 const InitialSpacer = styled.div`

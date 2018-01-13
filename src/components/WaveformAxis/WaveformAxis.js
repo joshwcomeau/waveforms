@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -10,7 +10,6 @@ import {
 } from '../../constants/index';
 import { range } from '../../utils';
 
-import Aux from '../Aux';
 import FadeTransition from '../FadeTransition';
 
 import type { Linecap } from '../../types';
@@ -122,7 +121,7 @@ class WaveformAxis extends PureComponent<Props> {
         <FadeTransition isVisible={showXLabels} typeName="g">
           {range(0, 1, 0.25).map(i => {
             return (
-              <Aux key={i}>
+              <Fragment key={i}>
                 {i > 0 && (
                   <line
                     x1={width * i}
@@ -140,12 +139,12 @@ class WaveformAxis extends PureComponent<Props> {
                 >
                   {i}s
                 </text>
-              </Aux>
+              </Fragment>
             );
           })}
         </FadeTransition>
         <FadeTransition isVisible={showYLabels} typeName="g">
-          <Aux>
+          <Fragment>
             <line
               x1={-SIDE_AXIS_SPACING}
               y1={-3}
@@ -196,7 +195,7 @@ class WaveformAxis extends PureComponent<Props> {
             >
               -1
             </text>
-          </Aux>
+          </Fragment>
         </FadeTransition>
         <line
           {...coordinates}

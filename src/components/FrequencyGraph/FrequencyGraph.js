@@ -1,12 +1,11 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import styled from 'styled-components';
 
 import { DEFAULT_WAVEFORM_SHAPE, COLORS } from '../../constants';
 import { range, roundTo } from '../../utils';
 import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
 
-import Aux from '../Aux';
 import FadeTransition from '../FadeTransition';
 
 import type { WaveformShape } from '../../types';
@@ -97,7 +96,7 @@ class FrequencyGraph extends PureComponent<Props, State> {
       const isHovered = this.state.hovering === index;
 
       return (
-        <Aux key={index}>
+        <Fragment key={index}>
           <Bar
             x1={xCoordinate}
             y1={VIEWBOX_HEIGHT}
@@ -112,7 +111,7 @@ class FrequencyGraph extends PureComponent<Props, State> {
               {roundTo(frequency, 2)}Hz at {roundTo(Math.abs(amplitude), 2)}dB
             </HoverText>
           </FadeTransition>
-        </Aux>
+        </Fragment>
       );
     });
   }
@@ -155,7 +154,7 @@ class FrequencyGraph extends PureComponent<Props, State> {
         </AxisLabel>
 
         {xAxisValues.map(({ label, position }, index) => (
-          <Aux key={index}>
+          <Fragment key={index}>
             <AxisNub
               x1={position}
               y1={VIEWBOX_HEIGHT}
@@ -165,11 +164,11 @@ class FrequencyGraph extends PureComponent<Props, State> {
             <AxisNubLabel x={position} y={VIEWBOX_HEIGHT + 5} dx={-2}>
               {label}
             </AxisNubLabel>
-          </Aux>
+          </Fragment>
         ))}
 
         {yAxisValues.map(({ label, position }, index) => (
-          <Aux key={index}>
+          <Fragment key={index}>
             <AxisNub x1={label ? -2 : -1} y1={position} x2={0} y2={position} />
             <AxisNubLabel
               textAnchor="end"
@@ -180,7 +179,7 @@ class FrequencyGraph extends PureComponent<Props, State> {
             >
               {label}
             </AxisNubLabel>
-          </Aux>
+          </Fragment>
         ))}
       </FrequencyGraphSvg>
     );

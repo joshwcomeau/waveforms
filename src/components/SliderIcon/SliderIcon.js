@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Aux from '../Aux';
-
 import { COLORS } from '../../constants';
 
 const SliderIcon = ({ fieldName }) => {

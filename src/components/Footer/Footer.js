@@ -4,8 +4,6 @@ import styled from 'styled-components';
 
 import { COLORS } from '../../constants';
 
-import MaxWidthWrapper from '../MaxWidthWrapper';
-
 const Footer = () => {
   return (
     <Wrapper>

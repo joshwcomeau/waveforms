@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
 
 import {
@@ -7,8 +7,6 @@ import {
   DEFAULT_WAVEFORM_AMPLITUDE,
   SPRING_SETTINGS,
 } from '../../constants';
-
-import Aux from '../Aux';
 
 type DynamicValues = {
   amplitude: number,
@@ -165,10 +163,10 @@ class WaveformPlayer extends PureComponent<Props, State> {
     const { children } = this.props;
 
     // To appease React Motion, we have to return a React element, so we use
-    // the self-erasing <Aux>. This is really just a bit of a hack; I shouldn't
+    // the DOM-free Fragment. This is really just a bit of a hack; I shouldn't
     // really be using React Motion for this at all, I should just manage my own
-    // spring values.
-    return <Aux>{children(values)}</Aux>;
+    // spring values!
+    return <Fragment>{children(values)}</Fragment>;
   };
 
   render() {
