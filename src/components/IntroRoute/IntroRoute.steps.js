@@ -197,16 +197,17 @@ export const steps = {
       <Fragment>
         <Paragraph>Hi there!</Paragraph>
         <Paragraph>
-          This interactive guide introduces waves and waveforms. We'll go over
-          the fundamental physics of sound, learn how it relates to music and
-          harmony, and discover how to build complex tones from simple ones.
+          This interactive guide introduces and explores waveforms. We'll cover
+          how to read these funny shapes, go over the fundamental physics of
+          sound, learn how it relates to music and harmony, and discover how to
+          build complex tones from simple ones.
         </Paragraph>
         <Paragraph>
           This guide is aimed at a general audience–no prior knowledge is
           required. It may be of particular interest to musicians, producers,
           and aspiring audio engineers, but the goal is to make it compelling
           enough that even folks without a particular passion for audio find it
-          interesting.
+          accessible and interesting.
         </Paragraph>
       </Fragment>
     ),
@@ -244,6 +245,8 @@ export const steps = {
               your keyboard!
             </Emphasized>
           </Paragraph>
+
+          <Paragraph>You should hear a constant bass tone.</Paragraph>
         </LandscapeOnly>
       </Fragment>
     ),
@@ -260,7 +263,7 @@ export const steps = {
         </Paragraph>
 
         <Paragraph>
-          We're looking at a graph, AKA a cartesian plane. The blue line is the
+          We're looking at a graph, a data visualization. The blue line is the
           data we're graphing, and it represents a waveform. Specifically, we're
           graphing the waveform's <strong>amplitude over time</strong>.
         </Paragraph>
@@ -282,9 +285,7 @@ export const steps = {
         </Paragraph>
 
         <Paragraph>
-          In this case, our graph is showing a 1-second interval. Don't worry
-          too much about the specific unit, though; the important bit is to
-          understand that we're graphing how something changes over time.
+          In this case, our graph is showing a 1-second interval.
         </Paragraph>
       </Fragment>
     ),
@@ -308,7 +309,17 @@ export const steps = {
           The unit of measurement for amplitude is the <em>decibel</em>,
           abbreviated as "dB". Decibels are a relative unit, and there are many
           different scales that they can be relative to. In our case, the value
-          ranges from -1 to 1.
+          ranges from 0 to 1.
+        </Paragraph>
+        <Paragraph>
+          Note that while amplitude ranges from 0 to 1, there are negative
+          values in the waveform graph. Waveforms oscillate, back and forth,
+          between negative and positive values. The amplitude controls how far
+          it deviates from 0, in both directions.
+        </Paragraph>
+
+        <Paragraph>
+          We'll go into more detail about this in the next section.
         </Paragraph>
       </Fragment>
     ),
@@ -363,16 +374,16 @@ export const steps = {
         </Paragraph>
 
         <Paragraph>
-          We're able to seamlessly repeat the waveform because it's{' '}
+          We're able to seamlessly repeat this waveform because it's{' '}
           <strong>periodic</strong>. What this means is that it's a loopable,
           repeatable pattern; you can stack them side-by-side and they form a
-          continuous shape.
+          continuous line.
         </Paragraph>
 
         <Paragraph>
           <strong>Frequency</strong> is a measure of how many times the waveform
-          repeats in a given period of time. The common unit of measurement for
-          frequency is the <em>hertz</em>, abbreviated as "Hz", which measures
+          repeats in a given amount of time. The common unit of measurement for
+          frequency is the <em>hertz</em>, abbreviated as "Hz", which represents
           the number of repetitions per second.
         </Paragraph>
 
@@ -380,15 +391,6 @@ export const steps = {
           Because we know that this waveform graph shows a 1-second interval, we
           can deduce that this wave is oscillating at <strong>2Hz</strong>.
         </Paragraph>
-
-        <Sidebar>
-          <Paragraph>
-            Not all waveforms are periodic. For example, white noise—the sound
-            of static, or waves crashing on the beach—is just a uniform
-            distribution of all frequencies. Because it isn't periodic, it
-            doesn't have a discernable pitch.
-          </Paragraph>
-        </Sidebar>
       </Fragment>
     ),
   },
@@ -404,6 +406,7 @@ export const steps = {
           Frequency is just the technical term for "pitch". The faster a wave
           repeats itself, the higher the pitch of the note.
         </Paragraph>
+
         <Paragraph>
           For example, when a singer sings an "A4" note (The "A" in the middle
           of a typical piano), their throat vibrates at 440Hz. If their voice
@@ -411,12 +414,27 @@ export const steps = {
           at ~523Hz.
         </Paragraph>
 
-        <Sidebar>
+        <Paragraph>
+          This phenomenon doesn't just happen with music. Think about a car's
+          engine, and how the faster it "revs", the higher the pitch. The same
+          can be said for a hand mixer, or a drill. Any physical object that
+          makes noise doing the same thing hundreds or thousands of times a
+          second should have a discernable pitch.
+        </Paragraph>
+
+        <Paragraph>
+          Not all sound is periodic, though. For example, white noise—the sound
+          of static, or waves crashing on the beach—is just a uniform
+          distribution of audible frequencies. Because it isn't periodic, it
+          doesn't have a discernable pitch.
+        </Paragraph>
+
+        <Sidebar type="warning">
           <Paragraph>
-            It is very important to point out that the waves we've been dealing
-            with so far, at 1Hz and 2Hz, have been far too low-frequency to be
-            audible. Perfect human hearing ranges from 20Hz to 20,000Hz, with
-            20Hz being the lowest sub-bass you can possibly hear.
+            It is very important to point out that the waveforms we've been
+            dealing with so far, at 1Hz and 2Hz, have been far too low-frequency
+            to be audible. Perfect human hearing ranges from 20Hz to 20,000Hz,
+            with 20Hz being the lowest sub-bass you can possibly hear.
           </Paragraph>
           <Paragraph>
             The reason for this discrepancy is that it's much easier to teach
@@ -461,33 +479,26 @@ export const steps = {
     children: (
       <Fragment>
         <Paragraph>
-          Let's wrap this stuff up in a semi-formal definition.
-        </Paragraph>
-
-        <Paragraph>
-          A waveform is just a schematic that describes how a wave's amplitude
-          changes over time. When the waveform is periodic, it produces a tone,
-          and the pitch of that tone is dependent on how quickly the waveform
-          repeats.
+          In summary, a waveform is just a schematic that describes how a sound
+          wave's amplitude changes over time. When the waveform is
+          periodic—meaning, its shape repeats over and over—the sound has a
+          pitch. The quicker the repetition, the higher the pitch.
         </Paragraph>
 
         <Sidebar>
           <Paragraph>
-            If you're feeling confused and having trouble understanding, it's my
-            fault for not explaining it more clearly. The{' '}
-            <Link
-              external
-              to="https://en.wikipedia.org/wiki/Curse_of_knowledge"
-              target="_blank"
-            >
-              curse of knowledge
+            If all of these terms are new to you, this can be a lot to take in!
+            Don't feel bad if it isn't clicking yet; hopefully, the next section
+            will help make all of this theoretical stuff tangible.
+          </Paragraph>
+
+          <Paragraph>
+            If it still doesn't make sense by the end of this exploration, I
+            apologize. The fault lies with me, not with you! Please feel free to{' '}
+            <Link external to="mailto:joshwcomeau@gmail.com">
+              reach out
             </Link>{' '}
-            means it's hard for me to know if I'm teaching this stuff
-            adequately: please{' '}
-            <Link external to="https://twitter.com/JoshWComeau" target="_blank">
-              let me know
-            </Link>{' '}
-            if it doesn't make sense, I'd love to make this clearer.
+            and let me know which parts are confusing.
           </Paragraph>
         </Sidebar>
       </Fragment>
@@ -499,6 +510,7 @@ export const steps = {
     waveformOpacity: 0.5,
     xAxisOpacity: 0.5,
     yAxisOpacity: 0.5,
+    amplitudeOverride: 1,
     frequencyOverride: 1,
     children: (
       <Fragment>
@@ -531,13 +543,9 @@ export const steps = {
       <Fragment>
         <Paragraph>
           The air around us is filled with molecules. When you play a sound out
-          of a speaker, the wave moves through the molecules in the air to reach
-          your ear, and that's how you hear it.
-        </Paragraph>
-        <Paragraph>
-          Sound is vibration. This is something many have discovered, when
-          they've touched a speaker cone and felt how it vibrates as it plays.
-          You can think of waves as a chain reaction of vibrations.
+          of a speaker, the speaker vibrates really quickly. That vibration
+          moves through the molecules in the air, like a chain reaction, until
+          it reaches your ear and is processed by the brain as sound.
         </Paragraph>
 
         <Paragraph>
@@ -558,9 +566,15 @@ export const steps = {
         </MountWhenVisible>
 
         <Paragraph>
-          A key thing to note is that the air molecules themselves aren't flying
-          across the space; each molecule is just vibrating back and forth, but
-          the chain-reaction of vibrations sends a pulse forwards.
+          Each dot is oscillating back and forth by an amount specified by the
+          amplitude, and with a speed specified by the frequency.
+        </Paragraph>
+
+        <Paragraph>
+          Because this is a chain reaction, you can see the effects of the
+          vibrations moving from left to right, but this is a bit of an optical
+          illusion: the air molecules themselves aren't flying across the space,
+          they're just vibrating. But that vibration moves through the field.
         </Paragraph>
       </Fragment>
     ),
