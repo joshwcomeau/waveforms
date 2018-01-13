@@ -7,13 +7,13 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "prettier":
-      "prettier --single-quote --trailing-comma es5 --write \"src/**/*.js\"",
+    "prettier": "prettier --single-quote --trailing-comma es5 --write \"src/**/*.js\"",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
     "flow": "flow",
     "deploy": "yarn run build && surge -p build -d waveforms.surge.sh",
-    "deploy:no-build": "surge -p build -d waveforms.surge.sh"
+    "deploy:no-build": "surge -p build -d waveforms.surge.sh",
+    "stats": "NODE_ENV=production webpack --config config/webpack.config.prod.js --json > stats.json"
   },
   "dependencies": {
     "autoprefixer": "7.1.6",
@@ -71,8 +71,12 @@
     "babel-plugin-styled-components": "^1.4.0"
   },
   "jest": {
-    "collectCoverageFrom": ["src/**/*.{js,jsx,mjs}"],
-    "setupFiles": ["<rootDir>/config/polyfills.js"],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,mjs}"
+    ],
+    "setupFiles": [
+      "<rootDir>/config/polyfills.js"
+    ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,mjs}",
       "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,mjs}"
@@ -82,10 +86,11 @@
     "transform": {
       "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest",
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|mjs|css|json)$)":
-        "<rootDir>/config/jest/fileTransform.js"
+      "^(?!.*\\.(js|jsx|mjs|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
-    "transformIgnorePatterns": ["[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$"],
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$"
+    ],
     "moduleNameMapper": {
       "^react-native$": "react-native-web"
     },
@@ -100,8 +105,12 @@
     ]
   },
   "babel": {
-    "presets": ["react-app"],
-    "plugins": ["babel-plugin-styled-components"]
+    "presets": [
+      "react-app"
+    ],
+    "plugins": [
+      "babel-plugin-styled-components"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"
