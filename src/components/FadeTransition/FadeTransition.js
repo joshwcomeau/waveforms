@@ -20,27 +20,21 @@ class FadeTransition extends PureComponent<Props> {
   render() {
     const {
       isVisible,
-      mountOnEnter,
-      unmountOnExit,
-      duration = 500,
-      typeName = 'span',
+      duration,
+      typeName,
       children,
+      ...delegated
     } = this.props;
 
     return (
-      <Transition
-        in={isVisible}
-        mountOnEnter={mountOnEnter}
-        unmountOnExit={unmountOnExit}
-        timeout={duration}
-      >
+      <Transition in={isVisible} timeout={duration} {...delegated}>
         {transitionState =>
           React.createElement(
             typeName,
             {
               style: {
                 position: 'static',
-                display: 'block',
+                display: 'inline-block',
                 transition: `opacity ${duration}ms`,
                 opacity: transitionState === 'entered' ? 1 : 0,
                 pointerEvents: transitionState === 'entered' ? 'auto' : 'none',

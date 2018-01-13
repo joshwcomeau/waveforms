@@ -19,6 +19,7 @@ import IntroRouteSection from '../IntroRouteSection';
 import IntroRouteEnd from '../IntroRouteEnd';
 import VolumeAdjuster from '../VolumeAdjuster';
 import FadeTransition from '../FadeTransition';
+import WaveformControls from '../WaveformControls';
 
 import { steps, stepsArray, INTRO_STEPS } from './IntroRoute.steps';
 import { getActiveSectionInWindow } from './IntroRoute.helpers';
@@ -321,39 +322,47 @@ class IntroRoute extends PureComponent<Props, State> {
       <WaveformColumn isVisible={stepData.showWaveform}>
         <IntroRouteWaveformWrapper>
           {(width: number) => (
-            <Fragment>
-              {!stepData.useWaveformAddition && (
-                <IntroRouteWaveform
-                  width={width}
-                  amplitude={amplitude}
-                  frequency={frequency}
-                  progress={progress}
-                  handleUpdateAmplitude={this.handleUpdateAmplitude}
-                  handleUpdateFrequency={this.handleUpdateFrequency}
-                  stepData={stepData}
-                />
-              )}
+            <FlexParent>
+              <WaveformWrapper>
+                {!stepData.useWaveformAddition && (
+                  <IntroRouteWaveform
+                    width={width}
+                    amplitude={amplitude}
+                    frequency={frequency}
+                    progress={progress}
+                    stepData={stepData}
+                  />
+                )}
 
-              {stepData.useWaveformAddition && (
-                <IntroRouteWaveformAddition
-                  type={stepData.waveformAdditionType}
-                  width={width}
-                  stepData={stepData}
-                  baseAmplitude={amplitude}
-                  baseFrequency={frequency}
-                  harmonicsForShape={harmonicsForShape}
-                  numOfHarmonics={numOfHarmonics}
-                  convergence={convergence}
-                  phase={phase}
-                  handleUpdateHarmonicsForShape={
-                    this.handleUpdateHarmonicsForShape
-                  }
-                  handleUpdateNumOfHarmonics={this.handleUpdateNumOfHarmonics}
-                  handleUpdateConvergence={this.handleUpdateConvergence}
-                  handleUpdatePhase={this.handleUpdatePhase}
-                />
-              )}
-            </Fragment>
+                {stepData.useWaveformAddition && (
+                  <IntroRouteWaveformAddition
+                    type={stepData.waveformAdditionType}
+                    width={width}
+                    stepData={stepData}
+                    baseAmplitude={amplitude}
+                    baseFrequency={frequency}
+                    harmonicsForShape={harmonicsForShape}
+                    numOfHarmonics={numOfHarmonics}
+                    convergence={convergence}
+                    phase={phase}
+                  />
+                )}
+              </WaveformWrapper>
+              <WaveformControls
+                width={width}
+                amplitude={amplitude}
+                frequency={frequency}
+                numOfHarmonics={numOfHarmonics}
+                convergence={convergence}
+                phase={phase}
+                handleUpdateAmplitude={this.handleUpdateAmplitude}
+                handleUpdateFrequency={this.handleUpdateFrequency}
+                handleUpdateNumOfHarmonics={this.handleUpdateNumOfHarmonics}
+                handleUpdateConvergence={this.handleUpdateConvergence}
+                handleUpdatePhase={this.handleUpdatePhase}
+                stepData={stepData}
+              />
+            </FlexParent>
           )}
         </IntroRouteWaveformWrapper>
       </WaveformColumn>
@@ -495,6 +504,21 @@ const WaveformColumn = styled.div`
     */
     opacity: ${props => (props.isVisible ? 1 : 0)};
     transition: opacity 500ms;
+  }
+`;
+
+const FlexParent = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media (orientation: portrait) {
+    flex-direction: column-reverse;
+  }
+`;
+
+const WaveformWrapper = styled.div`
+  @media (orientation: landscape) {
+    padding-bottom: 40px;
   }
 `;
 
