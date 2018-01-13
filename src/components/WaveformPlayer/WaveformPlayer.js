@@ -83,6 +83,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
   componentWillUnmount() {
     window.cancelAnimationFrame(this.animationFrameId);
   }
+
   handleVisibilityChange = () => {
     // When the user switches tabs or applications, the animation will
     // automatically pause (due to `requestAnimationFrame` implementation).
@@ -96,6 +97,7 @@ class WaveformPlayer extends PureComponent<Props, State> {
       this.setState({ lastTickAt: new Date() });
     }
   };
+
   start = () => {
     this.setState({ lastTickAt: new Date() }, this.tick);
   };

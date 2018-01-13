@@ -57,6 +57,7 @@ export type IntroStep =
   | 'additive-synthesis-harmonics-tie-in'
   | 'additive-synthesis-phase'
   | 'additive-synthesis-noise-cancelling'
+  | 'additive-synthesis-music'
   | 'conclusion'
   | 'over';
 
@@ -90,6 +91,7 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'additive-synthesis-harmonics-tie-in',
   'additive-synthesis-phase',
   'additive-synthesis-noise-cancelling',
+  'additive-synthesis-music',
   'conclusion',
   'over',
 ];
@@ -131,6 +133,7 @@ export type StepData = {
   harmonicsForShapeOverride: HarmonicsForShape,
   numOfHarmonicsOverride: number,
   convergenceOverride: number,
+  phaseOverride: number,
 
   // Section parameters
   getMargin: (windowWidth: number) => number,
@@ -1083,6 +1086,7 @@ export const steps = {
     waveformAdditionType: 'phase',
     showPhaseSlider: true,
     convergenceOverride: 0,
+    phaseOverride: 36,
     showConvergenceSlider: true,
     children: ({ frequency, amplitude, currentStep }) => (
       <Fragment>
@@ -1143,6 +1147,45 @@ export const steps = {
             or subways.
           </Paragraph>
         </Sidebar>
+      </Fragment>
+    ),
+  },
+  'additive-synthesis-music': {
+    ...defaults,
+    useWaveformAddition: true,
+    waveformAdditionType: 'chord',
+    showConvergenceSlider: true,
+    convergenceOverride: 0,
+    phaseOverride: 0,
+    frequencyOverride: 2,
+    children: ({ frequency, amplitude, currentStep }) => (
+      <Fragment>
+        <Paragraph>
+          Another way to think of waveform addition, perhaps a more concrete
+          way, is to think musically. After all, when you play a chord on the
+          piano, you're really just adding 3 waves together!
+        </Paragraph>
+        <Paragraph>
+          The difference is the scale. With harmonics, the additional "notes"
+          are all multiples of the root frequency, whereas western music divides
+          an octave into 12 intervals.
+        </Paragraph>
+        <Paragraph>
+          Just for fun, here's what a C Major chord looks like, built out of 3
+          sine waves.
+        </Paragraph>
+
+        <MountWhenVisible
+          currentStep={currentStep}
+          belongsToStep="additive-synthesis-music"
+          estimatedSize={390}
+        >
+          <FrequencyGraph
+            shape="square"
+            baseFrequency={frequency}
+            baseAmplitude={amplitude}
+          />
+        </MountWhenVisible>
       </Fragment>
     ),
   },

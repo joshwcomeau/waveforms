@@ -1,7 +1,12 @@
 // @flow
-import { range, sum } from '../utils';
+import { COLORS } from '../constants';
+import { range, sum, convertHexToRGBA } from '../utils';
 
-import type { WaveformShape, WaveformPoint } from '../types';
+import type {
+  WaveformShape,
+  WaveformPoint,
+  WaveformAdditionType,
+} from '../types';
 import type { Props as WaveformProps } from '../components/Waveform';
 
 /**
@@ -347,13 +352,13 @@ export const convertProgressToCycle = (progress: number) =>
   (progress * 100) % 100;
 
 type GetHarmonicsForWaveArgs = {
-  shape?: WaveformShape,
+  harmonicsForShape?: WaveformShape,
   baseFrequency: number,
   baseAmplitude: number,
   maxNumberToGenerate: number,
 };
 export const getHarmonicsForWave = ({
-  shape = 'sine',
+  harmonicsForShape = 'sine',
   baseFrequency,
   baseAmplitude,
   maxNumberToGenerate,
@@ -363,7 +368,7 @@ export const getHarmonicsForWave = ({
     return [];
   }
 
-  switch (shape) {
+  switch (harmonicsForShape) {
     // Sine waves have no harmonics
     case 'sine':
       return [];
@@ -459,23 +464,103 @@ export const getHarmonicsForWave = ({
       });
     }
 
-    // While not technically a shape, we want to be able to show how noise
-    // cancelling works, by having the "harmonic" be an inverse of the base
-    // waveform.
-    // This is leaky af, as it's not a true harmonic. If I find the time, I'd
-    // like to pull this out into a proper abstraction.
-    case 'cancelling': {
+    default:
+      return [];
+  }
+};
+
+type GetWaveformsProps = {
+  type: WaveformAdditionType,
+  harmonicsForShape?: WaveformShape,
+  phase: number,
+  baseFrequency: number,
+  baseAmplitude: number,
+  numOfHarmonics: number,
+};
+
+export const getWaveforms = ({
+  type,
+  harmonicsForShape,
+  phase,
+  baseFrequency,
+  baseAmplitude,
+  numOfHarmonics,
+}: GetWaveformsProps) => {
+  switch (type) {
+    case 'phase': {
+      // Our phase ranges from 0 to 360, but we need to convert that to our
+      // 0-100 offset for the waves. Additionally, we want the value to go
+      // from 100-o, so that the phase moves to the right instead of the left.
+      const offset = 100 - phase * 100 / 360;
+
       return [
         {
           shape: 'sine',
           frequency: baseFrequency,
-          amplitude: baseAmplitude * -1,
-          ...delegated,
+          amplitude: baseAmplitude,
+          offset,
+          strokeWidth: 5,
+          color: convertHexToRGBA(COLORS.secondary[500], 0.6),
+        },
+        {
+          shape: 'sine',
+          frequency: baseFrequency,
+          amplitude: baseAmplitude,
+          offset: 0,
+          strokeWidth: 5,
+          color: convertHexToRGBA(COLORS.primary[500], 0.6),
         },
       ];
     }
 
+    case 'chord': {
+      const sharedProperties = {
+        shape: 'sine',
+        amplitude: 0.45,
+        offset: 0,
+        strokeWidth: 5,
+      };
+
+      return [
+        {
+          ...sharedProperties,
+          frequency: baseFrequency * 1.4983086478738652,
+          color: convertHexToRGBA(COLORS.tertiary[500], 0.6),
+        },
+        {
+          ...sharedProperties,
+          frequency: baseFrequency * 1.259913999044434,
+          color: convertHexToRGBA(COLORS.secondary[500], 0.6),
+        },
+        {
+          ...sharedProperties,
+          frequency: baseFrequency,
+          color: convertHexToRGBA(COLORS.primary[500], 0.6),
+        },
+      ];
+    }
+
+    case 'harmonics':
+      return [
+        ...getHarmonicsForWave({
+          harmonicsForShape,
+          baseFrequency,
+          baseAmplitude,
+          maxNumberToGenerate: numOfHarmonics,
+          strokeWidth: 5,
+          color: convertHexToRGBA(COLORS.secondary[500], 0.6),
+        }),
+        {
+          shape: 'sine',
+          frequency: baseFrequency,
+          amplitude: baseAmplitude,
+          offset: 0,
+          strokeWidth: 5,
+          color: convertHexToRGBA(COLORS.primary[500], 0.6),
+        },
+      ];
+
     default:
-      return [];
+      throw new Error('Unrecognized type for `IntroRouteWaveformAddition`');
   }
 };

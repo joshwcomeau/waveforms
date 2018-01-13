@@ -92,6 +92,7 @@ export const COLORS: Colors = {
 
 COLORS.primary = COLORS.indigo;
 COLORS.secondary = COLORS.pink;
+COLORS.tertiary = COLORS.orange;
 
 // Media queries
 export const BREAKPOINT_SIZES = {

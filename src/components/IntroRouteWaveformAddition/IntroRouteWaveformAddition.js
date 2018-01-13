@@ -6,9 +6,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
-import { COLORS } from '../../constants';
-import { convertHexToRGBA } from '../../utils';
-import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
+import { getWaveforms } from '../../helpers/waveform.helpers';
 
 import WaveformAddition from '../WaveformAddition';
 import WaveformAxis from '../WaveformAxis';
@@ -37,66 +35,6 @@ type Props = {
 };
 
 class IntroRouteWaveformAddition extends PureComponent<Props> {
-  getWaveforms(phase: number) {
-    const {
-      type,
-      baseFrequency,
-      baseAmplitude,
-      harmonicsForShape,
-      numOfHarmonics,
-    } = this.props;
-
-    switch (type) {
-      case 'phase': {
-        // Our phase ranges from 0 to 360, but we need to convert that to our
-        // 0-100 offset for the waves. Additionally, we want the value to go
-        // from 100-o, so that the phase moves to the right instead of the left.
-        const offset = 100 - phase * 100 / 360;
-
-        return [
-          {
-            shape: 'sine',
-            frequency: baseFrequency,
-            amplitude: baseAmplitude,
-            offset,
-            strokeWidth: 5,
-            color: convertHexToRGBA(COLORS.secondary[500], 0.6),
-          },
-          {
-            shape: 'sine',
-            frequency: baseFrequency,
-            amplitude: baseAmplitude,
-            offset: 0,
-            strokeWidth: 5,
-            color: convertHexToRGBA(COLORS.primary[500], 0.6),
-          },
-        ];
-      }
-
-      case 'harmonics':
-        return [
-          ...getHarmonicsForWave({
-            shape: harmonicsForShape,
-            baseFrequency: baseFrequency,
-            baseAmplitude: baseAmplitude,
-            maxNumberToGenerate: numOfHarmonics,
-            strokeWidth: 5,
-            color: convertHexToRGBA(COLORS.secondary[500], 0.6),
-          }),
-          {
-            shape: 'sine',
-            frequency: baseFrequency,
-            amplitude: baseAmplitude,
-            offset: 0,
-            strokeWidth: 5,
-            color: convertHexToRGBA(COLORS.primary[500], 0.6),
-          },
-        ];
-
-      default:
-        throw new Error('Unrecognized type for `IntroRouteWaveformAddition`');
-    }
-  }
   render() {
     const {
       width,
@@ -114,7 +52,7 @@ class IntroRouteWaveformAddition extends PureComponent<Props> {
         <WaveformWrapper>
           <WaveformAddition
             size={width}
-            waveforms={this.getWaveforms(phase)}
+            waveforms={getWaveforms(this.props)}
             convergence={convergence}
           />
 

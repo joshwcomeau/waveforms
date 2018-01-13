@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { COLORS } from '../../constants';
 import { debounce } from '../../utils';
-import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
+import { getWaveforms } from '../../helpers/waveform.helpers';
 import { getApproximateWindowHeight } from '../../helpers/responsive.helpers';
 
 import MaxWidthWrapper from '../MaxWidthWrapper';
@@ -217,6 +217,7 @@ class IntroRoute extends PureComponent<Props, State> {
       currentStep,
       amplitude,
       frequency,
+      phase,
       harmonicsForShape,
       numOfHarmonics,
       audioVolume,
@@ -259,16 +260,18 @@ class IntroRoute extends PureComponent<Props, State> {
 
             {stepData.useWaveformAddition &&
               numOfHarmonics > 0 &&
-              getHarmonicsForWave({
-                shape: harmonicsForShape,
+              getWaveforms({
+                type: stepData.waveformAdditionType,
                 baseFrequency: adjustedAudibleFrequency,
                 baseAmplitude: amplitude,
-                maxNumberToGenerate: numOfHarmonics,
+                harmonicsForShape,
+                phase,
+                numOfHarmonics,
               })
                 .filter(({ frequency }) => frequency < 20000)
-                .map(({ frequency, amplitude }) => (
+                .map(({ frequency, amplitude }, index) => (
                   <Oscillator
-                    key={frequency}
+                    key={index}
                     shape="sine"
                     amplitude={amplitude}
                     frequency={frequency}

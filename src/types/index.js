@@ -5,6 +5,6 @@ export type WaveformPoint = { x: number, y: number };
 
 export type HarmonicsForShape = WaveformShape | 'cancellable';
 
-export type WaveformAdditionType = 'harmonics' | 'phase';
+export type WaveformAdditionType = 'harmonics' | 'phase' | 'chord';
 
 export type AvailableIcon = 'volumeOff' | 'volumeOn';
