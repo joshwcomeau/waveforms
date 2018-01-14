@@ -1152,12 +1152,12 @@ export const steps = {
   },
   'additive-synthesis-music': {
     ...defaults,
+    frequencyOverride: 2.04375,
     useWaveformAddition: true,
     waveformAdditionType: 'chord',
     showConvergenceSlider: true,
     convergenceOverride: 0,
     phaseOverride: 0,
-    frequencyOverride: 2,
     children: ({ frequency, amplitude, currentStep }) => (
       <Fragment>
         <Paragraph>
@@ -1181,7 +1181,8 @@ export const steps = {
           estimatedSize={390}
         >
           <FrequencyGraph
-            shape="square"
+            shape="sine"
+            type="chord"
             baseFrequency={frequency}
             baseAmplitude={amplitude}
           />

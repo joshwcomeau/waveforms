@@ -4,14 +4,15 @@ import styled from 'styled-components';
 
 import { DEFAULT_WAVEFORM_SHAPE, COLORS } from '../../constants';
 import { range, roundTo } from '../../utils';
-import { getHarmonicsForWave } from '../../helpers/waveform.helpers';
+import { getWaveforms } from '../../helpers/waveform.helpers';
 
 import FadeTransition from '../FadeTransition';
 
-import type { WaveformShape } from '../../types';
+import type { WaveformShape, WaveformType } from '../../types';
 
 type Props = {
   shape: WaveformShape,
+  type: WaveformType,
   baseFrequency: number,
   baseAmplitude: number,
   xMin: number,
@@ -31,6 +32,7 @@ const VIEWBOX_HEIGHT = VIEWBOX_WIDTH * ASPECT_RATIO;
 class FrequencyGraph extends PureComponent<Props, State> {
   static defaultProps = {
     shape: DEFAULT_WAVEFORM_SHAPE,
+    type: 'harmonics',
     baseFrequency: 1,
     baseAmplitude: 1,
     xMin: 0,
@@ -68,16 +70,14 @@ class FrequencyGraph extends PureComponent<Props, State> {
   };
 
   renderBars() {
-    const { baseFrequency, baseAmplitude, shape, xMax } = this.props;
-    const harmonics = [
-      { frequency: baseFrequency, amplitude: baseAmplitude },
-      ...getHarmonicsForWave({
-        shape,
-        baseFrequency,
-        baseAmplitude,
-        maxNumberToGenerate: shape === 'sawtooth' ? xMax * 2 : xMax,
-      }),
-    ];
+    const { baseFrequency, baseAmplitude, shape, type, xMax } = this.props;
+    const harmonics = getWaveforms({
+      harmonicsForShape: shape,
+      type,
+      baseFrequency,
+      baseAmplitude,
+      numOfHarmonics: shape === 'sawtooth' ? xMax * 2 : xMax,
+    });
 
     // Filter out any harmonics that are too high-frequency to draw.
     const drawableHarmonics = harmonics.filter(

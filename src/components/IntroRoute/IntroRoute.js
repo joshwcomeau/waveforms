@@ -244,7 +244,7 @@ class IntroRoute extends PureComponent<Props, State> {
     // oscillator that needs to vibrate at normal ranges.
     // By multiplying by 100, we ensure that doubling the unit still augments
     // the pitch by an octave. We also add 100 to make the low-end audible.
-    const adjustedAudibleFrequency = frequency * 100;
+    const adjustedAudibleFrequency = frequency * 2 ** 7;
 
     return (
       <AudioOutput masterVolume={effectiveAudioVolume}>

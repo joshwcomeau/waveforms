@@ -472,7 +472,7 @@ export const getHarmonicsForWave = ({
 type GetWaveformsProps = {
   type: WaveformAdditionType,
   harmonicsForShape?: WaveformShape,
-  phase: number,
+  phase?: number,
   baseFrequency: number,
   baseAmplitude: number,
   numOfHarmonics: number,
@@ -481,7 +481,7 @@ type GetWaveformsProps = {
 export const getWaveforms = ({
   type,
   harmonicsForShape,
-  phase,
+  phase = 0,
   baseFrequency,
   baseAmplitude,
   numOfHarmonics,
@@ -524,17 +524,17 @@ export const getWaveforms = ({
       return [
         {
           ...sharedProperties,
-          frequency: baseFrequency * 1.4983086478738652,
+          frequency: baseFrequency,
           color: convertHexToRGBA(COLORS.tertiary[500], 0.6),
         },
         {
           ...sharedProperties,
-          frequency: baseFrequency * 1.259913999044434,
+          frequency: baseFrequency * 1.2599388379204892,
           color: convertHexToRGBA(COLORS.secondary[500], 0.6),
         },
         {
           ...sharedProperties,
-          frequency: baseFrequency,
+          frequency: baseFrequency * 1.4984709480122322,
           color: convertHexToRGBA(COLORS.primary[500], 0.6),
         },
       ];
