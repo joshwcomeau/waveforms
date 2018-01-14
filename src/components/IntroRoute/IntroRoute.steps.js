@@ -207,9 +207,8 @@ export const steps = {
         <Paragraph>
           This guide is aimed at a general audience–no prior knowledge is
           required. It may be of particular interest to musicians, producers,
-          and aspiring audio engineers, but the goal is to make it compelling
-          enough that even folks without a particular passion for audio find it
-          accessible and interesting.
+          and aspiring audio engineers, but it's designed to be accessible to
+          everyone!
         </Paragraph>
       </Fragment>
     ),
@@ -260,14 +259,15 @@ export const steps = {
         <SectionTitle>1. Reading Waveform Graphs</SectionTitle>
         <Paragraph>
           First, let's take a closer look at the waveform{' '}
-          <PortraitOnly>above</PortraitOnly>
+          <PortraitOnly>below</PortraitOnly>
           <LandscapeOnly>to the left</LandscapeOnly>.
         </Paragraph>
 
         <Paragraph>
           We're looking at a graph, a data visualization. The blue line is the
-          data we're graphing, and it represents a waveform. Specifically, we're
-          graphing the waveform's <strong>amplitude over time</strong>.
+          data we're graphing, and it represents a sound wave. Specifically,
+          it's telling us about the wave's <strong>amplitude</strong>, and how
+          it changes over <strong>time</strong>.
         </Paragraph>
 
         <Paragraph>Let's dig into what that means.</Paragraph>
@@ -302,26 +302,38 @@ export const steps = {
       <Fragment>
         <Heading>Amplitude</Heading>
         <Paragraph>
-          The vertical line, our Y axis, represents <strong>amplitude</strong>.
-          We'll go into more detail in a bit about what amplitude really is, but
-          for now, you can think of it as volume. The bigger the wave, the
-          louder the sound.
+          When you pluck a guitar string, it oscillates back and forth very
+          quickly. This is a kind of vibration. The string vibrates, which
+          causes the air around it to vibrate; this is how sound travels,
+          through a chain reaction of vibrating air molecules. Eventually that
+          vibration makes it to your ear, where the brain translates it into
+          sound.
         </Paragraph>
+
+        <Paragraph>
+          The Y axis in our waveform graph is telling us about that vibration.
+          We're zooming in and seeing how, for example, a guitar string moves up
+          and down over time.
+        </Paragraph>
+
+        <Paragraph>
+          <strong>Amplitude</strong> is a measure of the strength of the
+          vibration. When you crank the knob on a guitar amplifier, for example,
+          you're telling the speaker to vibrate more intensely. Like a guitar
+          string, speakers just move back and forth really quickly to create
+          sound. The greater the amplitude, the further the speaker cone moves,
+          in both directions, from its resting position.
+        </Paragraph>
+
         <Paragraph>
           The unit of measurement for amplitude is the <em>decibel</em>,
           abbreviated as "dB". Decibels are a relative unit, and there are many
           different scales that they can be relative to. In our case, the value
-          ranges from 0 to 1.
-        </Paragraph>
-        <Paragraph>
-          Note that while amplitude ranges from 0 to 1, there are negative
-          values in the waveform graph. Waveforms oscillate, back and forth,
-          between negative and positive values. The amplitude controls how far
-          it deviates from 0, in both directions.
+          ranges from 0 (silent) to 1 (as loud as possible).
         </Paragraph>
 
         <Paragraph>
-          We'll go into more detail about this in the next section.
+          Amplitude is covered in greater detail in Part 2, below.
         </Paragraph>
       </Fragment>
     ),
@@ -445,7 +457,7 @@ export const steps = {
           </Paragraph>
           <Paragraph>
             The waves you hear when you unmute the sound are running at{' '}
-            <strong>100x</strong> the selected frequency.
+            <strong>128x</strong> the selected frequency.
           </Paragraph>
         </Sidebar>
       </Fragment>
@@ -480,27 +492,14 @@ export const steps = {
     showFrequencySlider: true,
     children: (
       <Fragment>
-        <Paragraph>
-          In summary, a waveform is just a schematic that describes how a sound
-          wave's amplitude changes over time. When the waveform is
-          periodic—meaning, its shape repeats over and over—the sound has a
-          pitch. The quicker the repetition, the higher the pitch.
-        </Paragraph>
-
-        <Sidebar>
+        <Sidebar type="summary">
           <Paragraph>
-            If all of these terms are new to you, this can be a lot to take in!
-            Don't feel bad if it isn't clicking yet; hopefully, the next section
-            will help make all of this theoretical stuff tangible.
-          </Paragraph>
-
-          <Paragraph>
-            If it still doesn't make sense by the end of this exploration, I
-            apologize. The fault lies with me, not with you! Please feel free to{' '}
-            <Link external to="mailto:joshwcomeau@gmail.com">
-              reach out
-            </Link>{' '}
-            and let me know which parts are confusing.
+            A waveform is just a schematic that displays the amplitude and
+            frequency of a sound wave. Amplitude represents the strength of the
+            sound wave's vibration, which dictates how loud the sound is. When
+            the waveform is periodic—meaning, its shape repeats over and
+            over—the sound has a pitch. The quicker the repetition, the higher
+            the pitch.
           </Paragraph>
         </Sidebar>
       </Fragment>
@@ -519,9 +518,9 @@ export const steps = {
         <SectionTitle>2. How Sound Works</SectionTitle>
 
         <Paragraph>
-          So far, what we've covered has been very abstract. We know that waves
-          are just changes in amplitude over time, but what does that actually
-          mean?
+          In Part 1, we looked at the abstract definition for amplitude and
+          frequency. We spoke a bit about how sound is vibration, but what does
+          that actually look like, in real-world terms?
         </Paragraph>
 
         <Paragraph>
@@ -568,7 +567,7 @@ export const steps = {
         </MountWhenVisible>
 
         <Paragraph>
-          Each dot is oscillating back and forth by an amount specified by the
+          Each dot is oscillating back and forth by an amount controlled by the
           amplitude, and with a speed specified by the frequency.
         </Paragraph>
 
@@ -598,9 +597,9 @@ export const steps = {
         <Paragraph>
           The waveform we've been looking at{' '}
           <LandscapeOnly>on the left</LandscapeOnly>
-          <PortraitOnly>above</PortraitOnly> shows the trajectory of a single
+          <PortraitOnly>below</PortraitOnly> shows the trajectory of a single
           air molecule. Compare the blue dot added to the waveform graph
-          indicating the current amplitude with the first column of air
+          indicating the current displacement with the first column of air
           molecules in the grid below:
         </Paragraph>
 
@@ -619,7 +618,7 @@ export const steps = {
 
         <Paragraph>
           Because our waveform graph is just a representation of the change in
-          amplitude over time, it maps directly to what's actually happening
+          displacement over time, it maps directly to what's actually happening
           with the air molecules!
         </Paragraph>
 
