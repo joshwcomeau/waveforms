@@ -33,6 +33,7 @@ export type IntroStep =
   | 'about-sound-toggling'
   | 'reading-waveform-graphs-intro'
   | 'x-axis-time'
+  | 'y-axis-displacement'
   | 'y-axis-amplitude'
   | 'y-axis-amplitude-with-control'
   | 'frequency-introduction'
@@ -67,6 +68,7 @@ export const INTRO_STEPS: Array<IntroStep> = [
   'about-sound-toggling',
   'reading-waveform-graphs-intro',
   'x-axis-time',
+  'y-axis-displacement',
   'y-axis-amplitude',
   'y-axis-amplitude-with-control',
   'frequency-introduction',
@@ -180,6 +182,13 @@ const defaults: StepData = {
   getMargin: marginFunctions.large,
 };
 
+const waveformPosition = (
+  <Fragment>
+    <PortraitOnly>below</PortraitOnly>
+    <LandscapeOnly>to the left</LandscapeOnly>
+  </Fragment>
+);
+
 export const steps = {
   title: {
     ...defaults,
@@ -256,11 +265,9 @@ export const steps = {
     ...defaults,
     children: (
       <Fragment>
-        <SectionTitle>1. Reading Waveform Graphs</SectionTitle>
+        <SectionTitle>1. Reading Waveforms</SectionTitle>
         <Paragraph>
-          First, let's take a closer look at the waveform{' '}
-          <PortraitOnly>below</PortraitOnly>
-          <LandscapeOnly>to the left</LandscapeOnly>.
+          First, let's take a closer look at the waveform {waveformPosition}.
         </Paragraph>
 
         <Paragraph>
@@ -292,6 +299,68 @@ export const steps = {
       </Fragment>
     ),
   },
+  'y-axis-displacement': {
+    ...defaults,
+    waveformOpacity: 0.5,
+    showYAxisLabels: true,
+    showXAxis: false,
+    getMargin: marginFunctions.xsmall,
+    children: (
+      <Fragment>
+        <Heading>Displacement</Heading>
+        <Paragraph>
+          When you pluck a guitar's string, you cause the string to wobble back
+          and forth. If you had a zoomed-in, slow-motion camera, you'd be able
+          to see that it oscillates from side to side, like a clock's pendulum.
+        </Paragraph>
+
+        <Paragraph>
+          If you had the world's smallest ruler, you could measure the distance
+          that the string moves from its default, resting position.
+        </Paragraph>
+
+        <Paragraph>
+          When the guitar string vibrates, it causes a chain reaction with the
+          air molecules around it; they all start vibrating as well, radiating
+          outwards.
+        </Paragraph>
+
+        <Paragraph>
+          Our Y-axis measures <strong>displacement</strong> of air molecules.
+          It's a measure of a sound wave's loudness; a lightly-strummed guitar
+          string only vibrates a little bit, so the displacement would be tiny.
+          If you pick the string, pull it back an inch, and release, the
+          string's displacement would be much higher, which would create a much
+          louder sound wave.
+        </Paragraph>
+
+        <Paragraph>
+          The waveform {waveformPosition} shows a single oscillation of a sound
+          wave. It starts by displacing the air molecule in the positive
+          direction by '1', and then in the negative direction by '-1'.
+        </Paragraph>
+
+        <Sidebar>
+          <Paragraph>
+            This is not a feature unique to guitar strings. Speakers work much
+            the same way; if you play music loud enough through a speaker, you
+            may notice its cone actually moving back and forth; the speaker
+            moves, to kick-off the chain reaction of vibrating air molecules.
+          </Paragraph>
+
+          <Paragraph>
+            Indeed, this is a fundamental feature of sound. Sound is created by
+            something vibrating, and that vibration moves through the air in the
+            form of a sound wave.
+          </Paragraph>
+
+          <Paragraph>
+            This idea is explored in much greater detail in Part 2, below.
+          </Paragraph>
+        </Sidebar>
+      </Fragment>
+    ),
+  },
   'y-axis-amplitude': {
     ...defaults,
     waveformOpacity: 0.5,
@@ -302,38 +371,22 @@ export const steps = {
       <Fragment>
         <Heading>Amplitude</Heading>
         <Paragraph>
-          When you pluck a guitar string, it oscillates back and forth very
-          quickly. This is a kind of vibration. The string vibrates, which
-          causes the air around it to vibrate; this is how sound travels,
-          through a chain reaction of vibrating air molecules. Eventually that
-          vibration makes it to your ear, where the brain translates it into
+          Waveforms are abstract representations of sound waves. While a real
+          sound wave might displace an air molecule by 4 nanometers, we tend to
+          use abstract measurements when dealing with waveforms.
+        </Paragraph>
+
+        <Paragraph>
+          This is where <strong>amplitude</strong> comes in. The maximum
+          displacement of a waveform is known as the amplitude, and it's
+          measured in decibels (dB). In our case, it ranges from 0 (silent) to 1
+          (maximum displacement).
+        </Paragraph>
+
+        <Paragraph>
+          Amplitude can be thought of as loudness. While the underlying mechanic
+          is more complicated, the end result is that more amplitude = louder
           sound.
-        </Paragraph>
-
-        <Paragraph>
-          The Y axis in our waveform graph is telling us about that vibration.
-          We're zooming in and seeing how, for example, a guitar string moves up
-          and down over time.
-        </Paragraph>
-
-        <Paragraph>
-          <strong>Amplitude</strong> is a measure of the strength of the
-          vibration. When you crank the knob on a guitar amplifier, for example,
-          you're telling the speaker to vibrate more intensely. Like a guitar
-          string, speakers just move back and forth really quickly to create
-          sound. The greater the amplitude, the further the speaker cone moves,
-          in both directions, from its resting position.
-        </Paragraph>
-
-        <Paragraph>
-          The unit of measurement for amplitude is the <em>decibel</em>,
-          abbreviated as "dB". Decibels are a relative unit, and there are many
-          different scales that they can be relative to. In our case, the value
-          ranges from 0 (silent) to 1 (as loud as possible).
-        </Paragraph>
-
-        <Paragraph>
-          Amplitude is covered in greater detail in Part 2, below.
         </Paragraph>
       </Fragment>
     ),
@@ -365,7 +418,9 @@ export const steps = {
         <Sidebar type="summary">
           <Paragraph>
             A waveform is a <strong>graph</strong> that shows a wave's change in{' '}
-            <strong>amplitude</strong> over <strong>time</strong>.
+            <strong>displacement</strong> over <strong>time</strong>. A
+            waveform's <strong>amplitude</strong> controls the wave's maximum
+            displacement.
           </Paragraph>
         </Sidebar>
       </Fragment>
@@ -456,8 +511,9 @@ export const steps = {
             able to see a 440Hz wave oscillate: it's much too fast.
           </Paragraph>
           <Paragraph>
-            The waves you hear when you unmute the sound are running at{' '}
-            <strong>128x</strong> the selected frequency.
+            The wave you hear when you unmute the sound is about{' '}
+            <strong>100 times faster</strong> than the waveform being
+            visualized.
           </Paragraph>
         </Sidebar>
       </Fragment>
@@ -487,19 +543,14 @@ export const steps = {
   },
   'reading-waveform-graphs-summary': {
     ...defaults,
-    getMargin: marginFunctions.small,
-    showAmplitudeSlider: true,
-    showFrequencySlider: true,
     children: (
       <Fragment>
         <Sidebar type="summary">
           <Paragraph>
-            A waveform is just a schematic that displays the amplitude and
-            frequency of a sound wave. Amplitude represents the strength of the
-            sound wave's vibration, which dictates how loud the sound is. When
-            the waveform is periodic—meaning, its shape repeats over and
-            over—the sound has a pitch. The quicker the repetition, the higher
-            the pitch.
+            A waveform is just a schematic that helps us understand sound waves.
+            They measure an air molecule's displacement over time. We can adjust
+            the amplitude of a waveform to make it louder/quieter, and we can
+            adjust the frequency of a waveform to make the pitch higher/lower.
           </Paragraph>
         </Sidebar>
       </Fragment>
@@ -518,13 +569,9 @@ export const steps = {
         <SectionTitle>2. How Sound Works</SectionTitle>
 
         <Paragraph>
-          In Part 1, we looked at the abstract definition for amplitude and
-          frequency. We spoke a bit about how sound is vibration, but what does
-          that actually look like, in real-world terms?
-        </Paragraph>
-
-        <Paragraph>
-          To answer this question, we need to look at some physics.
+          In Part 1, we scratched the surface of how sound works, by thinking of
+          displacement in terms of a vibrating guitar string, and the effect it
+          has on sound molecules. Let's see if we can unravel this a bit more.
         </Paragraph>
       </Fragment>
     ),
@@ -550,8 +597,7 @@ export const steps = {
         </Paragraph>
 
         <Paragraph>
-          Let's take a look at how this works. Imagine that each dot in this
-          grid is an air molecule:
+          Imagine that each dot in this grid is an air molecule:
         </Paragraph>
 
         <MountWhenVisible
@@ -567,8 +613,8 @@ export const steps = {
         </MountWhenVisible>
 
         <Paragraph>
-          Each dot is oscillating back and forth by an amount controlled by the
-          amplitude, and with a speed specified by the frequency.
+          Each dot is oscillating back and forth by a displacement controlled by
+          the amplitude, and with a speed specified by the frequency.
         </Paragraph>
 
         <Paragraph>
@@ -595,12 +641,10 @@ export const steps = {
     children: ({ amplitude, frequency, progress, currentStep }) => (
       <Fragment>
         <Paragraph>
-          The waveform we've been looking at{' '}
-          <LandscapeOnly>on the left</LandscapeOnly>
-          <PortraitOnly>below</PortraitOnly> shows the trajectory of a single
-          air molecule. Compare the blue dot added to the waveform graph
-          indicating the current displacement with the first column of air
-          molecules in the grid below:
+          The waveform we've been looking at {waveformPosition} shows the
+          oscillation of a single air molecule. Compare the blue dot added to
+          the waveform graph indicating the current displacement with the first
+          column of air molecules in the grid below:
         </Paragraph>
 
         <MountWhenVisible
@@ -613,6 +657,7 @@ export const steps = {
             amplitude={amplitude}
             frequency={frequency}
             progress={progress}
+            direction="vertical"
           />
         </MountWhenVisible>
 
@@ -628,23 +673,6 @@ export const steps = {
           <SliderIcon fieldName="frequency" /> to see how it affects the air
           molecules in the grid.
         </Paragraph>
-
-        <Sidebar>
-          <Paragraph>
-            Curious about how our ears translate these waves into sound that the
-            brain understands? It's outside the scope of this guide, but it's
-            super interesting stuff!
-          </Paragraph>
-          <Paragraph>
-            <Link
-              external
-              target="_blank"
-              to="https://www.nidcd.nih.gov/health/how-do-we-hear"
-            >
-              Learn more about our ears and sound
-            </Link>.
-          </Paragraph>
-        </Sidebar>
       </Fragment>
     ),
   },
@@ -655,16 +683,47 @@ export const steps = {
       <Fragment>
         <SectionTitle>3. Harmonics</SectionTitle>
         <Paragraph>
-          So far, we've been looking at the sine waveform exclusively, but there
-          are plenty of other waveforms!
+          So far, we've been tweaking the amplitude and frequency of a waveform,
+          but we've been using the same <strong>waveform shape</strong> all
+          along.
         </Paragraph>
 
         <Paragraph>
-          We started with the sine because it is the "fundamental" waveform.
-          What that means is that when a sine wave vibrates the air at 440Hz,
-          the only thing you hear is a 440Hz tone. Sine waves are the "vanilla"
-          wave; it doesn't have any bells or whistles.
+          The shape of a waveform refers to the curve of the waveform line; in
+          other words, how the displacement changes over time.
         </Paragraph>
+
+        <Paragraph>
+          We've been looking at a <strong>sine waveform</strong>. Its origins
+          come from trigonometry, and it's known as the{' '}
+          <em>fundamental waveform</em>.
+        </Paragraph>
+
+        <Paragraph>
+          This is because it's pure: there are no "side effects". When you play
+          a 440Hz sine wave, the only frequency you hear is 440Hz. Sine waves
+          are the "vanilla" wave; it doesn't have any bells or whistles.
+        </Paragraph>
+
+        <Paragraph>
+          When a waveform has "side effect" frequencies, we call them{' '}
+          <strong>harmonics</strong>.
+        </Paragraph>
+
+        <Sidebar>
+          <Paragraph>
+            Curious to learn more about how the sine wave is derived from
+            mathematics? There's an awesome{' '}
+            <Link
+              external
+              target="_blank"
+              to="https://www.khanacademy.org/math/algebra2/trig-functions/graphs-of-sine-cosine-tangent-alg2/v/we-graph-domain-and-range-of-sine-function"
+            >
+              Khan Academy video
+            </Link>{' '}
+            on the subject!
+          </Paragraph>
+        </Sidebar>
       </Fragment>
     ),
   },
@@ -680,8 +739,8 @@ export const steps = {
     children: ({ frequency, amplitude, currentStep }) => (
       <Fragment>
         <Paragraph>
-          To understand what this means, let's take a look at a graph of the
-          frequencies audible for a given waveform. Let's start with the sine
+          To help us understand how harmonics work, we need a way to represent
+          the additional frequencies. Let's use a bar graph. Here's the sine
           wave's graph:
         </Paragraph>
 
@@ -698,9 +757,10 @@ export const steps = {
         </MountWhenVisible>
 
         <Paragraph>
-          This graph is pretty uninteresting: we're playing a{' '}
-          {roundTo(frequency, 1)}Hz tone, and so we see a spike at{' '}
-          {roundTo(frequency, 1)}Hz.
+          This graph is pretty boring. Because the sine waveform is the{' '}
+          <em>fundamental</em> waveform, it doesn't have any harmonies! What you
+          see is what you get. A {roundTo(frequency, 1)}Hz wave plays a{' '}
+          {roundTo(frequency, 1)}Hz tone, and that's it.
         </Paragraph>
         <Sidebar>
           <Paragraph>
@@ -723,23 +783,27 @@ export const steps = {
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
       <Fragment>
-        <Heading>The Triangle Wave</Heading>
+        <Heading>The Triangle Waveform</Heading>
+        <Paragraph>Woo, our first non-sine waveform!</Paragraph>
 
         <Paragraph>
-          It looks quite a bit like a sine wave, but with the curviness removed.
+          It looks quite a bit like the sine, but with the curviness removed.
           Instead, straight lines connect in triangle-like shapes.
         </Paragraph>
 
         <Paragraph>
           What effect does this have on the way it sounds? If you haven't
-          already, go ahead and enable sound using the button in the top-right,
-          and scroll between this and the previous section to hear the
-          difference.
+          already, go ahead and enable sound using the{' '}
+          <LandscapeOnly>
+            <KeyboardCharacter>M</KeyboardCharacter> key
+          </LandscapeOnly>
+          <PortraitOnly>audio controls above</PortraitOnly>, and scroll between
+          this and the previous section to hear the difference.
         </Paragraph>
 
         <Paragraph>
           Notice that the sound is a little "brighter"? It doesn't quite sound
-          so muffled? This is because of <strong>harmonics</strong>
+          so muffled? This is because of <strong>harmonics</strong>.
         </Paragraph>
       </Fragment>
     ),
@@ -755,9 +819,9 @@ export const steps = {
     children: ({ frequency, amplitude, currentStep }) => (
       <Fragment>
         <Paragraph>
-          Harmonics are additional frequencies that happen automatically with
-          certain waveforms. We'll learn more about why that is soon, but first,
-          let's graph these additional harmonics:
+          Harmonics are additional frequencies that are created by certain
+          waveforms. We'll learn more about why that is soon, but first, let's
+          graph these additional harmonics:
         </Paragraph>
 
         <MountWhenVisible
@@ -771,6 +835,29 @@ export const steps = {
             baseAmplitude={amplitude}
           />
         </MountWhenVisible>
+
+        <Paragraph>
+          Harmonics are always interval-based. Different waveforms have
+          different selections, but they always follow the same pattern.
+        </Paragraph>
+
+        <UnorderedList>
+          <li>First interval (root frequency): {roundTo(frequency, 2)}Hz.</li>
+          <li>
+            Second interval (2x frequency): {roundTo(frequency * 2, 2)}Hz.
+          </li>
+          <li>Third interval (3x frequency): {roundTo(frequency * 3, 2)}Hz.</li>
+          <li>
+            Fourth interval (4x frequency): {roundTo(frequency * 4, 2)}Hz.
+          </li>
+          <li>... This pattern continues to infinity.</li>
+        </UnorderedList>
+
+        <Paragraph>
+          Triangle waves only have <em>odd harmonics</em>. That means they have
+          the 1st interval, 3rd interval, 5th interval, and so on. They also
+          decay in terms of amplitude very rapidly.
+        </Paragraph>
       </Fragment>
     ),
   },
@@ -785,12 +872,12 @@ export const steps = {
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, progress, currentStep }) => (
       <Fragment>
-        <Heading>The Square Wave</Heading>
+        <Heading>The Square Waveform</Heading>
 
         <Paragraph>
-          The square wave is arguably the most extreme of the common periodic
-          waveforms. It jumps between the highest and lowest possible values.
-          It's a binary wave: it's either +1 or -1.
+          The square waveform is arguably the most extreme of the common
+          periodic waveforms. It jumps between the highest and lowest possible
+          values. It's a binary wave: it's either +1 or -1.
         </Paragraph>
       </Fragment>
     ),
@@ -805,10 +892,10 @@ export const steps = {
     children: ({ frequency, amplitude, currentStep }) => (
       <Fragment>
         <Paragraph>
-          In terms of harmonics, the square wave features exactly the same
-          intervals as the triangle wave: Every "odd" harmonic (3rd, 5th, 7th,
-          etc). The difference between the square and the triangle is that the
-          square's harmonics are louder: they don't fall off so quickly, so you
+          In terms of harmonics, the square waveform features exactly the same
+          intervals as the triangle waveform: Every "odd" harmonic (3rd, 5th,
+          7th, etc). The difference between the square and the triangle is that
+          the square's harmonics are louder: they don't decay so quickly, so you
           get more higher frequencies. This is plainly noticeable in the sound:
           squares sound much "brighter" than triangles.
         </Paragraph>
@@ -853,12 +940,12 @@ export const steps = {
     getMargin: marginFunctions.small,
     children: ({ frequency, amplitude, currentStep }) => (
       <Fragment>
-        <Heading>The Sawtooth Wave</Heading>
+        <Heading>The Sawtooth Waveform</Heading>
 
         <Paragraph>
           Finally, we have the sawtooth. Named after the blades of a saw, This
-          waveform exhibits the linear rise of the triangle wave with the hard
-          drop of the square wave.
+          waveform exhibits the linear rise of the triangle waveform with the
+          hard drop of the square waveform.
         </Paragraph>
 
         <Paragraph>
@@ -866,7 +953,7 @@ export const steps = {
           you run a bow across a violin's string, the friction between the two
           items causes the string to slip and catch, which causes the string to
           vibrate in a sawtooth-like pattern. Of course, real instruments
-          produce far more complex waveforms than these basic ones!
+          produce far more complex waves than these basic waveforms!
         </Paragraph>
       </Fragment>
     ),
@@ -882,8 +969,8 @@ export const steps = {
       <Fragment>
         <Paragraph>
           In terms of harmonics, sawtooth waveforms have additional frequencies
-          at every interval, unlike triangles and squares which only add
-          harmonics at every second interval.
+          at <em>every interval</em>, unlike triangles and squares which only
+          have odd harmonics.
         </Paragraph>
 
         <MountWhenVisible
@@ -902,7 +989,7 @@ export const steps = {
   },
   'additive-synthesis-intro': {
     ...defaults,
-    // frequencyOverride: 2,
+    frequencyOverride: 2,
     children: (
       <Fragment>
         <SectionTitle>4. Additive Synthesis</SectionTitle>
@@ -966,14 +1053,14 @@ export const steps = {
 
         <Paragraph>
           If you've ever used audio editing software, you've seen how a full
-          song - which is comprised of many different instruments and sounds -
-          creates a single wave. What we're looking at over there is not a wave
-          yet: we have to combine the 3 lines into 1.
+          song—which is comprised of many different instruments and
+          sounds—creates a single waveform. What we're looking at over there is
+          not a waveform yet: we have to merge the two lines to form one.
         </Paragraph>
 
         <Paragraph>
-          This is known as <strong>waveform addition</strong>, and it makes
-          sense when you think of it in real-world terms.
+          This is known as <strong>waveform addition</strong>. Let's try to
+          understand it in real-world terms.
         </Paragraph>
 
         <Paragraph>
@@ -984,10 +1071,11 @@ export const steps = {
         </Paragraph>
 
         <Paragraph>
-          How does the addition work? It's arithmetic: imagine the waveform
-          graph as a bunch of individual points. At each point, you simply add
-          the individual amplitude values. The new set of points is our new
-          single waveform.
+          So, we just need to "add" the two waveforms together to get our end
+          result. How does the addition work? It's arithmetic: imagine the
+          waveform graph as a bunch of individual points. At each point, you
+          simply add the individual displacement values. The new set of points
+          is our new single waveform.
         </Paragraph>
       </Fragment>
     ),
@@ -1022,12 +1110,24 @@ export const steps = {
       <Fragment>
         <Paragraph>
           You might be wondering where the values for that first harmonic came
-          from. Why did we add a wave at 3x the frequency and 1/3rd the
-          amplitude?
+          from. Why did we choose these waveforms specifically?
         </Paragraph>
 
+        <UnorderedList>
+          <li>
+            <strong style={{ color: COLORS.primary[500] }}>1Hz at 1dB</strong>{' '}
+            (our base note)
+          </li>
+          <li>
+            <strong style={{ color: COLORS.secondary[500] }}>
+              3Hz at 0.33dB
+            </strong>{' '}
+            (our first harmonic)
+          </li>
+        </UnorderedList>
+
         <Paragraph>
-          The answer is that we <em>reverse engineered</em> the square wave.
+          The answer is that we <em>reverse engineered</em> the square waveform.
           Remember this chart, showing the harmonics for a square wave?
         </Paragraph>
 
@@ -1062,8 +1162,8 @@ export const steps = {
         <Paragraph>
           The more harmonics we add from this chart, the more our waveform
           starts to look like a square wave. Use the new{' '}
-          <strong>Number of Harmonics</strong> slider to change the number
-          rendered, and see how it affects the converged line.
+          <SliderIcon fieldName="# of Harmonics" /> to change the number, and
+          see how it affects the converged line.
         </Paragraph>
 
         <Sidebar type="warning">
@@ -1079,7 +1179,7 @@ export const steps = {
   },
   'additive-synthesis-phase': {
     ...defaults,
-    frequencyOverride: 1,
+    frequencyOverride: 2,
     amplitudeOverride: 0.75,
     useWaveformAddition: true,
     waveformAdditionType: 'phase',
@@ -1155,10 +1255,12 @@ export const steps = {
     useWaveformAddition: true,
     waveformAdditionType: 'chord',
     showConvergenceSlider: true,
+    showFrequencySlider: true,
     convergenceOverride: 0,
     phaseOverride: 0,
     children: ({ frequency, amplitude, currentStep }) => (
       <Fragment>
+        <Heading>Chords</Heading>
         <Paragraph>
           Another way to think of waveform addition, perhaps a more concrete
           way, is to think musically. After all, when you play a chord on the
@@ -1186,6 +1288,19 @@ export const steps = {
             baseAmplitude={amplitude}
           />
         </MountWhenVisible>
+
+        <Paragraph>
+          A fundamental truth about sound is that there are only 2 variables:{' '}
+          <strong>time</strong> and <strong>displacement</strong>. We can create
+          any sound imaginable by simply displacing air molecules by the right
+          amount at the right time.
+        </Paragraph>
+
+        <Paragraph>
+          Both the harmonics associated with certain waveforms and the
+          additional waves needed to form chords are just the math needed to
+          produce the right displacement at the right time.
+        </Paragraph>
       </Fragment>
     ),
   },

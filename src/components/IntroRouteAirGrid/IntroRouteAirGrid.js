@@ -14,6 +14,7 @@ type Props = {
   amplitude: number,
   frequency: number,
   progress: number,
+  direction: 'horizontal' | 'vertical',
   highlightAirGridColumn?: boolean,
 };
 
@@ -25,6 +26,7 @@ const IntroRouteAirGrid = ({
   amplitude,
   frequency,
   progress,
+  direction,
   highlightAirGridColumn,
 }: Props) => {
   return (
@@ -36,6 +38,7 @@ const IntroRouteAirGrid = ({
             height={Math.round(width * WAVEFORM_ASPECT_RATIO + 10)}
             numOfRows={NUM_OF_ROWS}
             numOfCols={NUM_OF_COLS}
+            direction={direction}
             waveformShape={shape}
             waveformAmplitude={amplitude}
             waveformFrequency={frequency}

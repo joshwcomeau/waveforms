@@ -36,7 +36,7 @@ const WaveformEquation = () => {
         strokeWidth={2}
         color={COLORS.primary[500]}
         frequency={2}
-        shape="sawtooth"
+        shape="square"
         size={WAVEFORM_SIZE}
       />
     </Wrapper>
