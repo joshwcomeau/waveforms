@@ -78,12 +78,7 @@ class IntroRoute extends PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    // When going forwards a step, we may wish to specify an override frequency
-    // or amplitude.
-    // NOTE: I really don't like that this is dealt with at such a high level,
-    // since there won't always even be a Waveform (the WaveformAddition
-    // component manages this all internally).
-    // For future routes, let's use Redux instead. Would make this much nicer.
+    // When changing step, we may wish to specify an override value.
     if (this.state.currentStep !== prevState.currentStep) {
       const stepData = steps[this.state.currentStep];
 
@@ -245,33 +240,64 @@ class IntroRoute extends PureComponent<Props, State> {
     // oscillator that needs to vibrate at normal ranges.
     // By multiplying by 100, we ensure that doubling the unit still augments
     // the pitch by an octave. We also add 100 to make the low-end audible.
-    const adjustedAudibleFrequency = frequency * 2 ** 7;
+    const adjustedAudibleFrequency = frequency * 130.81;
 
     return (
       <AudioOutput masterVolume={effectiveAudioVolume}>
-        {(audioCtx, masterOut) => (
-          <Fragment>
-            <Oscillator
-              key="base-frequency"
-              shape={stepData.waveformShape}
-              amplitude={amplitude}
-              frequency={adjustedAudibleFrequency}
-              audioCtx={audioCtx}
-              masterOut={masterOut}
-            />
+        {(audioCtx, masterOut) =>
+          // TODO: I found out too late that the Web Audio API has a
+          // periodicWave type which does exactly what I want, albeit with a
+          // bunch of fourier math.
+          //
+          // It would also help with the phase issue, since then it's just
+          // a simple param.
+          //
+          // Switch to it!
+          // https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createPeriodicWave
+          stepData.useWaveformAddition ? (
+            getWaveforms({
+              type: stepData.waveformAdditionType,
+              baseFrequency: adjustedAudibleFrequency,
+              baseAmplitude: amplitude,
+              harmonicsForShape,
+              phase,
+              numOfHarmonics,
+            })
+              .filter(({ frequency }) => frequency < 20000)
+              .map(({ frequency, amplitude, offset }, index, waveforms) => {
+                // Web Audio API doesn't support phase as a param to
+                // Oscillators. This is a shame, since I need to show how phase
+                // offset affects amplitude.
+                //
+                // My hacky workaround is just to multiply the amplitudes when
+                // appropriate.
+                //
+                if (stepData.waveformAdditionType === 'phase') {
+                  // HACK: This whole bit is gross. This should really be
+                  // abstracted elsewhere.
 
-            {stepData.useWaveformAddition &&
-              numOfHarmonics > 0 &&
-              getWaveforms({
-                type: stepData.waveformAdditionType,
-                baseFrequency: adjustedAudibleFrequency,
-                baseAmplitude: amplitude,
-                harmonicsForShape,
-                phase,
-                numOfHarmonics,
-              })
-                .filter(({ frequency }) => frequency < 20000)
-                .map(({ frequency, amplitude }, index) => (
+                  // We know that for phase addition, we only have 2 waveforms,
+                  // and the phase is being applied to the 1st one.
+                  // No matter which one we're iterating through in this map,
+                  // we want to consider the first waveform's offset.
+                  const waveformWithOffset = waveforms[0];
+
+                  // The offset is a number from 0 to 100.
+                  // At 0 and 100, the amplitude is 1.
+                  // at 50, the amplitude is 0.
+                  const { offset } = waveformWithOffset;
+
+                  // By subtracting 50, we make the value range from -50 to 50.
+                  // Then, we can get the absolute value so that it's from 0
+                  // to 50.
+                  // Finally, we multiply by 2 (so that it's 0-100), and divide
+                  // by 100 (so that it's 0-1).
+                  const absoluteOffset = Math.abs(50 - offset) * 2 / 100;
+
+                  amplitude *= absoluteOffset;
+                }
+
+                return (
                   <Oscillator
                     key={index}
                     shape="sine"
@@ -280,9 +306,20 @@ class IntroRoute extends PureComponent<Props, State> {
                     audioCtx={audioCtx}
                     masterOut={masterOut}
                   />
-                ))}
-          </Fragment>
-        )}
+                );
+              })
+          ) : (
+            <Oscillator
+              key="base-frequency"
+              slidePitch
+              shape={stepData.waveformShape}
+              amplitude={amplitude}
+              frequency={adjustedAudibleFrequency}
+              audioCtx={audioCtx}
+              masterOut={masterOut}
+            />
+          )
+        }
       </AudioOutput>
     );
   }
