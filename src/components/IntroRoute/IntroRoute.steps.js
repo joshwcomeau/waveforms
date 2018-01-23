@@ -231,7 +231,7 @@ export const steps = {
       <Fragment>
         <Heading>Listen in</Heading>
         <Paragraph>
-          Because this guide deals with audio waves, it's beneficial to be able
+          This guide deals with audio waves, and so it's beneficial to be able
           to hear stuff. This way, when you change parameters, you can hear the
           difference it makes.
         </Paragraph>
@@ -273,8 +273,8 @@ export const steps = {
         <Paragraph>
           We're looking at a graph, a data visualization. The blue line is the
           data we're graphing, and it represents a sound wave. Specifically,
-          it's telling us about the wave's <strong>amplitude</strong>, and how
-          it changes over <strong>time</strong>.
+          it's telling us about the wave's <strong>displacement</strong>, and
+          how it changes over <strong>time</strong>.
         </Paragraph>
 
         <Paragraph>Let's dig into what that means.</Paragraph>
@@ -500,10 +500,10 @@ export const steps = {
 
         <Sidebar type="warning">
           <Paragraph>
-            It is very important to point out that the waveforms we've been
-            dealing with so far, at 1Hz and 2Hz, have been far too low-frequency
-            to be audible. Perfect human hearing ranges from 20Hz to 20,000Hz,
-            with 20Hz being the lowest sub-bass you can possibly hear.
+            It's important to point out that the waveforms we've been dealing
+            with so far, at 1Hz and 2Hz, have been far too low-frequency to be
+            audible. Perfect human hearing ranges from 20Hz to 20,000Hz, with
+            20Hz being the lowest sub-bass you can hear.
           </Paragraph>
           <Paragraph>
             The reason for this discrepancy is that it's much easier to teach
@@ -511,7 +511,7 @@ export const steps = {
             able to see a 440Hz wave oscillate: it's much too fast.
           </Paragraph>
           <Paragraph>
-            The wave you hear when you unmute the sound is about{' '}
+            The wave you hear when you unmute the sound is oscillating about{' '}
             <strong>100 times faster</strong> than the waveform being
             visualized.
           </Paragraph>
@@ -989,7 +989,7 @@ export const steps = {
   },
   'additive-synthesis-intro': {
     ...defaults,
-    frequencyOverride: 2,
+    frequencyOverride: 1,
     children: (
       <Fragment>
         <SectionTitle>4. Additive Synthesis</SectionTitle>

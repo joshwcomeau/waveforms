@@ -8,6 +8,7 @@ import { fade } from './Oscillator.helpers';
 import type { WaveformShape } from '../../types';
 
 type Props = {
+  slidePitch: boolean,
   audioCtx: AudioContext,
   masterOut: AudioDestinationNode,
   shape: WaveformShape,
@@ -83,12 +84,16 @@ class Oscillator extends PureComponent<Props> {
   };
 
   updateFrequency = (frequency: number) => {
-    const { audioCtx } = this.props;
+    const { audioCtx, slidePitch } = this.props;
 
-    this.oscillatorNode.frequency.exponentialRampToValueAtTime(
-      frequency,
-      audioCtx.currentTime + GLIDE_DURATION
-    );
+    if (slidePitch) {
+      this.oscillatorNode.frequency.exponentialRampToValueAtTime(
+        frequency,
+        audioCtx.currentTime + GLIDE_DURATION
+      );
+    } else {
+      this.oscillatorNode.frequency.value = frequency;
+    }
   };
 
   updateAmplitude = (amplitude: number) => {

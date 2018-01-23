@@ -87,7 +87,6 @@ class IntersectionObserver extends PureComponent<Props> {
       }
     }
 
-    // console.log('On intersect', id, entry);
     onIntersect(id, entry);
   };
 

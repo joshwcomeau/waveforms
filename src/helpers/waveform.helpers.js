@@ -497,7 +497,7 @@ export const getWaveforms = ({
         {
           shape: 'sine',
           frequency: baseFrequency,
-          amplitude: baseAmplitude,
+          amplitude: baseAmplitude * 0.5,
           offset,
           strokeWidth: 5,
           color: convertHexToRGBA(COLORS.secondary[500], 0.6),
@@ -505,7 +505,7 @@ export const getWaveforms = ({
         {
           shape: 'sine',
           frequency: baseFrequency,
-          amplitude: baseAmplitude,
+          amplitude: baseAmplitude * 0.5,
           offset: 0,
           strokeWidth: 5,
           color: convertHexToRGBA(COLORS.primary[500], 0.6),

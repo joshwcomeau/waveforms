@@ -37,7 +37,7 @@ export const COLORS: Colors = {
     '300': '#FFD54F',
     '500': '#FFC107',
     '700': '#FFA000',
-    '900': '#FF6F00',
+    '900': '#ee7314',
   },
   green: {
     '100': '#DCEDC8',
