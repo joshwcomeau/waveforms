@@ -377,10 +377,10 @@ export const steps = {
         </Paragraph>
 
         <Paragraph>
-          This is where <strong>amplitude</strong> comes in. The maximum
-          displacement of a waveform is known as the amplitude, and it's
-          measured in decibels (dB). In our case, it ranges from 0 (silent) to 1
-          (maximum displacement).
+          This is where <strong>amplitude</strong> comes in. It measures how
+          much a molecule is displaced from its resting position. In our case,
+          we're measuring it from 0 (silent) to 1 (the maximum amount
+          displaced).
         </Paragraph>
 
         <Paragraph>
@@ -438,21 +438,24 @@ export const steps = {
         <Heading>Frequency</Heading>
 
         <Paragraph>
-          Let's update the waveform so that it repeats twice in the available
-          time.
+          The waveform has been updated so that it repeats twice in the
+          available time (or, phrased another way, it's twice as fast).
         </Paragraph>
 
         <Paragraph>
-          We're able to seamlessly repeat this waveform because it's{' '}
-          <strong>periodic</strong>. What this means is that it's a loopable,
-          repeatable pattern; you can stack them side-by-side and they form a
-          continuous line.
+          The waveform we're looking at is <strong>periodic</strong>; this means
+          that the waveform can be repeated to produce a constant tone. When you
+          unmute the sound, notice how the sound is totally consistent; it
+          doesn't change from one second to the next. Periodic waveforms allow
+          you to produce constant sound by repeating the waveform over and over.
+          This differs from, say, a piano, where the quality of the note changes
+          over time.
         </Paragraph>
 
         <Paragraph>
           <strong>Frequency</strong> is a measure of how many times the waveform
           repeats in a given amount of time. The common unit of measurement for
-          frequency is the <em>hertz</em>, abbreviated as "Hz", which represents
+          frequency is the <em>Hertz</em>, abbreviated as "Hz", which represents
           the number of repetitions per second.
         </Paragraph>
 
@@ -837,26 +840,28 @@ export const steps = {
         </MountWhenVisible>
 
         <Paragraph>
-          Harmonics are always interval-based. Different waveforms have
-          different selections, but they always follow the same pattern.
+          Harmonics are always a multiple of the root frequency. Different
+          waveforms have different selections, but they always follow the same
+          pattern:
         </Paragraph>
 
         <UnorderedList>
-          <li>First interval (root frequency): {roundTo(frequency, 2)}Hz.</li>
+          <li>Fundamental note (root frequency): {roundTo(frequency, 2)}Hz.</li>
           <li>
-            Second interval (2x frequency): {roundTo(frequency * 2, 2)}Hz.
+            Second harmonic (2x frequency): {roundTo(frequency * 2, 2)}Hz.
           </li>
-          <li>Third interval (3x frequency): {roundTo(frequency * 3, 2)}Hz.</li>
+          <li>Third harmonic (3x frequency): {roundTo(frequency * 3, 2)}Hz.</li>
           <li>
-            Fourth interval (4x frequency): {roundTo(frequency * 4, 2)}Hz.
+            Fourth harmonic (4x frequency): {roundTo(frequency * 4, 2)}Hz.
           </li>
           <li>... This pattern continues to infinity.</li>
         </UnorderedList>
 
         <Paragraph>
           Triangle waves only have <em>odd harmonics</em>. That means they have
-          the 1st interval, 3rd interval, 5th interval, and so on. They also
-          decay in terms of amplitude very rapidly.
+          the root note, 3rd harmonic, 5th harmonic, 7th harmonic, and so on.
+          These harmonics "taper off" as you get further away from the root
+          frequency.
         </Paragraph>
       </Fragment>
     ),
@@ -892,12 +897,11 @@ export const steps = {
     children: ({ frequency, amplitude, currentStep }) => (
       <Fragment>
         <Paragraph>
-          In terms of harmonics, the square waveform features exactly the same
-          intervals as the triangle waveform: Every "odd" harmonic (3rd, 5th,
-          7th, etc). The difference between the square and the triangle is that
-          the square's harmonics are louder: they don't decay so quickly, so you
-          get more higher frequencies. This is plainly noticeable in the sound:
-          squares sound much "brighter" than triangles.
+          The square waveform features exactly the same harmonics as the
+          triangle waveform: Every "odd" harmonic (3rd, 5th, 7th, etc). The
+          difference is that the square wave harmonics don't "fall off" as much
+          the further you get from the root frequency. Look at how much louder
+          the higher-frequency harmonics are for square waves:
         </Paragraph>
 
         <MountWhenVisible
@@ -911,6 +915,11 @@ export const steps = {
             baseAmplitude={amplitude}
           />
         </MountWhenVisible>
+
+        <Paragraph>
+          This is plainly noticeable in the sound: squares sound much "brighter"
+          than triangles.
+        </Paragraph>
 
         <Sidebar>
           <Paragraph>
@@ -969,8 +978,8 @@ export const steps = {
       <Fragment>
         <Paragraph>
           In terms of harmonics, sawtooth waveforms have additional frequencies
-          at <em>every interval</em>, unlike triangles and squares which only
-          have odd harmonics.
+          at <em>every multiple of the root frequency</em>, unlike triangles and
+          squares which only have odd harmonics.
         </Paragraph>
 
         <MountWhenVisible
@@ -1035,19 +1044,19 @@ export const steps = {
 
         <UnorderedList>
           <li>
-            <strong style={{ color: COLORS.primary[500] }}>1Hz at 1dB</strong>{' '}
-            (our base note)
+            <strong style={{ color: COLORS.primary[500] }}>
+              1Hz at 1 amplitude
+            </strong>
           </li>
           <li>
             <strong style={{ color: COLORS.secondary[500] }}>
-              3Hz at 0.33dB
-            </strong>{' '}
-            (our first harmonic)
+              3Hz at 0.33 amplitude
+            </strong>
           </li>
         </UnorderedList>
 
         <Paragraph>
-          Put another way, this new wave is 3 times as fast, but at one-third
+          Put another way, this second wave is 3 times as fast, but at one-third
           the amplitude.
         </Paragraph>
 
@@ -1115,14 +1124,14 @@ export const steps = {
 
         <UnorderedList>
           <li>
-            <strong style={{ color: COLORS.primary[500] }}>1Hz at 1dB</strong>{' '}
-            (our base note)
+            <strong style={{ color: COLORS.primary[500] }}>
+              1Hz at 1 amplitude
+            </strong>
           </li>
           <li>
             <strong style={{ color: COLORS.secondary[500] }}>
-              3Hz at 0.33dB
-            </strong>{' '}
-            (our first harmonic)
+              3Hz at 0.33 amplitude
+            </strong>
           </li>
         </UnorderedList>
 
@@ -1315,41 +1324,43 @@ export const steps = {
         <SectionTitle>In Conclusion</SectionTitle>
         <Paragraph>
           An audio wave is the vibration of air molecules, which is how sound
-          travels. A waveform describes a wave by graphing how its amplitude
-          changes over time.
+          travels. A waveform describes a wave by graphing how an air molecule
+          is displaced, over time.
         </Paragraph>
 
         <Paragraph>
           Amplitude is the strength of a wave's effect; the higher the
-          amplitude, the more the air molecules vibrate. This also translates
-          into loudness for the human ear; the higher the amplitude, the louder
-          the sound.
+          amplitude, the more the air molecules are displaced. This also
+          translates into loudness for the human ear; the higher the amplitude,
+          the louder the sound.
         </Paragraph>
 
         <Paragraph>
-          There are many different kinds of waveforms. The most common periodic
-          waveforms are the sine, triangle, square, and sawtooth.
+          The most common periodic waveforms are the sine, triangle, square, and
+          sawtooth.
         </Paragraph>
 
         <Paragraph>
           These waveforms are said to be periodic because the wave they
-          represent repeats. This repetition gives the waveform its pitch, and
-          the faster the repetition, the higher the pitch.
+          represent can be repeated to produce a constant tone. The faster the
+          wave repeats, the higher the pitch of the sound.
         </Paragraph>
 
         <Paragraph>
-          Different waveforms have different harmonics. A harmonic is simply an
-          additional frequency that occurs. The sine waveform is unique in that
-          it doesn't have any additional harmonics; it is the fundamental
-          waveform.
+          Different waveforms have different harmonics. A harmonic is an
+          additional frequency created by the wave. The sine waveform is unique
+          in that it doesn't have any additional harmonics; it is the
+          fundamental waveform.
         </Paragraph>
 
         <Paragraph>
           To understand why certain waveforms have harmonics, we can attack the
           problem from the opposite end. Because the sine waveform is the
           fundamental waveform, it can be used to approximate all the other
-          periodic waveforms, by just adding 1 sine wave at the appropriate
-          intervals, and at the appropriate amplitude.
+          periodic waveforms, by just adding additional sine waves at the
+          appropriate harmonics, and at the appropriate amplitude levels. In
+          essence, a square wave can be thought of as an infinite number of sine
+          waves, all happening at very specific frequencies and amplitudes.
         </Paragraph>
       </Fragment>
     ),

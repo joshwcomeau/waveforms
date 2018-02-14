@@ -9,13 +9,13 @@ import HitCounter from '../HitCounter';
 const Footer = () => {
   return (
     <Wrapper>
-      <TextWrapper>
+      <Copyright>
         <strong>© Josh Comeau, 2018 and beyond.</strong>
-        <br />
-        <br />
+      </Copyright>
+      <License>
         Feel free to do whatever you want with the content on this page, just
-        please attribute it with a link back here.
-      </TextWrapper>
+        please attribute it with a link back here :).
+      </License>
 
       <CounterWrapper>
         <HitCounter />
@@ -34,10 +34,17 @@ const CounterWrapper = styled.div`
   padding-bottom: 40px;
 `;
 
-const TextWrapper = styled.div`
-  max-width: 500px;
+const Copyright = styled.div`
+  max-width: 450px;
   margin: auto;
   padding: 40px;
+
+  line-height: 1.5;
+`;
+
+const License = styled(Copyright)`
+  padding-top: 0;
+  font-size: 13px;
 `;
 
 export default Footer;

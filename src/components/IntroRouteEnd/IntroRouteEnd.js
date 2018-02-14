@@ -23,6 +23,21 @@ const IntroRouteEnd = () => {
         </LimitedParagraph>
 
         <LimitedParagraph>
+          Let me know what you think{' '}
+          <Link external to="https://twitter.com/JoshWComeau">
+            on Twitter
+          </Link>. I'm especially keen to hear if you have suggestions for other
+          audio concepts you'd like explained this way!
+        </LimitedParagraph>
+
+        <LimitedParagraph>
+          This project was created with React.{' '}
+          <Link external to="https://github.com/joshwcomeau/waveforms">
+            View the source
+          </Link>.
+        </LimitedParagraph>
+
+        <LimitedParagraph>
           This project was heavily inspired by R2D3's amazing{' '}
           <Link
             external
@@ -32,17 +47,14 @@ const IntroRouteEnd = () => {
           </Link>.
         </LimitedParagraph>
 
+        <LimitedParagraph />
+
         <LimitedParagraph>
-          This was a blast to build, and I'd love to make this part of a series.
-          Please{' '}
-          <Link
-            external
-            to="https://docs.google.com/forms/d/e/1FAIpQLSe7dFRfI36VLOaQfgjxCa-hINSTrQTNhrmj3A5ewCDITH_WHw/viewform?usp=sf_link"
-          >
-            take this survey
-          </Link>{' '}
-          to let me know how I could improve, and what I should cover next time.
-          It's only 4 questions :)
+          Warm thanks to Pat McNeil, instructor at{' '}
+          <Link external to="http://www.vaniercollege.qc.ca/audio/">
+            Vanier College
+          </Link>, who taught me all this stuff originally. His proof-read was
+          invaluable.
         </LimitedParagraph>
         <Spacer size={172} />
       </MaxWidthWrapper>
@@ -80,6 +92,7 @@ const LimitedParagraph = styled(Paragraph)`
   font-size: 26px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 42px;
 `;
 
 export default IntroRouteEnd;
