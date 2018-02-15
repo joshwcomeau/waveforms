@@ -475,8 +475,8 @@ export const steps = {
     children: (
       <Fragment>
         <Paragraph>
-          Frequency is just the technical term for "pitch". The faster a wave
-          repeats itself, the higher the pitch of the note.
+          Frequency is similar to "pitch". The faster a wave repeats itself, the
+          higher the pitch of the note.
         </Paragraph>
 
         <Paragraph>
@@ -514,7 +514,7 @@ export const steps = {
             able to see a 440Hz wave oscillate: it's much too fast.
           </Paragraph>
           <Paragraph>
-            The wave you hear when you unmute the sound is oscillating about{' '}
+            The wave you hear when you unmute the sound is about{' '}
             <strong>100 times faster</strong> than the waveform being
             visualized.
           </Paragraph>
@@ -765,10 +765,11 @@ export const steps = {
           see is what you get. A {roundTo(frequency, 1)}Hz wave plays a{' '}
           {roundTo(frequency, 1)}Hz tone, and that's it.
         </Paragraph>
+
         <Sidebar>
           <Paragraph>
-            Try changing the amplitude/frequency settings under the waveform to
-            see how it affects this graph. This may help build an intuitive
+            If this graph doesn't quite make sense, try fiddling with the
+            amplitude/frequency sliders. This may help build an intuitive
             understanding of what this graph represents!
           </Paragraph>
         </Sidebar>

@@ -9,6 +9,8 @@ type State = {
   hits: ?number,
 };
 
+const IS_HTTPS = window.location.protocol.indexOf('https') !== -1;
+
 class HitCounter extends PureComponent<Props, State> {
   state = {
     hits: null,
@@ -32,6 +34,14 @@ class HitCounter extends PureComponent<Props, State> {
 
   requestHits = () => {
     const url = `http://159.203.41.223:1337${window.location.pathname}`;
+
+    // Argh, so my analytics server is HTTP.
+    // I'll hopefully soon fix it to run on HTTPS, but in the meantime, we'll
+    // just avoid tracking hits on the HTTPS version. The hit tracker is mainly
+    // for fun nostalgia, so it's not a huge loss :)
+    if (IS_HTTPS) {
+      return;
+    }
 
     fetch(url)
       .then(response => response.json())

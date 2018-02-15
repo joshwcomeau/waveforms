@@ -529,12 +529,12 @@ export const getWaveforms = ({
         },
         {
           ...sharedProperties,
-          frequency: baseFrequency * 1.2599388379204892,
+          frequency: baseFrequency * 1.25,
           color: convertHexToRGBA(COLORS.secondary[500], 0.6),
         },
         {
           ...sharedProperties,
-          frequency: baseFrequency * 1.4984709480122322,
+          frequency: baseFrequency * 1.5,
           color: convertHexToRGBA(COLORS.primary[500], 0.6),
         },
       ];

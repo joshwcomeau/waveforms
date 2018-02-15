@@ -26,6 +26,10 @@ const IntroRouteEnd = () => {
           Let me know what you think{' '}
           <Link external to="https://twitter.com/JoshWComeau">
             on Twitter
+          </Link>{' '}
+          or{' '}
+          <Link external to="mailto:joshwcomeau@gmail.com">
+            by email
           </Link>. I'm especially keen to hear if you have suggestions for other
           audio concepts you'd like explained this way!
         </LimitedParagraph>
@@ -53,9 +57,14 @@ const IntroRouteEnd = () => {
           Warm thanks to Pat McNeil, instructor at{' '}
           <Link external to="http://www.vaniercollege.qc.ca/audio/">
             Vanier College
-          </Link>, who taught me all this stuff originally. His proof-read was
-          invaluable.
+          </Link>, who taught me all this stuff originally, and Matt
+          Dunn-Rankin, co-worker at{' '}
+          <Link external to="https://www.khanacademy.org/">
+            Khan Academy
+          </Link>. Pat's deep audio expertise and Matt's keen eye for pedagogy
+          greatly improved this exploration.
         </LimitedParagraph>
+
         <Spacer size={172} />
       </MaxWidthWrapper>
     </Wrapper>
