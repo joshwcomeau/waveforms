@@ -1175,15 +1175,6 @@ export const steps = {
           <SliderIcon fieldName="# of Harmonics" /> to change the number, and
           see how it affects the converged line.
         </Paragraph>
-
-        <Sidebar type="warning">
-          <Paragraph>
-            The slider lets you add up to 75 additional harmonics, but it's
-            computationally intensive to calculate and render all these waves!
-            If you're on a slower device, it may make the page slow /
-            unresponsive if you climb up too high.
-          </Paragraph>
-        </Sidebar>
       </Fragment>
     ),
   },
