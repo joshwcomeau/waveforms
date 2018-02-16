@@ -35,10 +35,14 @@ The waveforms are rendered with SVG (although they can also render to Canvas wit
 >
 > You can also poke around yourself! Check out all the components that start with `Waveform`, like `WaveformPlayer` or `WaveformTween`.
 
-### Running locally
+## How to run
 
-Want to run this on your machine? it _should_ be as simple as `git clone`, `yarn install`, and `yarn:start`. Let me know if that fails.
+Want to run this on your machine? it _should_ be as simple as `yarn:start`. Let me know if that fails.
 
-### License
+## Contributing
 
-MIT
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
