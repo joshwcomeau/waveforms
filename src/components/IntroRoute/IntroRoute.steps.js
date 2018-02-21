@@ -384,10 +384,26 @@ export const steps = {
         </Paragraph>
 
         <Paragraph>
-          Amplitude can be thought of as loudness. While the underlying mechanic
-          is more complicated, the end result is that more amplitude = louder
-          sound.
+          Amplitude can be thought of as loudness. The more the air molecules
+          are displaced, the louder the sound seems to us.
         </Paragraph>
+
+        <Sidebar>
+          <Paragraph>
+            "Amplitude = loudness" is a bit of an oversimplification. Loudness
+            is based on human perception.
+          </Paragraph>
+
+          <Paragraph>
+            For example, imagine someone cheering in the apartment next door.
+            The wall does a good job at dampening the displacement of air
+            molecules, and so by the time the wave reaches your ears, the
+            amplitude is probably quite low. But, because humans perceive
+            cheering as a "loud sound", it might not seem as quiet as, say, the
+            television you're watching, even if that television is displacing
+            the air more than the cheering.
+          </Paragraph>
+        </Sidebar>
       </Fragment>
     ),
   },
@@ -1323,8 +1339,8 @@ export const steps = {
         <Paragraph>
           Amplitude is the strength of a wave's effect; the higher the
           amplitude, the more the air molecules are displaced. This also
-          translates into loudness for the human ear; the higher the amplitude,
-          the louder the sound.
+          translates into loudness for the human ear; increasing a wave's
+          amplitude will increase how loud it seems to us.
         </Paragraph>
 
         <Paragraph>
